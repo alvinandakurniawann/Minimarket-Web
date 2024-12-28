@@ -8,6 +8,7 @@ D:\COOL YEAH\Semester 5\PBO\web\src\main\java\com\minimarket\web\controller\web\
 D:\COOL YEAH\Semester 5\PBO\web\src\main\java\com\minimarket\web\controller\web\WebProductController.java
 D:\COOL YEAH\Semester 5\PBO\web\src\main\java\com\minimarket\web\controller\web\WebTransactionController.java
 D:\COOL YEAH\Semester 5\PBO\web\src\main\java\com\minimarket\web\controller\web\WebUserController.java
+D:\COOL YEAH\Semester 5\PBO\web\src\main\java\com\minimarket\web\dto\request\CartRequest.java
 D:\COOL YEAH\Semester 5\PBO\web\src\main\java\com\minimarket\web\dto\request\ProductRequest.java
 D:\COOL YEAH\Semester 5\PBO\web\src\main\java\com\minimarket\web\dto\request\TransactionRequest.java
 D:\COOL YEAH\Semester 5\PBO\web\src\main\java\com\minimarket\web\dto\request\UserRequest.java
@@ -28,9 +29,11 @@ D:\COOL YEAH\Semester 5\PBO\web\src\main\java\com\minimarket\web\model\transacti
 D:\COOL YEAH\Semester 5\PBO\web\src\main\java\com\minimarket\web\model\user\Admin.java
 D:\COOL YEAH\Semester 5\PBO\web\src\main\java\com\minimarket\web\model\user\Customer.java
 D:\COOL YEAH\Semester 5\PBO\web\src\main\java\com\minimarket\web\model\user\User.java
+D:\COOL YEAH\Semester 5\PBO\web\src\main\java\com\minimarket\web\repository\CartItemRepository.java
 D:\COOL YEAH\Semester 5\PBO\web\src\main\java\com\minimarket\web\repository\CartRepository.java
 D:\COOL YEAH\Semester 5\PBO\web\src\main\java\com\minimarket\web\repository\CategoryRepository.java
 D:\COOL YEAH\Semester 5\PBO\web\src\main\java\com\minimarket\web\repository\ProductRepository.java
+D:\COOL YEAH\Semester 5\PBO\web\src\main\java\com\minimarket\web\repository\TransactionItemRepository.java
 D:\COOL YEAH\Semester 5\PBO\web\src\main\java\com\minimarket\web\repository\TransactionRepository.java
 D:\COOL YEAH\Semester 5\PBO\web\src\main\java\com\minimarket\web\repository\UserRepository.java
 D:\COOL YEAH\Semester 5\PBO\web\src\main\java\com\minimarket\web\service\impl\CartServiceImpl.java

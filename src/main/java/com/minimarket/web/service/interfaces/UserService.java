@@ -1,5 +1,10 @@
 package com.minimarket.web.service.interfaces;
 
-public interface UserService {
+import com.minimarket.web.dto.request.UserRequest;
+import com.minimarket.web.dto.response.UserResponse;
 
+public interface UserService {
+    UserResponse registerUser(UserRequest userRequest);
+
+    UserResponse getUserByEmail(String email);
 }

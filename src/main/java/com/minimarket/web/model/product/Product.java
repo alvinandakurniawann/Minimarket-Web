@@ -19,6 +19,9 @@ public class Product extends BaseEntity {
     @JoinColumn(name = "category_id")
     private Category category;
 
+    private String imageUrl; // Menyimpan URL atau path gambar
+
+    // Getters and Setters
     public String getName() {
         return name;
     }
@@ -49,5 +52,13 @@ public class Product extends BaseEntity {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }
