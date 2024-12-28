@@ -1,28 +1,27 @@
 package com.minimarket.web.dto.request;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-
 public class ProductRequest {
-
-    @NotBlank
-    private String name;
-
-    @NotNull
+    private String productName;
+    private Long category; // Category ID
     private Double price;
-
-    @NotNull
     private Integer stock;
+    private String description;
 
-    @NotNull
-    private Long categoryId;
-
-    public String getName() {
-        return name;
+    // Getters and Setters
+    public String getProductName() {
+        return productName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public Long getCategory() {
+        return category;
+    }
+
+    public void setCategory(Long category) {
+        this.category = category;
     }
 
     public Double getPrice() {
@@ -41,11 +40,11 @@ public class ProductRequest {
         this.stock = stock;
     }
 
-    public Long getCategoryId() {
-        return categoryId;
+    public String getDescription() {
+        return description;
     }
 
-    public void setCategoryId(Long categoryId) {
-        this.categoryId = categoryId;
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

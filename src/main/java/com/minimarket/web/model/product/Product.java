@@ -21,6 +21,9 @@ public class Product extends BaseEntity {
 
     private String imageUrl; // Menyimpan URL atau path gambar
 
+    @Column(length = 1000)
+    private String description; // Tambahkan ini
+
     // Getters and Setters
     public String getName() {
         return name;
@@ -60,5 +63,13 @@ public class Product extends BaseEntity {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
