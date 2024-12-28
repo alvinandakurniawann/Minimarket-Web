@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product List</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            text-align: left;
+            padding: 8px;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+    </style>
+</head>
+<body>
+    <h1>Daftar Produk</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nama</th>
+                <th>Kategori</th>
+                <th>Harga</th>
+            </tr>
+        </thead>
+        <tbody id="productTableBody">
+            <!-- Data akan dimasukkan dengan JavaScript -->
+        </tbody>
+    </table>
+
+    <script>
+
+        // Fungsi untuk menampilkan data ke tabel
+        function displayData() {
+            const tableBody = document.getElementById('productTableBody');
+            dataBarang.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${item.id}</td>
+                    <td>${item.name}</td>
+                    <td>${item.category}</td>
+                    <td>${item.price.toFixed(2)}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Panggil fungsi untuk menampilkan data 
+        displayData();
+    </script>
+</body>
+</html>
