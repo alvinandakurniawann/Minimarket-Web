@@ -10,10 +10,10 @@
     <div class="auth-container">
         <div class="auth-card">
             <h2>Register</h2>
-            <form id="registerForm">
+            <form method="post" action="/auth/register">
                 <div class="form-group">
-                    <label for="name">Full Name</label>
-                    <input type="text" id="name" name="name" required>
+                    <label for="fullName">Full Name</label>
+                    <input type="text" id="fullName" name="fullName" required>
                 </div>
                 <div class="form-group">
                     <label for="email">Email</label>
@@ -30,10 +30,9 @@
                 <button type="submit" class="btn-submit">Register</button>
             </form>
             <p class="auth-link">
-                Already have an account? <a href="login.html">Login here</a>
+                Already have an account? <a href="/auth/login">Login here</a>
             </p>
         </div>
     </div>
-    <script src="../../js/auth/login.js"></script>
 </body>
 </html>
