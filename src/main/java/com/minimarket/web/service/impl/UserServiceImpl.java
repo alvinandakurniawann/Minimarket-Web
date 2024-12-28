@@ -2,6 +2,7 @@ package com.minimarket.web.service.impl;
 
 import com.minimarket.web.dto.request.UserRequest;
 import com.minimarket.web.dto.response.UserResponse;
+import com.minimarket.web.model.user.Admin;
 import com.minimarket.web.model.user.Customer;
 import com.minimarket.web.model.user.User;
 import com.minimarket.web.repository.UserRepository;
@@ -11,8 +12,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Collections;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -28,8 +27,7 @@ public class UserServiceImpl implements UserService {
         Customer user = new Customer();
         user.setFullName(userRequest.getFullName());
         user.setEmail(userRequest.getEmail());
-        user.setPassword(passwordEncoder.encode(userRequest.getPassword())); // Enkripsi password
-        user.setAddress(userRequest.getAddress());
+        user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
         user.setRole("CUSTOMER");
 
         Customer savedUser = userRepository.save(user);
@@ -38,20 +36,38 @@ public class UserServiceImpl implements UserService {
                 savedUser.getId(),
                 savedUser.getFullName(),
                 savedUser.getEmail(),
-                savedUser.getAddress()
+                savedUser.getRole()
+        );
+    }
+
+    @Override
+    public UserResponse createAdmin(UserRequest userRequest) {
+        Admin admin = new Admin();
+        admin.setFullName(userRequest.getFullName());
+        admin.setEmail(userRequest.getEmail());
+        admin.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+        admin.setRole("ADMIN");
+
+        Admin savedAdmin = userRepository.save(admin);
+
+        return new UserResponse(
+                savedAdmin.getId(),
+                savedAdmin.getFullName(),
+                savedAdmin.getEmail(),
+                savedAdmin.getRole()
         );
     }
 
     @Override
     public UserResponse getUserByEmail(String email) {
-        Customer user = (Customer) userRepository.findByEmail(email)
+        User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         return new UserResponse(
                 user.getId(),
                 user.getFullName(),
                 user.getEmail(),
-                user.getAddress()
+                user.getRole()
         );
     }
 
@@ -63,7 +79,7 @@ public class UserServiceImpl implements UserService {
         return org.springframework.security.core.userdetails.User
                 .withUsername(user.getEmail())
                 .password(user.getPassword())
-                .authorities(Collections.emptyList()) // Role dapat ditambahkan di sini
+                .authorities("ROLE_" + user.getRole())
                 .build();
     }
 }

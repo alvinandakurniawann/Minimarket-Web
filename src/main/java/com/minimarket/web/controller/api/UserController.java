@@ -14,15 +14,15 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("/register")
-    public ResponseEntity<UserResponse> register(@RequestBody UserRequest userRequest) {
-        UserResponse response = userService.registerUser(userRequest);
+    @PostMapping("/create-admin")
+    public ResponseEntity<UserResponse> createAdmin(@RequestBody UserRequest userRequest) {
+        UserResponse response = userService.createAdmin(userRequest);
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/{email}")
-    public ResponseEntity<UserResponse> getUserByEmail(@PathVariable String email) {
-        UserResponse response = userService.getUserByEmail(email);
+    @PostMapping("/register")
+    public ResponseEntity<UserResponse> registerUser(@RequestBody UserRequest userRequest) {
+        UserResponse response = userService.registerUser(userRequest);
         return ResponseEntity.ok(response);
     }
 }

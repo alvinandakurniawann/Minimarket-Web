@@ -1,5 +1,6 @@
 com\minimarket\web\repository\ProductRepository.class
 com\minimarket\web\service\interfaces\TransactionService.class
+com\minimarket\web\controller\web\WebCustomerController.class
 com\minimarket\web\controller\api\UserController.class
 com\minimarket\web\model\product\Category.class
 com\minimarket\web\controller\api\TransactionController.class
@@ -23,9 +24,11 @@ com\minimarket\web\repository\CategoryRepository.class
 com\minimarket\web\service\interfaces\ProductService.class
 com\minimarket\web\model\product\Product.class
 com\minimarket\web\service\impl\ProductServiceImpl.class
+com\minimarket\web\controller\web\WebAdminController.class
 com\minimarket\web\dto\response\CartResponse$Item.class
 com\minimarket\web\service\impl\UserServiceImpl.class
 com\minimarket\web\dto\response\CartResponse.class
+com\minimarket\web\controller\web\WebAuthController.class
 com\minimarket\web\model\user\Customer.class
 com\minimarket\web\model\user\Admin.class
 com\minimarket\web\model\base\AuditableEntity.class

@@ -22,18 +22,13 @@ public class WebAuthController {
 
     @GetMapping("/auth/register")
     public String registerPage(Model model) {
-        model.addAttribute("userRequest", new UserRequest()); // Menyiapkan form registrasi
+        model.addAttribute("userRequest", new UserRequest()); // Form registrasi
         return "auth/register"; // Mengarah ke src/main/resources/templates/auth/register.html
     }
 
     @PostMapping("/auth/register")
-    public String handleRegister(@ModelAttribute UserRequest userRequest, Model model) {
-        try {
-            userService.registerUser(userRequest); // Simpan pengguna baru
-            return "redirect:/auth/login"; // Redirect ke halaman login setelah berhasil registrasi
-        } catch (Exception e) {
-            model.addAttribute("error", "Failed to register user: " + e.getMessage());
-            return "auth/register"; // Kembali ke halaman registrasi jika ada error
-        }
+    public String handleRegister(@ModelAttribute UserRequest userRequest) {
+        userService.registerUser(userRequest); // Registrasi pengguna baru
+        return "redirect:/auth/login"; // Redirect ke halaman login setelah registrasi
     }
 }

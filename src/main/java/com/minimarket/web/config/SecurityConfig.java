@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 @Configuration
 public class SecurityConfig {
@@ -26,12 +27,14 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/auth/**", "/css/**", "/js/**").permitAll()
+                .requestMatchers("/auth/**", "/css/**", "/js/**", "/images/**", "/api/users/create-admin").permitAll()
+                .requestMatchers("/admin/**").hasRole("ADMIN")
+                .requestMatchers("/customer/**").hasRole("CUSTOMER")
                 .anyRequest().authenticated()
             )
             .formLogin(form -> form
                 .loginPage("/auth/login")
-                .defaultSuccessUrl("/customer/home", true)
+                .successHandler(authenticationSuccessHandler())
                 .permitAll()
             )
             .logout(logout -> logout
@@ -40,5 +43,17 @@ public class SecurityConfig {
                 .permitAll()
             );
         return http.build();
+    }
+
+    @Bean
+    public AuthenticationSuccessHandler authenticationSuccessHandler() {
+        return (request, response, authentication) -> {
+            var authorities = authentication.getAuthorities();
+            if (authorities.stream().anyMatch(auth -> auth.getAuthority().equals("ROLE_ADMIN"))) {
+                response.sendRedirect("/admin/dashboard");
+            } else {
+                response.sendRedirect("/customer/home");
+            }
+        };
     }
 }
