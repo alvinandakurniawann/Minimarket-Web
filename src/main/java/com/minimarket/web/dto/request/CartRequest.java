@@ -5,10 +5,21 @@ import jakarta.validation.constraints.NotNull;
 public class CartRequest {
 
     @NotNull
+    private Long customerId;
+
+    @NotNull
     private Long productId;
 
     @NotNull
     private Integer quantity;
+
+    public Long getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(Long customerId) {
+        this.customerId = customerId;
+    }
 
     public Long getProductId() {
         return productId;

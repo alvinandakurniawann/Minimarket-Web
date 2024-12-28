@@ -1,6 +1,8 @@
+com\minimarket\web\dto\response\CartResponse$Item.class
 com\minimarket\web\repository\ProductRepository.class
 com\minimarket\web\service\impl\UserServiceImpl.class
 com\minimarket\web\service\interfaces\TransactionService.class
+com\minimarket\web\dto\response\CartResponse.class
 com\minimarket\web\model\user\Customer.class
 com\minimarket\web\model\user\Admin.class
 com\minimarket\web\controller\api\UserController.class
@@ -29,6 +31,7 @@ com\minimarket\web\exception\GlobalExceptionHandler.class
 com\minimarket\web\config\WebConfig.class
 com\minimarket\web\controller\web\WebTransactionController.class
 com\minimarket\web\model\cart\Cart.class
+com\minimarket\web\dto\request\TransactionRequest$Item.class
 com\minimarket\web\dto\response\UserResponse.class
 com\minimarket\web\model\transaction\PaymentMethod.class
 com\minimarket\web\service\impl\CartServiceImpl.class

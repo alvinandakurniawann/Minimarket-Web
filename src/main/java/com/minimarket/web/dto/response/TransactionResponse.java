@@ -6,19 +6,64 @@ public class TransactionResponse {
 
     private Long id; // ID transaksi
     private String customerName; // Nama pelanggan
-    private String paymentMethod; // Metode pembayaran (cash, debit, wallet)
+    private List<Item> items; // Daftar item transaksi
+    private String paymentMethod; // Metode pembayaran
     private Double total; // Total harga transaksi
 
-    // Daftar item dalam transaksi
-    private List<Item> items;
+    public TransactionResponse(Long id, String customerName, List<Item> items, String paymentMethod, Double total) {
+        this.id = id;
+        this.customerName = customerName;
+        this.items = items;
+        this.paymentMethod = paymentMethod;
+        this.total = total;
+    }
 
-    // Inner class untuk item
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+
+    public List<Item> getItems() {
+        return items;
+    }
+
+    public void setItems(List<Item> items) {
+        this.items = items;
+    }
+
+    public String getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(String paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
+
+    public Double getTotal() {
+        return total;
+    }
+
+    public void setTotal(Double total) {
+        this.total = total;
+    }
+
     public static class Item {
-        private Long productId; // ID produk
-        private String productName; // Nama produk
-        private Integer quantity; // Jumlah produk
-        private Double pricePerUnit; // Harga per unit
-        private Double totalPrice; // Harga total (quantity * pricePerUnit)
+        private Long productId;
+        private String productName;
+        private Integer quantity;
+        private Double pricePerUnit;
+        private Double totalPrice;
 
         public Item(Long productId, String productName, Integer quantity, Double pricePerUnit, Double totalPrice) {
             this.productId = productId;
@@ -67,54 +112,5 @@ public class TransactionResponse {
         public void setTotalPrice(Double totalPrice) {
             this.totalPrice = totalPrice;
         }
-    }
-
-    // Constructor untuk TransactionResponse
-    public TransactionResponse(Long id, String customerName, String paymentMethod, Double total, List<Item> items) {
-        this.id = id;
-        this.customerName = customerName;
-        this.paymentMethod = paymentMethod;
-        this.total = total;
-        this.items = items;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getCustomerName() {
-        return customerName;
-    }
-
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
-    }
-
-    public String getPaymentMethod() {
-        return paymentMethod;
-    }
-
-    public void setPaymentMethod(String paymentMethod) {
-        this.paymentMethod = paymentMethod;
-    }
-
-    public Double getTotal() {
-        return total;
-    }
-
-    public void setTotal(Double total) {
-        this.total = total;
-    }
-
-    public List<Item> getItems() {
-        return items;
-    }
-
-    public void setItems(List<Item> items) {
-        this.items = items;
     }
 }

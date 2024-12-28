@@ -1,5 +1,14 @@
 package com.minimarket.web.service.interfaces;
 
-public interface TransactionService {
+import com.minimarket.web.dto.request.TransactionRequest;
+import com.minimarket.web.dto.response.TransactionResponse;
 
+import java.util.List;
+
+public interface TransactionService {
+    TransactionResponse createTransaction(TransactionRequest transactionRequest);
+
+    TransactionResponse getTransactionById(Long id);
+
+    List<TransactionResponse> getAllTransactionsByCustomerId(Long customerId);
 }
