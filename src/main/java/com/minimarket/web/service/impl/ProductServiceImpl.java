@@ -114,13 +114,13 @@ public class ProductServiceImpl implements ProductService {
         if (!productRepository.existsById(id)) {
             throw new RuntimeException("Product not found with ID: " + id);
         }
-        productRepository.deleteById(id);
-    }
 
-    @Override
-    public void deleteAllProducts() {
-        productRepository.deleteAll();
-        jdbcTemplate.execute("ALTER TABLE product AUTO_INCREMENT = 1");
+        productRepository.deleteById(id);
+
+        // Jika tabel kosong, reset auto_increment
+        if (productRepository.count() == 0) {
+            jdbcTemplate.execute("ALTER TABLE product AUTO_INCREMENT = 1");
+        }
     }
 
     private void handleImageUpload(MultipartFile image, Product product) {

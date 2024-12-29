@@ -6,6 +6,7 @@ import com.minimarket.web.model.product.Category;
 import com.minimarket.web.repository.CategoryRepository;
 import com.minimarket.web.service.interfaces.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,6 +17,9 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Autowired
     private CategoryRepository categoryRepository;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     @Override
     public List<CategoryResponse> getAllCategories() {
@@ -34,8 +38,18 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void deleteCategory(Long id) {
+        if (!categoryRepository.existsById(id)) {
+            throw new RuntimeException("Category not found with ID: " + id);
+        }
+
         categoryRepository.deleteById(id);
+
+        // Jika tabel kosong, reset auto_increment
+        if (categoryRepository.count() == 0) {
+            jdbcTemplate.execute("ALTER TABLE category AUTO_INCREMENT = 1");
+        }
     }
+
 
     @Override
     public CategoryResponse getCategoryById(Long id) {

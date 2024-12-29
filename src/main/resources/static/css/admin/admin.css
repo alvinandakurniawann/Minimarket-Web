@@ -1,3 +1,4 @@
+/* Struktur Dasar */
 .admin-container {
   display: flex;
   min-height: 100vh;
@@ -12,6 +13,8 @@
 
 .sidebar h2 {
   text-align: center;
+  font-size: 24px;
+  margin-bottom: 20px;
 }
 
 .sidebar a {
@@ -23,41 +26,92 @@
   background-color: #dc3545;
   text-align: center;
   border-radius: 4px;
+  font-weight: bold;
 }
 
 .sidebar a:hover {
   background-color: #c82333;
 }
 
+/* Konten Utama */
 .main-content {
   flex: 1;
-  padding: 20px;
+  padding: 30px;
+  background-color: #f8f9fa;
+  min-height: 100vh;
 }
 
-.admin-table {
+.main-content h1 {
+  font-size: 28px;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Form Styling */
+.admin-form {
+  max-width: 600px;
+  margin: 0 auto;
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.admin-form .form-group {
+  margin-bottom: 15px;
+}
+
+.admin-form label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  display: block;
+  font-size: 14px;
+}
+
+.admin-form input,
+.admin-form select,
+.admin-form textarea {
   width: 100%;
-  border-collapse: collapse;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.admin-form textarea {
+  resize: none;
+}
+
+/* Gambar */
+.admin-form img {
+  margin-top: 10px;
+  max-width: 150px;
+  max-height: 150px;
+  object-fit: cover;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+/* Tombol */
+.btn-container {
+  display: flex;
+  justify-content: space-between;
   margin-top: 20px;
 }
 
-.admin-table th, .admin-table td {
-  border: 1px solid #ddd;
-  padding: 10px;
+.btn {
+  display: inline-block;
   text-align: center;
-}
-
-.admin-table th {
-  background-color: #f8f9fa;
+  text-decoration: none;
+  padding: 10px 15px;
+  border-radius: 4px;
+  font-weight: bold;
+  color: white;
 }
 
 .btn-primary {
   background-color: #007bff;
-  color: white;
-  text-decoration: none;
-  padding: 10px 15px;
-  border-radius: 4px;
-  display: inline-block;
-  margin-right: 10px;
 }
 
 .btn-primary:hover {
@@ -66,13 +120,44 @@
 
 .btn-danger {
   background-color: #dc3545;
-  color: white;
-  text-decoration: none;
-  padding: 10px 15px;
-  border-radius: 4px;
-  display: inline-block;
 }
 
 .btn-danger:hover {
   background-color: #c82333;
+}
+
+/* Tabel */
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background-color: white;
+}
+
+.admin-table th,
+.admin-table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+}
+
+.admin-table th {
+  background-color: #f8f9fa;
+  font-weight: bold;
+}
+
+/* Responsif */
+@media (max-width: 768px) {
+  .admin-container {
+      flex-direction: column;
+  }
+
+  .sidebar {
+      width: 100%;
+      text-align: center;
+  }
+
+  .main-content {
+      padding: 20px;
+  }
 }
