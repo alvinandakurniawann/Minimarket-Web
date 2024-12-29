@@ -9,13 +9,15 @@ import java.util.List;
 public interface ProductService {
     ProductResponse addProduct(ProductRequest productRequest);
 
-    ProductResponse addProductWithImage(ProductRequest productRequest, MultipartFile image);
-
     ProductResponse updateProduct(Long id, ProductRequest productRequest);
 
-    void deleteProduct(Long id);
+    ProductResponse addProductWithImage(ProductRequest productRequest, MultipartFile image);
+
+    ProductResponse updateProductWithImage(Long id, ProductRequest productRequest, MultipartFile image);
+
+    ProductResponse getProductById(Long id);
 
     List<ProductResponse> getAllProducts();
 
-    ProductResponse getProductById(Long id);
+    void deleteProduct(Long id);
 }

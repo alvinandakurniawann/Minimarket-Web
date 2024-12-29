@@ -3,6 +3,7 @@ package com.minimarket.web.service.impl;
 import com.minimarket.web.dto.request.ProductRequest;
 import com.minimarket.web.dto.response.ProductResponse;
 import com.minimarket.web.model.product.Product;
+import com.minimarket.web.repository.CategoryRepository;
 import com.minimarket.web.repository.ProductRepository;
 import com.minimarket.web.service.interfaces.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -24,55 +24,85 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    private CategoryRepository categoryRepository;
+
     @Override
     public ProductResponse addProduct(ProductRequest productRequest) {
         Product product = new Product();
         product.setName(productRequest.getProductName());
-        product.setCategory(null); // Set category if applicable
+        product.setCategory(categoryRepository.findById(productRequest.getCategoryId())
+                .orElseThrow(() -> new RuntimeException("Category not found with ID: " + productRequest.getCategoryId())));
         product.setPrice(productRequest.getPrice());
         product.setStock(productRequest.getStock());
-        product.setImageUrl(null);
+        product.setDescription(productRequest.getDescription());
+
         Product savedProduct = productRepository.save(product);
         return mapToResponse(savedProduct);
     }
 
     @Override
-        public ProductResponse addProductWithImage(ProductRequest productRequest, MultipartFile image) {
-        Product product = new Product();
-        product.setName(productRequest.getProductName());
-        product.setCategory(null); // Set category if applicable
-        product.setPrice(productRequest.getPrice());
-        product.setStock(productRequest.getStock());
-
-        if (!image.isEmpty()) {
-                try {
-                byte[] bytes = image.getBytes();
-                Path path = Paths.get(IMAGE_UPLOAD_DIR + image.getOriginalFilename());
-                System.out.println("Saving image to: " + path.toString()); // Debug log
-                Files.write(path, bytes);
-                product.setImageUrl("/images/products/" + image.getOriginalFilename());
-                } catch (IOException e) {
-                e.printStackTrace(); // Cetak error ke konsol
-                throw new RuntimeException("Failed to save image", e);
-                }
-        }
-
-        Product savedProduct = productRepository.save(product);
-        return mapToResponse(savedProduct);
-        }
-
-    @Override
     public ProductResponse updateProduct(Long id, ProductRequest productRequest) {
         Product existingProduct = productRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Product not found with ID: " + id));
+
         existingProduct.setName(productRequest.getProductName());
-        existingProduct.setCategory(null); // Set category if applicable
+        existingProduct.setCategory(categoryRepository.findById(productRequest.getCategoryId())
+                .orElseThrow(() -> new RuntimeException("Category not found with ID: " + productRequest.getCategoryId())));
         existingProduct.setPrice(productRequest.getPrice());
         existingProduct.setStock(productRequest.getStock());
         existingProduct.setDescription(productRequest.getDescription());
 
         Product updatedProduct = productRepository.save(existingProduct);
         return mapToResponse(updatedProduct);
+    }
+
+    @Override
+    public ProductResponse addProductWithImage(ProductRequest productRequest, MultipartFile image) {
+        Product product = new Product();
+        product.setName(productRequest.getProductName());
+        product.setCategory(categoryRepository.findById(productRequest.getCategoryId())
+                .orElseThrow(() -> new RuntimeException("Category not found with ID: " + productRequest.getCategoryId())));
+        product.setPrice(productRequest.getPrice());
+        product.setStock(productRequest.getStock());
+        product.setDescription(productRequest.getDescription());
+    
+        handleImageUpload(image, product);
+    
+        Product savedProduct = productRepository.save(product);
+        return mapToResponse(savedProduct);
+    }
+    
+    @Override
+    public ProductResponse updateProductWithImage(Long id, ProductRequest productRequest, MultipartFile image) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Product not found with ID: " + id));
+    
+        product.setName(productRequest.getProductName());
+        product.setCategory(categoryRepository.findById(productRequest.getCategoryId())
+                .orElseThrow(() -> new RuntimeException("Category not found with ID: " + productRequest.getCategoryId())));
+        product.setPrice(productRequest.getPrice());
+        product.setStock(productRequest.getStock());
+        product.setDescription(productRequest.getDescription());
+    
+        handleImageUpload(image, product);
+    
+        Product updatedProduct = productRepository.save(product);
+        return mapToResponse(updatedProduct);
+    }    
+
+    @Override
+    public ProductResponse getProductById(Long id) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+        return mapToResponse(product);
+    }
+
+    @Override
+    public List<ProductResponse> getAllProducts() {
+        return productRepository.findAll().stream()
+                .map(this::mapToResponse)
+                .toList();
     }
 
     @Override
@@ -83,28 +113,30 @@ public class ProductServiceImpl implements ProductService {
         productRepository.deleteById(id);
     }
 
-    @Override
-    public ProductResponse getProductById(Long id) {
-        Product product = productRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Product not found with ID: " + id));
-        return mapToResponse(product);
-    }
-
-    @Override
-    public List<ProductResponse> getAllProducts() {
-        return productRepository.findAll().stream()
-                .map(this::mapToResponse)
-                .collect(Collectors.toList());
+    private void handleImageUpload(MultipartFile image, Product product) {
+        if (image != null && !image.isEmpty()) {
+            try {
+                byte[] bytes = image.getBytes();
+                Path path = Paths.get(IMAGE_UPLOAD_DIR + image.getOriginalFilename());
+                Files.write(path, bytes);
+                product.setImageUrl("/images/products/" + image.getOriginalFilename());
+            } catch (IOException e) {
+                throw new RuntimeException("Failed to save image", e);
+            }
+        }
     }
 
     private ProductResponse mapToResponse(Product product) {
         return new ProductResponse(
                 product.getId(),
                 product.getName(),
-                product.getCategory() != null ? product.getCategory().getName() : null,
+                product.getCategory() != null ? product.getCategory().getId() : null, // Tambahkan categoryId
+                product.getCategory() != null ? product.getCategory().getName() : "No Category",
                 product.getPrice(),
                 product.getStock(),
-                product.getImageUrl()
+                product.getImageUrl(),
+                product.getDescription()
         );
     }
+    
 }

@@ -1,8 +1,13 @@
 package com.minimarket.web.dto.request;
 
+import jakarta.validation.constraints.NotNull;
+
 public class ProductRequest {
     private String productName;
-    private Long category; // Category ID
+
+    @NotNull(message = "Category ID cannot be null")
+    private Long categoryId;
+
     private Double price;
     private Integer stock;
     private String description;
@@ -16,12 +21,12 @@ public class ProductRequest {
         this.productName = productName;
     }
 
-    public Long getCategory() {
-        return category;
+    public Long getCategoryId() {
+        return categoryId;
     }
 
-    public void setCategory(Long category) {
-        this.category = category;
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
     }
 
     public Double getPrice() {

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Product - Admin Dashboard</title>
+    <link rel="stylesheet" href="/css/admin/admin.css">
+    <style>
+        /* Tambahkan gaya tambahan untuk elemen form */
+        .admin-form {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .admin-form .form-group {
+            margin-bottom: 15px;
+        }
+        .admin-form label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+        }
+        .admin-form input,
+        .admin-form select,
+        .admin-form textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .admin-form textarea {
+            resize: none;
+            font-size: 14px;
+        }
+        .admin-form img {
+            margin-top: 10px;
+            max-width: 150px;
+            max-height: 150px;
+            object-fit: cover;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .btn-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        .btn-container .btn {
+            display: inline-block;
+            text-align: center;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            color: white;
+        }
+        .btn-primary {
+            background-color: #007bff;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+        .btn-danger {
+            background-color: #dc3545;
+        }
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <div class="sidebar">
+            <h2>Admin Panel</h2>
+            <nav>
+                <a href="/admin/dashboard" class="btn btn-danger">Dashboard</a>
+                <a href="/admin/product/list" class="btn btn-danger">Products</a>
+                <a href="/admin/category/list" class="btn btn-danger">Categories</a>
+            </nav>
+        </div>
+        <div class="main-content">
+            <h1>Edit Product</h1>
+            <form class="admin-form" method="post" th:action="'/admin/product/edit/' + ${product.id}" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="productName">Product Name</label>
+                    <input type="text" id="productName" name="productName" class="form-control" th:value="${product.name}" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="category">Category</label>
+                    <select id="category" name="categoryId" class="form-control" required>
+                        <option value="">Select Category</option>
+                        <option th:each="category : ${categories}" 
+                                th:value="${category.id}" 
+                                th:selected="${category.id == product.categoryId}" 
+                                th:text="${category.name}"></option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="price">Price</label>
+                    <input type="number" id="price" name="price" class="form-control" th:value="${product.price}" step="0.01" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="stock">Stock</label>
+                    <input type="number" id="stock" name="stock" class="form-control" th:value="${product.stock}" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea id="description" name="description" class="form-control" rows="4" th:text="${product.description}"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="image">Product Image</label>
+                    <input type="file" id="image" name="image" class="form-control" accept="image/*">
+                    <div>
+                        <img th:src="${product.imageUrl}" alt="Current Image">
+                    </div>
+                </div>
+                
+                <div class="btn-container">
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                    <a href="/admin/product/list" class="btn btn-danger">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

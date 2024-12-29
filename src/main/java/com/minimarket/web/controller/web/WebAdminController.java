@@ -3,6 +3,7 @@ package com.minimarket.web.controller.web;
 import com.minimarket.web.dto.request.CategoryRequest;
 import com.minimarket.web.dto.request.ProductRequest;
 import com.minimarket.web.dto.response.CategoryResponse;
+import com.minimarket.web.dto.response.ProductResponse;
 import com.minimarket.web.service.interfaces.CategoryService;
 import com.minimarket.web.service.interfaces.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,20 +26,22 @@ public class WebAdminController {
 
     // Tampilkan dashboard admin
     @GetMapping("/dashboard")
-    public String adminDashboard(Model model) {
+    public String adminDashboard() {
         return "admin/dashboard";
     }
 
     // Tampilkan daftar produk
     @GetMapping("/product/list")
     public String manageProducts(Model model) {
-        model.addAttribute("products", productService.getAllProducts());
+        List<ProductResponse> products = productService.getAllProducts();
+        model.addAttribute("products", products);
         return "admin/products/list";
     }
 
     // Tampilkan halaman tambah produk
     @GetMapping("/product/add")
     public String addProductPage(Model model) {
+        model.addAttribute("categories", categoryService.getAllCategories());
         model.addAttribute("productRequest", new ProductRequest());
         return "admin/products/add";
     }
@@ -48,6 +51,31 @@ public class WebAdminController {
     public String addProduct(@ModelAttribute ProductRequest productRequest,
                              @RequestParam("image") MultipartFile image) {
         productService.addProductWithImage(productRequest, image);
+        return "redirect:/admin/product/list";
+    }
+
+    // Tampilkan halaman edit produk
+    @GetMapping("/product/edit/{id}")
+    public String editProductPage(@PathVariable Long id, Model model) {
+        ProductResponse product = productService.getProductById(id);
+        model.addAttribute("product", product);
+        model.addAttribute("categories", categoryService.getAllCategories());
+        return "admin/products/edit";
+    }
+
+    // Proses edit produk
+    @PostMapping("/product/edit/{id}")
+    public String editProduct(@PathVariable Long id,
+                              @ModelAttribute ProductRequest productRequest,
+                              @RequestParam("image") MultipartFile image) {
+        productService.updateProductWithImage(id, productRequest, image);
+        return "redirect:/admin/product/list";
+    }
+
+    // Proses hapus produk
+    @PostMapping("/product/delete/{id}")
+    public String deleteProduct(@PathVariable Long id) {
+        productService.deleteProduct(id);
         return "redirect:/admin/product/list";
     }
 
