@@ -1,6 +1,8 @@
 package com.minimarket.web.controller.web;
 
+import com.minimarket.web.dto.response.CategoryResponse;
 import com.minimarket.web.dto.response.ProductResponse;
+import com.minimarket.web.service.interfaces.CategoryService;
 import com.minimarket.web.service.interfaces.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,6 +19,9 @@ public class WebCustomerController {
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    private CategoryService categoryService;
+
     @GetMapping("/customer/home")
     public String showHomePage(Model model) {
         return "customer/home";
@@ -29,11 +34,17 @@ public class WebCustomerController {
 
     @GetMapping("/customer/products/list")
     public String showProductList(
-            @RequestParam(value = "category", required = false) Long categoryId,
+            @RequestParam(value = "categoryId", required = false) Long categoryId,
             @RequestParam(value = "sort", required = false) String sort,
             Model model) {
         List<ProductResponse> products = productService.getAllProducts(categoryId, sort);
+        List<CategoryResponse> categories = categoryService.getAllCategories();
+
         model.addAttribute("products", products);
+        model.addAttribute("categories", categories);
+        model.addAttribute("selectedCategory", categoryId);
+        model.addAttribute("sortOrder", sort);
+
         return "customer/products/list";
     }
 
