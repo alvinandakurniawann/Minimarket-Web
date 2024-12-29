@@ -17,8 +17,10 @@ public interface ProductService {
 
     ProductResponse getProductById(Long id);
 
-    List<ProductResponse> getAllProducts();
+    List<ProductResponse> getAllProducts(); // Overload tanpa parameter
+
+    List<ProductResponse> getAllProducts(Long categoryId, String sort); // Dengan filter dan sort
 
     void deleteProduct(Long id);
-
 }
+

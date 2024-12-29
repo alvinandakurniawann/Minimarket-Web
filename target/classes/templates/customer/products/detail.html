@@ -1,25 +1,72 @@
-<!-- Product Folder: detail.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product Detail</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+            background-color: #f8f9fa;
+        }
+        .product-detail-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .product-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .product-info {
+            padding: 15px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .btn-container {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            color: white;
+            background-color: #007bff;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+        .btn-danger {
+            background-color: #dc3545;
+        }
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+    </style>
 </head>
 <body>
-    <table border="1" width="100%">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nama</th>
-                <th>Kategori</th>
-                <th>Harga</th>
-                <th>Jumlah</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Data barang yang telah dipilih akan muncul di sini -->
-        </tbody>
-    </table>
+    <div class="product-detail-container">
+        <img th:src="${product.imageUrl}" alt="Product Image" class="product-image">
+        <div class="product-info">
+            <h1 th:text="${product.name}">Sample Product</h1>
+            <p><strong>Category:</strong> <span th:text="${product.category}">Category</span></p>
+            <p><strong>Price:</strong> <span th:text="${product.price}">100.00</span></p>
+            <p><strong>Description:</strong></p>
+            <p th:text="${product.description}">Sample description</p>
+        </div>
+
+        <div class="btn-container">
+            <a href="/customer/cart/add" class="btn">Add to Cart</a>
+            <a href="/customer/cart/checkout" class="btn-danger">Buy Now</a>
+        </div>
+    </div>
 </body>
 </html>

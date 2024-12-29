@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -110,6 +111,23 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public List<ProductResponse> getAllProducts(Long categoryId, String sort) {
+        List<Product> products = categoryId != null
+                ? productRepository.findByCategoryId(categoryId)
+                : productRepository.findAll();
+
+        if ("price-asc".equals(sort)) {
+            products.sort(Comparator.comparing(Product::getPrice));
+        } else if ("price-desc".equals(sort)) {
+            products.sort(Comparator.comparing(Product::getPrice).reversed());
+        }
+
+        return products.stream()
+                .map(this::mapToResponse)
+                .toList();
+    }
+
+    @Override
     public void deleteProduct(Long id) {
         if (!productRepository.existsById(id)) {
             throw new RuntimeException("Product not found with ID: " + id);
@@ -117,7 +135,6 @@ public class ProductServiceImpl implements ProductService {
 
         productRepository.deleteById(id);
 
-        // Jika tabel kosong, reset auto_increment
         if (productRepository.count() == 0) {
             jdbcTemplate.execute("ALTER TABLE product AUTO_INCREMENT = 1");
         }
