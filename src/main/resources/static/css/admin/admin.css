@@ -1,0 +1,78 @@
+.admin-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  background-color: #343a40;
+  color: white;
+  padding: 20px;
+  width: 250px;
+}
+
+.sidebar h2 {
+  text-align: center;
+}
+
+.sidebar a {
+  display: block;
+  color: white;
+  text-decoration: none;
+  padding: 10px;
+  margin-top: 10px;
+  background-color: #dc3545;
+  text-align: center;
+  border-radius: 4px;
+}
+
+.sidebar a:hover {
+  background-color: #c82333;
+}
+
+.main-content {
+  flex: 1;
+  padding: 20px;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.admin-table th, .admin-table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+}
+
+.admin-table th {
+  background-color: #f8f9fa;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  color: white;
+  text-decoration: none;
+  padding: 10px 15px;
+  border-radius: 4px;
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  color: white;
+  text-decoration: none;
+  padding: 10px 15px;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+.btn-danger:hover {
+  background-color: #c82333;
+}

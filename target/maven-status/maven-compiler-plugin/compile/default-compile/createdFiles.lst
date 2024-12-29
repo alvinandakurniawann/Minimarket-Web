@@ -8,6 +8,7 @@ com\minimarket\web\repository\CartItemRepository.class
 com\minimarket\web\dto\request\UserRequest.class
 com\minimarket\web\controller\web\WebUserController.class
 com\minimarket\web\service\interfaces\CartService.class
+com\minimarket\web\service\interfaces\CategoryService.class
 com\minimarket\web\service\interfaces\UserService.class
 com\minimarket\web\WebApplication.class
 com\minimarket\web\dto\request\CartRequest.class
@@ -21,12 +22,14 @@ com\minimarket\web\dto\request\TransactionRequest$Item.class
 com\minimarket\web\model\transaction\PaymentMethod.class
 com\minimarket\web\service\impl\CartServiceImpl.class
 com\minimarket\web\repository\CategoryRepository.class
+com\minimarket\web\dto\response\CategoryResponse.class
 com\minimarket\web\service\interfaces\ProductService.class
 com\minimarket\web\model\product\Product.class
 com\minimarket\web\service\impl\ProductServiceImpl.class
 com\minimarket\web\controller\web\WebAdminController.class
 com\minimarket\web\dto\response\CartResponse$Item.class
 com\minimarket\web\service\impl\UserServiceImpl.class
+com\minimarket\web\dto\request\CategoryRequest.class
 com\minimarket\web\dto\response\CartResponse.class
 com\minimarket\web\controller\web\WebAuthController.class
 com\minimarket\web\model\user\Customer.class
@@ -52,3 +55,4 @@ com\minimarket\web\config\SecurityConfig.class
 com\minimarket\web\dto\response\TransactionResponse.class
 com\minimarket\web\controller\web\WebProductController.class
 com\minimarket\web\dto\request\TransactionRequest.class
+com\minimarket\web\service\impl\CategoryServiceImpl.class
