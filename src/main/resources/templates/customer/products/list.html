@@ -65,23 +65,27 @@
         .btn:hover {
             background-color: #0056b3;
         }
+        .btn-back {
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
     <div class="catalog-container">
+        <a href="/customer/home" class="btn btn-back">Back to Home</a>
         <h1>Product Catalog</h1>
 
         <div class="filter-container">
             <div>
                 <label for="categoryFilter">Filter by Category:</label>
-                <select id="categoryFilter">
+                <select id="categoryFilter" onchange="applyFilter()">
                     <option value="">All Categories</option>
                     <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
                 </select>
             </div>
             <div>
                 <label for="sortFilter">Sort by:</label>
-                <select id="sortFilter">
+                <select id="sortFilter" onchange="applyFilter()">
                     <option value="price-asc">Price: Low to High</option>
                     <option value="price-desc">Price: High to Low</option>
                 </select>
@@ -93,10 +97,18 @@
                 <img th:src="${product.imageUrl}" alt="Product Image">
                 <h3 th:text="${product.name}">Sample Product</h3>
                 <p th:text="${product.category}">Category</p>
-                <p th:text="${product.price}">Price</p>
-                <a th:href="'/customer/products/' + ${product.id}" class="btn">View Details</a>
+                <p th:text="'$' + ${product.price}">Price</p>
+                <a th:href="'/customer/products/detail/' + ${product.id}" class="btn">View Details</a>
             </div>
         </div>
     </div>
+
+    <script>
+        function applyFilter() {
+            const category = document.getElementById('categoryFilter').value;
+            const sort = document.getElementById('sortFilter').value;
+            window.location.href = `/customer/products/list?categoryId=${category}&sort=${sort}`;
+        }
+    </script>
 </body>
 </html>
