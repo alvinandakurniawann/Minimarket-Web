@@ -7,6 +7,7 @@ import com.minimarket.web.repository.CategoryRepository;
 import com.minimarket.web.repository.ProductRepository;
 import com.minimarket.web.service.interfaces.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,6 +27,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private CategoryRepository categoryRepository;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     @Override
     public ProductResponse addProduct(ProductRequest productRequest) {
@@ -66,30 +70,30 @@ public class ProductServiceImpl implements ProductService {
         product.setPrice(productRequest.getPrice());
         product.setStock(productRequest.getStock());
         product.setDescription(productRequest.getDescription());
-    
+
         handleImageUpload(image, product);
-    
+
         Product savedProduct = productRepository.save(product);
         return mapToResponse(savedProduct);
     }
-    
+
     @Override
     public ProductResponse updateProductWithImage(Long id, ProductRequest productRequest, MultipartFile image) {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Product not found with ID: " + id));
-    
+
         product.setName(productRequest.getProductName());
         product.setCategory(categoryRepository.findById(productRequest.getCategoryId())
                 .orElseThrow(() -> new RuntimeException("Category not found with ID: " + productRequest.getCategoryId())));
         product.setPrice(productRequest.getPrice());
         product.setStock(productRequest.getStock());
         product.setDescription(productRequest.getDescription());
-    
+
         handleImageUpload(image, product);
-    
+
         Product updatedProduct = productRepository.save(product);
         return mapToResponse(updatedProduct);
-    }    
+    }
 
     @Override
     public ProductResponse getProductById(Long id) {
@@ -113,6 +117,12 @@ public class ProductServiceImpl implements ProductService {
         productRepository.deleteById(id);
     }
 
+    @Override
+    public void deleteAllProducts() {
+        productRepository.deleteAll();
+        jdbcTemplate.execute("ALTER TABLE product AUTO_INCREMENT = 1");
+    }
+
     private void handleImageUpload(MultipartFile image, Product product) {
         if (image != null && !image.isEmpty()) {
             try {
@@ -130,7 +140,7 @@ public class ProductServiceImpl implements ProductService {
         return new ProductResponse(
                 product.getId(),
                 product.getName(),
-                product.getCategory() != null ? product.getCategory().getId() : null, // Tambahkan categoryId
+                product.getCategory() != null ? product.getCategory().getId() : null,
                 product.getCategory() != null ? product.getCategory().getName() : "No Category",
                 product.getPrice(),
                 product.getStock(),
@@ -138,5 +148,4 @@ public class ProductServiceImpl implements ProductService {
                 product.getDescription()
         );
     }
-    
 }
