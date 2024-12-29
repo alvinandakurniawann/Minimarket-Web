@@ -1,20 +1,22 @@
 package com.minimarket.web.dto.response;
 
+import com.minimarket.web.model.transaction.PaymentMethod;
+
 import java.util.List;
 
 public class TransactionResponse {
 
-    private Long id; // ID transaksi
-    private String customerName; // Nama pelanggan
-    private List<Item> items; // Daftar item transaksi
-    private String paymentMethod; // Metode pembayaran
-    private Double total; // Total harga transaksi
+    private Long id;
+    private String customerName;
+    private List<Item> items;
+    private String paymentMethod; // Representasi string untuk PaymentMethod
+    private Double total;
 
-    public TransactionResponse(Long id, String customerName, List<Item> items, String paymentMethod, Double total) {
+    public TransactionResponse(Long id, String customerName, List<Item> items, PaymentMethod paymentMethod, Double total) {
         this.id = id;
         this.customerName = customerName;
         this.items = items;
-        this.paymentMethod = paymentMethod;
+        this.paymentMethod = paymentMethod.name(); // Konversi enum ke string
         this.total = total;
     }
 

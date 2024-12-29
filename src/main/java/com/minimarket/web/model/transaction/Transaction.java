@@ -3,20 +3,24 @@ package com.minimarket.web.model.transaction;
 import com.minimarket.web.model.base.BaseEntity;
 import com.minimarket.web.model.user.Customer;
 import jakarta.persistence.*;
+
 import java.util.List;
 
 @Entity
 public class Transaction extends BaseEntity {
 
     @ManyToOne
-    @JoinColumn(name = "customer_id")
+    @JoinColumn(name = "customer_id", nullable = false)
     private Customer customer;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private PaymentMethod paymentMethod;
 
     @OneToMany(mappedBy = "transaction", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TransactionItem> items;
 
-    private String paymentMethod;
-
+    @Column(nullable = false)
     private Double total;
 
     public Customer getCustomer() {
@@ -27,20 +31,20 @@ public class Transaction extends BaseEntity {
         this.customer = customer;
     }
 
+    public PaymentMethod getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(PaymentMethod paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
+
     public List<TransactionItem> getItems() {
         return items;
     }
 
     public void setItems(List<TransactionItem> items) {
         this.items = items;
-    }
-
-    public String getPaymentMethod() {
-        return paymentMethod;
-    }
-
-    public void setPaymentMethod(String paymentMethod) {
-        this.paymentMethod = paymentMethod;
     }
 
     public Double getTotal() {

@@ -8,17 +8,20 @@ import jakarta.persistence.*;
 public class TransactionItem extends BaseEntity {
 
     @ManyToOne
-    @JoinColumn(name = "transaction_id")
+    @JoinColumn(name = "transaction_id", nullable = false)
     private Transaction transaction;
 
     @ManyToOne
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
+    @Column(nullable = false)
     private Integer quantity;
 
+    @Column(nullable = false)
     private Double price;
 
+    // Getter dan Setter
     public Transaction getTransaction() {
         return transaction;
     }

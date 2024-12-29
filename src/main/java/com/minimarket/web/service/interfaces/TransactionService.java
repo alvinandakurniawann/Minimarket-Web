@@ -11,4 +11,6 @@ public interface TransactionService {
     TransactionResponse getTransactionById(Long id);
 
     List<TransactionResponse> getAllTransactionsByCustomerId(Long customerId);
+
+    List<TransactionResponse> getAllTransactions(); // Tambahkan metode untuk semua transaksi
 }

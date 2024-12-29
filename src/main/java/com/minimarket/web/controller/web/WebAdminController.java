@@ -4,8 +4,11 @@ import com.minimarket.web.dto.request.CategoryRequest;
 import com.minimarket.web.dto.request.ProductRequest;
 import com.minimarket.web.dto.response.CategoryResponse;
 import com.minimarket.web.dto.response.ProductResponse;
+import com.minimarket.web.dto.response.TransactionResponse;
 import com.minimarket.web.service.interfaces.CategoryService;
 import com.minimarket.web.service.interfaces.ProductService;
+import com.minimarket.web.service.interfaces.TransactionService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,6 +26,9 @@ public class WebAdminController {
 
     @Autowired
     private CategoryService categoryService;
+
+    @Autowired
+    private TransactionService transactionService;
 
     // Tampilkan dashboard admin
     @GetMapping("/dashboard")
@@ -122,5 +128,21 @@ public class WebAdminController {
     public String editCategory(@PathVariable Long id, @ModelAttribute CategoryRequest categoryRequest) {
         categoryService.updateCategory(id, categoryRequest);
         return "redirect:/admin/category/list";
+    }
+
+    // Tampilkan daftar transaksi
+    @GetMapping("/transactions/list")
+    public String manageTransactions(Model model) {
+        List<TransactionResponse> transactions = transactionService.getAllTransactions();
+        model.addAttribute("transactions", transactions);
+        return "admin/transactions/list";
+    }
+
+    // Tampilkan detail transaksi
+    @GetMapping("/transactions/detail/{id}")
+    public String transactionDetail(@PathVariable Long id, Model model) {
+        TransactionResponse transaction = transactionService.getTransactionById(id);
+        model.addAttribute("transaction", transaction);
+        return "admin/transactions/d    etail";
     }
 }
