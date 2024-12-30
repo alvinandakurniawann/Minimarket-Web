@@ -1,29 +1,67 @@
-<!-- Cart Folder: checkout.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Checkout</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table th, table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        .btn {
+            padding: 10px 15px;
+            text-decoration: none;
+            color: white;
+            border-radius: 4px;
+            background-color: #28a745;
+        }
+        .btn:hover {
+            background-color: #218838;
+        }
+    </style>
 </head>
 <body>
-    <table border="1" width="100%">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nama</th>
-                <th>Kategori</th>
-                <th>Harga</th>
-                <th>Jumlah</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Data barang checkout -->
-        </tbody>
-    </table>
-    <h3>Pilih Metode Pembayaran:</h3>
-    <button>Cash</button>
-    <button>Transfer</button>
-    <button>Debit</button>
+    <div class="container">
+        <h1>Checkout</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="item : ${cart.items}">
+                    <td th:text="${item.productName}">Product Name</td>
+                    <td th:text="${item.pricePerUnit}">$10.00</td>
+                    <td th:text="${item.quantity}">2</td>
+                    <td th:text="${item.totalPrice}">$20.00</td>
+                </tr>
+            </tbody>
+        </table>
+        <h3>Total Amount: <span th:text="${cart.totalPrice}">$200</span></h3>
+        <h3>Choose Payment Method:</h3>
+        <form method="post" action="/customer/transactions/complete">
+            <button name="paymentMethod" value="CASH" class="btn">Cash</button>
+            <button name="paymentMethod" value="TRANSFER" class="btn">Transfer</button>
+            <button name="paymentMethod" value="DEBIT" class="btn">Debit</button>
+        </form>
+    </div>
 </body>
 </html>

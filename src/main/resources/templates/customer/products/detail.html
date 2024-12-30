@@ -97,9 +97,9 @@
                 <p class="stock" th:if="${product.stock == 0}" style="color: red;">Out of Stock</p>
                 <p class="description"><strong>Description:</strong> <span th:text="${product.description}">Product Description</span></p>
                 <div class="actions">
-                    <a href="/customer/cart/add?productId=${product.id}" class="btn btn-primary">Add to Cart</a>
-                    <a href="/customer/cart/buy-now?productId=${product.id}" class="btn btn-secondary">Buy Now</a>
-                </div>
+                    <a th:href="@{/customer/cart/add(productId=${product.id}, customerId=${customerId})}" class="btn btn-primary">Add to Cart</a>
+                    <a th:href="@{/customer/cart/buy-now(productId=${product.id}, customerId=${customerId})}" class="btn btn-secondary">Buy Now</a>
+                </div>                
             </div>
         </div>
     </div>
