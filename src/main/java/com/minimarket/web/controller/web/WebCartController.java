@@ -26,8 +26,11 @@ public class WebCartController {
     @Autowired
     private UserRepository userRepository;
 
-    @GetMapping("/add")
-    public String addToCart(@RequestParam Long productId, Authentication authentication) {
+    @PostMapping("/add")
+    public String addToCart(
+            @RequestParam Long productId,
+            @RequestParam(defaultValue = "1") Integer quantity,
+            Authentication authentication) {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         Customer customer = userRepository.findByEmail(userDetails.getUsername())
                 .filter(user -> user instanceof Customer)
@@ -37,7 +40,7 @@ public class WebCartController {
         CartRequest cartRequest = new CartRequest();
         cartRequest.setProductId(productId);
         cartRequest.setCustomerId(customer.getId());
-        cartRequest.setQuantity(1); // Default quantity 1
+        cartRequest.setQuantity(quantity);
         cartService.addToCart(cartRequest);
 
         return "redirect:/customer/cart/view/" + customer.getId();
@@ -82,5 +85,4 @@ public class WebCartController {
         cartItemService.removeCartItem(cartItemId);
         return "redirect:/customer/cart/view/" + customer.getId();
     }
-
 }
