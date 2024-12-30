@@ -1,11 +1,14 @@
 package com.minimarket.web.controller.web;
 
 import com.minimarket.web.dto.request.CartRequest;
+import com.minimarket.web.dto.request.TransactionRequest;
 import com.minimarket.web.dto.response.CartResponse;
+import com.minimarket.web.dto.response.TransactionResponse;
 import com.minimarket.web.model.user.Customer;
 import com.minimarket.web.repository.UserRepository;
 import com.minimarket.web.service.interfaces.CartItemService;
 import com.minimarket.web.service.interfaces.CartService;
+import com.minimarket.web.service.interfaces.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,6 +25,9 @@ public class WebCartController {
 
     @Autowired
     private CartItemService cartItemService;
+
+    @Autowired
+    private TransactionService transactionService;
 
     @Autowired
     private UserRepository userRepository;
@@ -84,5 +90,73 @@ public class WebCartController {
 
         cartItemService.removeCartItem(cartItemId);
         return "redirect:/customer/cart/view/" + customer.getId();
+    }
+
+    @PostMapping("/checkout/{cartId}")
+    public String proceedToCheckout(
+            @PathVariable Long cartId,
+            @RequestParam(value = "paymentMethod", required = false) String paymentMethod,
+            Authentication authentication,
+            Model model) {
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        Customer customer = userRepository.findByEmail(userDetails.getUsername())
+                .filter(user -> user instanceof Customer)
+                .map(user -> (Customer) user)
+                .orElseThrow(() -> new RuntimeException("Customer not found"));
+
+        CartResponse cart = cartService.getCartByCustomerId(customer.getId());
+        if (!cart.getId().equals(cartId)) {
+            throw new IllegalArgumentException("Invalid cart ID");
+        }
+
+        if (paymentMethod == null || paymentMethod.isEmpty()) {
+            model.addAttribute("cart", cart);
+            model.addAttribute("error", "Payment method is required.");
+            return "customer/cart/checkout";
+        }
+
+        TransactionRequest transactionRequest = new TransactionRequest();
+        transactionRequest.setCustomerId(customer.getId());
+        transactionRequest.setPaymentMethod(paymentMethod);
+        transactionRequest.setItems(cart.getItems().stream().map(item -> {
+            TransactionRequest.Item reqItem = new TransactionRequest.Item();
+            reqItem.setProductId(item.getProductId());
+            reqItem.setQuantity(item.getQuantity());
+            return reqItem;
+        }).toList());
+
+        TransactionResponse transactionResponse = transactionService.createTransaction(transactionRequest);
+        cartService.clearCart(customer.getId());
+
+        model.addAttribute("transaction", transactionResponse);
+
+        // Redirect ke halaman selesai dengan instruksi pembayaran
+        if ("CASH".equalsIgnoreCase(paymentMethod)) {
+            model.addAttribute("paymentInstruction", "Silakan bayar jika barang diterima.");
+        } else if ("TRANSFER".equalsIgnoreCase(paymentMethod)) {
+            model.addAttribute("paymentInstruction", "Silakan transfer ke rekening Bank Seabank Rusdi: 0852131498.");
+        } else if ("QRIS".equalsIgnoreCase(paymentMethod)) {
+            model.addAttribute("paymentInstruction", "Scan QRIS berikut untuk pembayaran.");
+            model.addAttribute("qrisImage", "/images/qris.jpg"); // Pastikan gambar ada di direktori static/images/qris.jpg
+        }
+
+        return "customer/cart/payment-instruction"; // Halaman instruksi pembayaran
+    }
+
+    @GetMapping("/checkout/{cartId}")
+    public String checkoutPage(@PathVariable Long cartId, Model model, Authentication authentication) {
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        Customer customer = userRepository.findByEmail(userDetails.getUsername())
+                .filter(user -> user instanceof Customer)
+                .map(user -> (Customer) user)
+                .orElseThrow(() -> new RuntimeException("Customer not found"));
+
+        CartResponse cart = cartService.getCartByCustomerId(customer.getId());
+        if (!cart.getId().equals(cartId)) {
+            throw new IllegalArgumentException("Invalid cart ID");
+        }
+
+        model.addAttribute("cart", cart);
+        return "customer/cart/checkout";
     }
 }
