@@ -132,7 +132,7 @@ public class WebCartController {
 
         // Redirect ke halaman selesai dengan instruksi pembayaran
         if ("CASH".equalsIgnoreCase(paymentMethod)) {
-            model.addAttribute("paymentInstruction", "Silakan bayar jika barang diterima.");
+            model.addAttribute("paymentInstruction", "Silakan bayar barangnya dengan tunai.");
         } else if ("TRANSFER".equalsIgnoreCase(paymentMethod)) {
             model.addAttribute("paymentInstruction", "Silakan transfer ke rekening Bank Seabank Rusdi: 0852131498.");
         } else if ("QRIS".equalsIgnoreCase(paymentMethod)) {
@@ -140,7 +140,10 @@ public class WebCartController {
             model.addAttribute("qrisImage", "/images/qris.jpg"); // Pastikan gambar ada di direktori static/images/qris.jpg
         }
 
-        return "customer/cart/payment-instruction"; // Halaman instruksi pembayaran
+        // Tombol kembali ke beranda
+        model.addAttribute("homeButton", true);
+
+        return "customer/cart/payment-instruction";
     }
 
     @GetMapping("/checkout/{cartId}")

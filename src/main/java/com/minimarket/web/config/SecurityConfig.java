@@ -55,5 +55,6 @@ public class SecurityConfig {
                 response.sendRedirect("/customer/home");
             }
         };
+        
     }
 }

@@ -72,4 +72,5 @@ public class Product extends BaseEntity {
     public void setDescription(String description) {
         this.description = description;
     }
+    
 }
