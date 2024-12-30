@@ -63,11 +63,15 @@ public class CartItemServiceImpl implements CartItemService {
     @Override
     @Transactional
     public void updateCartItem(Long cartItemId, Integer quantity) {
+        if (quantity <= 0) {
+            throw new IllegalArgumentException("Quantity must be greater than 0.");
+        }
         CartItem cartItem = cartItemRepository.findById(cartItemId)
                 .orElseThrow(() -> new RuntimeException("CartItem not found"));
         cartItem.setQuantity(quantity);
         cartItemRepository.save(cartItem);
     }
+    
 
     @Override
     @Transactional

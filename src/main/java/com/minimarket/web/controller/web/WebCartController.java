@@ -52,7 +52,15 @@ public class WebCartController {
     }
 
     @PostMapping("/update/{cartItemId}")
-    public String updateCartItem(@PathVariable Long cartItemId, @RequestParam Integer quantity, Authentication authentication) {
+    public String updateCartItem(
+            @PathVariable Long cartItemId,
+            @RequestParam Integer quantity,
+            Authentication authentication) {
+
+        if (quantity == null || quantity <= 0) {
+            throw new IllegalArgumentException("Invalid quantity. Quantity must be greater than 0.");
+        }
+
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         Customer customer = userRepository.findByEmail(userDetails.getUsername())
                 .filter(user -> user instanceof Customer)
@@ -62,4 +70,17 @@ public class WebCartController {
         cartItemService.updateCartItem(cartItemId, quantity);
         return "redirect:/customer/cart/view/" + customer.getId();
     }
+
+    @PostMapping("/remove/{cartItemId}")
+    public String removeCartItem(@PathVariable Long cartItemId, Authentication authentication) {
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        Customer customer = userRepository.findByEmail(userDetails.getUsername())
+                .filter(user -> user instanceof Customer)
+                .map(user -> (Customer) user)
+                .orElseThrow(() -> new RuntimeException("Customer not found"));
+
+        cartItemService.removeCartItem(cartItemId);
+        return "redirect:/customer/cart/view/" + customer.getId();
+    }
+
 }
