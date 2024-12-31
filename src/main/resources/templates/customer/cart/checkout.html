@@ -12,6 +12,7 @@
             max-width: 800px;
             margin: 20px auto;
             padding: 20px;
+            position: relative;
         }
         table {
             width: 100%;
@@ -32,42 +33,58 @@
         .btn:hover {
             background-color: #218838;
         }
+        .back-arrow {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            text-decoration: none;
+            color: #333;
+            font-size: 20px;
+        }
+        .back-arrow:hover {
+            color: #007bff;
+        }
     </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
 </head>
 <body>
     <div class="container">
+        <!-- Back Button -->
+        <a href="/customer/cart/view" class="back-arrow">
+            <i class="fas fa-arrow-left"></i>
+        </a>
         <h1>Checkout</h1>
         <table>
             <thead>
                 <tr>
-                    <th>Product</th>
-                    <th>Price</th>
-                    <th>Quantity</th>
+                    <th>Produk</th>
+                    <th>Harga</th>
+                    <th>Jumlah</th>
                     <th>Total</th>
                 </tr>
             </thead>
             <tbody>
                 <tr th:each="item : ${cart.items}">
-                    <td th:text="${item.productName}">Product Name</td>
+                    <td th:text="${item.productName}">Nama Produk</td>
                     <td th:text="${item.pricePerUnit}">Rp 10.000</td>
                     <td th:text="${item.quantity}">2</td>
                     <td th:text="${item.totalPrice}">Rp 20.000</td>
                 </tr>
             </tbody>
         </table>
-        <h3>Total Amount: <span th:text="${cart.totalPrice}">Rp 200.000</span></h3>
-        <h3>Choose Payment Method:</h3>
+        <h3>Total Pembayaran: <span th:text="${cart.totalPrice}">Rp 200.000</span></h3>
+        <h3>Pilih Metode Pembayaran:</h3>
         <form method="post" th:action="'/customer/cart/checkout/' + ${cart.id}">
             <label>
-                <input type="radio" name="paymentMethod" value="CASH" required> Cash
+                <input type="radio" name="paymentMethod" value="CASH" required> Tunai
             </label><br>
             <label>
                 <input type="radio" name="paymentMethod" value="TRANSFER" required> Transfer
             </label><br>
             <label>
-                <input type="radio" name="paymentMethod" value="QRIS" required> Qris
+                <input type="radio" name="paymentMethod" value="QRIS" required> QRIS
             </label><br>
-            <button type="submit" class="btn">Confirm Payment</button>
+            <button type="submit" class="btn">Konfirmasi Pembayaran</button>
         </form>
     </div>
 </body>

@@ -35,43 +35,48 @@ public class TransactionServiceImpl implements TransactionService {
     public TransactionResponse createTransaction(TransactionRequest transactionRequest) {
         Customer customer = (Customer) userRepository.findById(transactionRequest.getCustomerId())
                 .orElseThrow(() -> new RuntimeException("Customer not found"));
-
+    
         Transaction transaction = new Transaction();
         transaction.setCustomer(customer);
         transaction.setPaymentMethod(PaymentMethod.valueOf(transactionRequest.getPaymentMethod().toUpperCase()));
-
+    
         double[] total = {0.0};
-
+    
         List<TransactionItem> items = transactionRequest.getItems().stream().map(itemRequest -> {
             Product product = productRepository.findById(itemRequest.getProductId())
                     .orElseThrow(() -> new RuntimeException("Product not found"));
-
+    
             if (product.getStock() < itemRequest.getQuantity()) {
                 throw new RuntimeException("Insufficient stock for product: " + product.getName());
             }
-
+    
             product.setStock(product.getStock() - itemRequest.getQuantity());
             productRepository.save(product);
-
+    
             double itemTotal = product.getPrice() * itemRequest.getQuantity();
             total[0] += itemTotal;
-
+    
             TransactionItem transactionItem = new TransactionItem();
             transactionItem.setProduct(product);
             transactionItem.setQuantity(itemRequest.getQuantity());
             transactionItem.setPrice(product.getPrice());
             transactionItem.setTransaction(transaction);
-
+    
             return transactionItem;
         }).collect(Collectors.toList());
-
+    
+        if (items.isEmpty() || total[0] <= 0) {
+            throw new RuntimeException("Transaksi Tidak Valid, Tolong Pilih Item terlebih dahulu");
+        }
+    
         transaction.setItems(items);
         transaction.setTotal(total[0]);
-
+    
         Transaction savedTransaction = transactionRepository.save(transaction);
-
+    
         return mapToResponse(savedTransaction);
     }
+    
 
     @Override
     public TransactionResponse getTransactionById(Long id) {
@@ -112,4 +117,6 @@ public class TransactionServiceImpl implements TransactionService {
                 )).collect(Collectors.toList())
         );
     }
+
+
 }
