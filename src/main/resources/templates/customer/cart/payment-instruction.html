@@ -4,11 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Instruksi Pembayaran</title>
+    <style>
+        .btn {
+            display: inline-block;
+            padding: 10px 15px;
+            margin: 10px 0;
+            text-decoration: none;
+            color: white;
+            border-radius: 4px;
+            background-color: #28a745;
+        }
+        .btn:hover {
+            background-color: #218838;
+        }
+        .btn-back {
+            background-color: #007bff;
+        }
+        .btn-back:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
     <h1>Transaksi Berhasil</h1>
     <p th:text="${paymentInstruction}">Instruksi Pembayaran</p>
     <img th:if="${qrisImage}" th:src="${qrisImage}" alt="QRIS Pembayaran" style="max-width: 300px;">
-    <a href="/transactions" class="btn">Lihat Transaksi Saya</a>
+    <div>
+        <a th:href="'/transactions/' + ${transaction.id}" class="btn">Lihat Transaksi Saya</a>
+        <a href="/customer/home" class="btn btn-back">Kembali ke Beranda</a>
+    </div>
 </body>
 </html>
