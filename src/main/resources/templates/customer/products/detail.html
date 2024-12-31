@@ -13,25 +13,17 @@
         .rating-star {
             color: #ffc107;
         }
-        .breadcrumb a {
-            color: #007bff;
-            text-decoration: none;
-        }
-        .breadcrumb a:hover {
-            text-decoration: underline;
+        .back-btn {
+            margin-bottom: 16px;
         }
     </style>
 </head>
 <body>
     <div class="container mx-auto p-6">
-        <!-- Breadcrumb -->
-        <nav class="breadcrumb text-gray-600 mb-4">
-            <a href="/customer/products/list" class="hover:underline">Home</a>
-            <span class="mx-2">/</span>
-            <a href="#" th:href="'/category/' + ${product.categoryId}" class="hover:underline" th:text="${product.category}">Category</a>
-            <span class="mx-2">/</span>
-            <span th:text="${product.name}">Product Name</span>
-        </nav>
+        <!-- Back Button -->
+        <a href="/customer/home" class="text-blue-600 hover:underline flex items-center back-btn">
+            <i class="fas fa-arrow-left mr-2"></i> Back to Home
+        </a>
 
         <div class="flex flex-wrap items-start bg-white rounded-lg shadow-lg p-6">
             <!-- Image Section -->
@@ -60,7 +52,7 @@
                 
                 <!-- Add to Cart Section -->
                 <form th:action="'/customer/cart/add'" method="post" class="flex items-center">
-                    <!-- Input untuk jumlah -->
+                    <!-- Input for quantity -->
                     <input type="hidden" name="productId" th:value="${product.id}">
                     <input type="number" name="quantity" value="1" min="1" class="border rounded w-16 text-center mr-4">
                     <button type="submit" class="bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700">

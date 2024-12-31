@@ -31,6 +31,72 @@
         .dropdown:hover .dropdown-menu {
             display: block;
         }
+        .product-card {
+            position: relative;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            text-align: left;
+        }
+        .product-card img {
+            max-width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        .product-card .info {
+            margin-bottom: 10px;
+        }
+        .product-card .info h2 {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .product-card .info p {
+            font-size: 14px;
+            color: gray;
+            margin-bottom: 5px;
+        }
+        .product-card .actions {
+            display: flex;
+            justify-content: space-between;
+        }
+        .product-card .btn {
+            display: inline-block;
+            padding: 8px 12px;
+            color: white;
+            background-color: #007bff;
+            text-decoration: none;
+            border-radius: 4px;
+            text-align: center;
+            font-size: 14px;
+        }
+        .product-card .btn:hover {
+            background-color: #0056b3;
+        }
+        .btn-add-to-cart {
+            background-color: #28a745;
+        }
+        .btn-add-to-cart:hover {
+            background-color: #218838;
+        }
+        .filter-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .filter-container input,
+        .filter-container select {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
     </style>
 </head>
 <body class="bg-gray-100">
@@ -39,6 +105,7 @@
         <div class="container mx-auto flex justify-between items-center">
             <h1 class="text-2xl font-bold">MINIMARKET</h1>
             <div class="flex items-center space-x-4">
+                <!-- Profile Dropdown -->
                 <div class="relative dropdown">
                     <button class="text-blue-600 hover:text-blue-800 flex items-center">
                         <i class="fas fa-user mr-2"></i> Profile
@@ -50,6 +117,7 @@
                         <a href="/auth/logout"><i class="fas fa-sign-out-alt mr-2"></i> Logout</a>
                     </div>
                 </div>
+                <!-- Cart Button -->
                 <button class="text-blue-600 hover:text-blue-800" onclick="location.href='/customer/cart/view'">
                     <i class="fas fa-shopping-cart"></i>
                 </button>
@@ -65,39 +133,79 @@
         </div>
     </section>
 
-    <!-- Features -->
+    <!-- Product List -->
     <main class="container mx-auto mt-8">
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-            <!-- Profile -->
-            <div class="bg-white shadow-lg rounded-lg p-6 text-center">
-                <i class="fas fa-user text-4xl text-blue-600 mb-4"></i>
-                <h3 class="text-xl font-bold mb-2">Profile</h3>
-                <p class="text-gray-600 mb-4">View your profile</p>
-                <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" onclick="location.href='/customer/profile/view'">
-                    View
-                </button>
-            </div>
-
-            <!-- Products -->
-            <div class="bg-white shadow-lg rounded-lg p-6 text-center">
-                <i class="fas fa-box-open text-4xl text-green-600 mb-4"></i>
-                <h3 class="text-xl font-bold mb-2">Products</h3>
-                <p class="text-gray-600 mb-4">Explore our products</p>
-                <button class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700" onclick="location.href='/customer/products/list'">
-                    View
-                </button>
-            </div>
-
-            <!-- Cart -->
-            <div class="bg-white shadow-lg rounded-lg p-6 text-center">
-                <i class="fas fa-shopping-cart text-4xl text-red-600 mb-4"></i>
-                <h3 class="text-xl font-bold mb-2">Cart</h3>
-                <p class="text-gray-600 mb-4">View your cart</p>
-                <button class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700" onclick="location.href='/customer/cart/view'">
-                    View
-                </button>
+        <div class="filter-container">
+            <!-- Search -->
+            <input type="text" id="searchBar" placeholder="Search by product name..." class="w-1/2">
+            <!-- Sort -->
+            <select id="sortOptions" class="w-1/4">
+                <option value="">Sort by</option>
+                <option value="price-asc">Price: Low to High</option>
+                <option value="price-desc">Price: High to Low</option>
+            </select>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6" id="productGrid">
+            <div class="product-card" th:each="product : ${products}">
+                <img th:src="${product.imageUrl}" alt="Product Image">
+                <div class="info">
+                    <h2 th:text="${product.name}">Sample Product</h2>
+                    <p th:text="${product.category}">Category</p>
+                    <p class="text-red-500 font-bold" th:text="'Rp ' + ${product.price}">Rp 100.000</p>
+                </div>
+                <div class="actions">
+                    <a th:href="'/customer/products/detail/' + ${product.id}" class="btn">View Details</a>
+                    <button class="btn btn-add-to-cart" th:attr="onclick='addToCart(' + ${product.id} + ')'">Add to Cart</button>
+                </div>
             </div>
         </div>
     </main>
+
+    <script>
+        const searchBar = document.getElementById('searchBar');
+        const sortOptions = document.getElementById('sortOptions');
+        const productGrid = document.getElementById('productGrid');
+        const products = Array.from(productGrid.children);
+
+        searchBar.addEventListener('input', () => {
+            const query = searchBar.value.toLowerCase();
+            products.forEach(product => {
+                const name = product.querySelector('h2').textContent.toLowerCase();
+                product.style.display = name.includes(query) ? 'block' : 'none';
+            });
+        });
+
+        sortOptions.addEventListener('change', () => {
+            const sortValue = sortOptions.value;
+            const sortedProducts = products.sort((a, b) => {
+                const priceA = parseInt(a.querySelector('.text-red-500').textContent.replace(/\D/g, ''), 10);
+                const priceB = parseInt(b.querySelector('.text-red-500').textContent.replace(/\D/g, ''), 10);
+                return sortValue === 'price-asc' ? priceA - priceB : priceB - priceA;
+            });
+
+            productGrid.innerHTML = '';
+            sortedProducts.forEach(product => productGrid.appendChild(product));
+        });
+
+        function addToCart(productId) {
+            fetch('/customer/cart/add', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `productId=${productId}&quantity=1`,
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to add to cart.');
+                }
+                alert('Product added to cart!');
+            })
+            .catch(error => {
+                console.error(error);
+                alert('Could not add product to cart. Please try again.');
+            });
+        }
+    </script>
 </body>
 </html>
