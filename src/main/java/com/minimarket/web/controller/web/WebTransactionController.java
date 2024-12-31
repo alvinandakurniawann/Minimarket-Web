@@ -25,10 +25,10 @@ public class WebTransactionController {
     @Autowired
     private UserRepository userRepository;
 
-    // List all transactions for the authenticated customer
+    // List transactions for customer
     @GetMapping("/customer")
     public String listTransactionsForCustomer(Authentication authentication, Model model) {
-        String email = authentication.getName(); // Ambil email dari autentikasi
+        String email = authentication.getName();
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
@@ -37,34 +37,40 @@ public class WebTransactionController {
         }
 
         Customer customer = (Customer) user;
-        Long customerId = customer.getId();
-        List<TransactionResponse> transactions = transactionService.getAllTransactionsByCustomerId(customerId);
+        List<TransactionResponse> transactions = transactionService.getAllTransactionsByCustomerId(customer.getId());
         model.addAttribute("transactions", transactions);
-        return "customer/transactions/list"; // Template HTML untuk riwayat transaksi pelanggan
+        return "customer/transactions/list";
     }
 
-    // View details of a specific transaction
+    // View transaction details for customer
     @GetMapping("/{id}")
-    public String viewTransactionDetails(@PathVariable Long id, Model model) {
+    public String viewTransactionDetailsForCustomer(@PathVariable Long id, Model model, Authentication authentication) {
+        String email = authentication.getName();
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (!(user instanceof Customer)) {
+            throw new RuntimeException("User is not a customer");
+        }
+
         TransactionResponse transaction = transactionService.getTransactionById(id);
         model.addAttribute("transaction", transaction);
-        return "customer/transactions/detail"; // Perbarui path ini
+        return "customer/transactions/detail";
     }
-    
 
     // List all transactions for admin
     @GetMapping("/admin")
     public String listAllTransactionsForAdmin(Model model) {
         List<TransactionResponse> allTransactions = transactionService.getAllTransactions();
         model.addAttribute("transactions", allTransactions);
-        return "admin/transactions/list"; // Template HTML untuk riwayat transaksi admin
+        return "admin/transactions/list";
     }
-    // Admin Transaction Detail
+
+    // View transaction details for admin
     @GetMapping("/admin/{id}")
     public String adminTransactionDetail(@PathVariable Long id, Model model) {
         TransactionResponse transaction = transactionService.getTransactionById(id);
         model.addAttribute("transaction", transaction);
-        return "admin/transactions/detail"; // Path ke template
+        return "admin/transactions/detail";
     }
-    
 }

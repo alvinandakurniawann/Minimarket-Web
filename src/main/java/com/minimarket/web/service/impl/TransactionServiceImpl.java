@@ -98,7 +98,7 @@ public class TransactionServiceImpl implements TransactionService {
         return new TransactionResponse(
                 transaction.getId(),
                 transaction.getCustomer().getFullName(),
-                transaction.getCustomer().getEmail(), // Isi customerEmail
+                transaction.getCustomer().getEmail(), // Include email for admin views
                 transaction.getPaymentMethod(),
                 transaction.getTotal(),
                 transaction.getCreatedAt(),
@@ -111,6 +111,4 @@ public class TransactionServiceImpl implements TransactionService {
                 )).collect(Collectors.toList())
         );
     }
-    
-    
 }

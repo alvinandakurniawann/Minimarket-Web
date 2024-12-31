@@ -29,9 +29,9 @@
                 <tbody>
                     <tr th:each="item : ${transaction.items}">
                         <td class="border px-4 py-2" th:text="${item.productName}">Sample Product</td>
-                        <td class="border px-4 py-2" th:text="'Rp ' + ${item.pricePerUnit}">Rp 10.000</td>
+                        <td class="border px-4 py-2" th:text="'Rp ' + ${item.price}">Rp 10.000</td>
                         <td class="border px-4 py-2" th:text="${item.quantity}">1</td>
-                        <td class="border px-4 py-2" th:text="'Rp ' + ${item.totalPrice}">Rp 10.000</td>
+                        <td class="border px-4 py-2" th:text="'Rp ' + ${item.subtotal}">Rp 10.000</td>
                     </tr>
                 </tbody>
             </table>

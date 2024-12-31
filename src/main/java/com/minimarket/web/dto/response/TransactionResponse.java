@@ -9,7 +9,7 @@ public class TransactionResponse {
 
     private Long id;
     private String customerName;
-    private String customerEmail; // Tambahkan ini
+    private String customerEmail; // Tambahkan untuk admin
     private PaymentMethod paymentMethod;
     private Double total;
     private LocalDateTime createdAt;
@@ -98,6 +98,7 @@ public class TransactionResponse {
             this.subtotal = subtotal;
         }
 
+        // Getters and Setters
         public Long getProductId() {
             return productId;
         }
