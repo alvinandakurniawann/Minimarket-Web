@@ -52,13 +52,20 @@ public class WebCartController {
         return "redirect:/customer/cart/view/" + customer.getId();
     }
 
-    @GetMapping("/view/{customerId}")
-    public String viewCart(@PathVariable Long customerId, Model model) {
-        CartResponse cart = cartService.getCartByCustomerId(customerId);
+    @GetMapping("/customer/cart/view")
+    public String viewCart(Authentication authentication, Model model) {
+        String email = authentication.getName();
+        Customer customer = userRepository.findByEmail(email)
+                .filter(user -> user instanceof Customer)
+                .map(user -> (Customer) user)
+                .orElseThrow(() -> new RuntimeException("Customer not found"));
+    
+        CartResponse cart = cartService.getCartByCustomerId(customer.getId());
         model.addAttribute("cart", cart);
-        model.addAttribute("customerId", customerId);
+        model.addAttribute("customerId", customer.getId());
         return "customer/cart/view";
     }
+    
 
     @PostMapping("/update/{cartItemId}")
     public String updateCartItem(

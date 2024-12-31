@@ -84,14 +84,19 @@ public class CartServiceImpl implements CartService {
     @Override
     public CartResponse getCartByCustomerId(Long customerId) {
         Cart cart = cartRepository.findByCustomerId(customerId);
+    
         if (cart == null) {
-            throw new RuntimeException("Cart not found for customer");
+            // Jika cart tidak ditemukan, buat cart baru
+            cart = new Cart();
+            Customer customer = userRepository.findById(customerId)
+                    .filter(user -> user instanceof Customer)
+                    .map(user -> (Customer) user)
+                    .orElseThrow(() -> new RuntimeException("Customer not found"));
+            cart.setCustomer(customer);
+            cart.setItems(new ArrayList<>());
+            cart = cartRepository.save(cart); // Simpan cart baru ke database
         }
-
-        double totalPrice = cart.getItems().stream()
-                .mapToDouble(item -> item.getQuantity() * item.getProduct().getPrice())
-                .sum();
-
+    
         return new CartResponse(
                 cart.getId(),
                 cart.getCustomer().getFullName(),
@@ -104,9 +109,13 @@ public class CartServiceImpl implements CartService {
                         CurrencyFormatter.formatToRupiah(item.getProduct().getPrice()),
                         CurrencyFormatter.formatToRupiah(item.getQuantity() * item.getProduct().getPrice())
                 )).collect(Collectors.toList()),
-                CurrencyFormatter.formatToRupiah(totalPrice)
+                CurrencyFormatter.formatToRupiah(cart.getItems().stream()
+                        .mapToDouble(item -> item.getQuantity() * item.getProduct().getPrice())
+                        .sum())
         );
     }
+    
+    
 
     @Override
     @Transactional
