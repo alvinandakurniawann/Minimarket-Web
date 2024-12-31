@@ -32,9 +32,10 @@
                     <tr th:each="transaction : ${transactions}">
                         <td th:text="${transaction.id}">1</td>
                         <td th:text="${transaction.customerName}">John Doe</td>
-                        <td th:text="${transaction.total}">$200</td>
+                        <td th:text="'Rp ' + ${transaction.total}">Rp 200.000</td>
                         <td>
-                            <a th:href="'/admin/transactions/detail/' + ${transaction.id}" class="btn btn-primary">View Details</a>
+                            <!-- Updated URL -->
+                            <a th:href="'/transactions/admin/' + ${transaction.id}" class="btn btn-primary">View Details</a>
                         </td>
                     </tr>
                 </tbody>

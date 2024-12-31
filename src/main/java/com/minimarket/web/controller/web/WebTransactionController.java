@@ -59,4 +59,12 @@ public class WebTransactionController {
         model.addAttribute("transactions", allTransactions);
         return "admin/transactions/list"; // Template HTML untuk riwayat transaksi admin
     }
+    // Admin Transaction Detail
+    @GetMapping("/admin/{id}")
+    public String adminTransactionDetail(@PathVariable Long id, Model model) {
+        TransactionResponse transaction = transactionService.getTransactionById(id);
+        model.addAttribute("transaction", transaction);
+        return "admin/transactions/detail"; // Path ke template
+    }
+    
 }
