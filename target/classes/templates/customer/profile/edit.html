@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+        }
+        .profile-container {
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .btn {
+            padding: 10px 15px;
+            text-decoration: none;
+            color: white;
+            background-color: #007bff;
+            border-radius: 5px;
+            display: inline-block;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-container">
+        <h2>Edit Profile</h2>
+        <form action="/customer/profile/update" method="post">
+            <div class="form-group">
+                <label>Nama Lengkap:</label>
+                <input type="text" name="fullName" th:value="${customer.fullName}" required>
+            </div>
+            <div class="form-group">
+                <label>Alamat:</label>
+                <input type="text" name="address" th:value="${customer.address}" required>
+            </div>
+            <div class="form-group">
+                <label>Jenis Kelamin:</label>
+                <select name="gender" required>
+                    <option value="Male" th:selected="${customer.gender == 'Male'}">Laki-laki</option>
+                    <option value="Female" th:selected="${customer.gender == 'Female'}">Perempuan</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Nomor Telepon:</label>
+                <input type="text" name="phone" th:value="${customer.phone}" required>
+            </div>
+            <button type="submit" class="btn">Simpan</button>
+        </form>        
+    </div>
+</body>
+</html>
