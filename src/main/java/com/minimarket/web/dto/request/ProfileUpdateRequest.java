@@ -1,21 +1,21 @@
-package com.minimarket.web.model.user;
+package com.minimarket.web.dto.request;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
+public class ProfileUpdateRequest {
 
-@Entity
-public class Customer extends User {
-
-    @Column
+    private String fullName;
     private String address;
-
-    @Column
     private String gender;
-
-    @Column
     private String phone;
 
     // Getters and Setters
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
     public String getAddress() {
         return address;
     }
