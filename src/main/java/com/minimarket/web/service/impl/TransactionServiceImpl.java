@@ -39,7 +39,8 @@ public class TransactionServiceImpl implements TransactionService {
         Transaction transaction = new Transaction();
         transaction.setCustomer(customer);
         transaction.setPaymentMethod(PaymentMethod.valueOf(transactionRequest.getPaymentMethod().toUpperCase()));
-        double[] total = {0.0}; // Gunakan array untuk menyimpan total yang dapat diubah
+
+        double[] total = {0.0};
 
         List<TransactionItem> items = transactionRequest.getItems().stream().map(itemRequest -> {
             Product product = productRepository.findById(itemRequest.getProductId())
@@ -105,7 +106,9 @@ public class TransactionServiceImpl implements TransactionService {
                         item.getPrice() * item.getQuantity()
                 )).collect(Collectors.toList()),
                 transaction.getPaymentMethod(),
-                transaction.getTotal()
+                transaction.getTotal(),
+                transaction.getCreatedAt() // Tambahkan ini
         );
     }
+    
 }

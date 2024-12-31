@@ -2,6 +2,7 @@ package com.minimarket.web.dto.response;
 
 import com.minimarket.web.model.transaction.PaymentMethod;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class TransactionResponse {
@@ -9,17 +10,20 @@ public class TransactionResponse {
     private Long id;
     private String customerName;
     private List<Item> items;
-    private String paymentMethod; // Representasi string untuk PaymentMethod
+    private PaymentMethod paymentMethod;
     private Double total;
+    private LocalDateTime createdAt; // Tambahkan properti ini
 
-    public TransactionResponse(Long id, String customerName, List<Item> items, PaymentMethod paymentMethod, Double total) {
+    public TransactionResponse(Long id, String customerName, List<Item> items, PaymentMethod paymentMethod, Double total, LocalDateTime createdAt) {
         this.id = id;
         this.customerName = customerName;
         this.items = items;
-        this.paymentMethod = paymentMethod.name(); // Konversi enum ke string
+        this.paymentMethod = paymentMethod;
         this.total = total;
+        this.createdAt = createdAt;
     }
 
+    // Getters dan Setters
     public Long getId() {
         return id;
     }
@@ -44,11 +48,11 @@ public class TransactionResponse {
         this.items = items;
     }
 
-    public String getPaymentMethod() {
+    public PaymentMethod getPaymentMethod() {
         return paymentMethod;
     }
 
-    public void setPaymentMethod(String paymentMethod) {
+    public void setPaymentMethod(PaymentMethod paymentMethod) {
         this.paymentMethod = paymentMethod;
     }
 
@@ -58,6 +62,14 @@ public class TransactionResponse {
 
     public void setTotal(Double total) {
         this.total = total;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
     public static class Item {
@@ -75,6 +87,7 @@ public class TransactionResponse {
             this.totalPrice = totalPrice;
         }
 
+        // Getters dan Setters
         public Long getProductId() {
             return productId;
         }

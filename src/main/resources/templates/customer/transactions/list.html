@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction History</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto p-6">
+        <!-- Back Button -->
+        <div class="mb-4">
+            <a href="/customer/home" class="text-blue-600 hover:underline">
+                <i class="fas fa-arrow-left"></i> Back to Home
+            </a>
+        </div>
+
+        <h1 class="text-2xl font-bold mb-4">Transaction History</h1>
+        <table class="min-w-full bg-white border border-gray-300">
+            <thead>
+                <tr class="bg-gray-200 text-left">
+                    <th class="py-2 px-4 border-b">ID</th>
+                    <th class="py-2 px-4 border-b">Total</th>
+                    <th class="py-2 px-4 border-b">Payment Method</th>
+                    <th class="py-2 px-4 border-b">Date</th>
+                    <th class="py-2 px-4 border-b">Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="transaction : ${transactions}" class="hover:bg-gray-100">
+                    <td class="py-2 px-4 border-b" th:text="${transaction.id}">1</td>
+                    <td class="py-2 px-4 border-b" th:text="'Rp ' + ${transaction.total}">Rp 100,000</td>
+                    <td class="py-2 px-4 border-b" th:text="${transaction.paymentMethod}">CASH</td>
+                    <td class="py-2 px-4 border-b" th:text="${transaction.createdAt}">2024-12-30</td>
+                    <td class="py-2 px-4 border-b">
+                        <a th:href="'/transactions/' + ${transaction.id}" class="text-blue-600 hover:underline">View</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

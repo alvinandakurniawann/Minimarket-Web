@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction Detail</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto p-6">
+        <h1 class="text-2xl font-bold mb-4">Transaction Details</h1>
+        <div class="bg-white shadow-md rounded p-6">
+            <h2 class="text-xl font-bold">Transaction ID: <span th:text="${transaction.id}">1</span></h2>
+            <p><strong>Customer:</strong> <span th:text="${transaction.customerName}">John Doe</span></p>
+            <p><strong>Payment Method:</strong> <span th:text="${transaction.paymentMethod}">CASH</span></p>
+            <p><strong>Total:</strong> <span th:text="'Rp ' + ${transaction.total}">Rp 0</span></p>
+            <p><strong>Date:</strong> <span th:text="${transaction.createdAt}">01-01-2024 12:00</span></p>
+            <h3 class="text-lg font-bold mt-6">Items:</h3>
+            <table class="w-full table-auto border-collapse">
+                <thead>
+                    <tr>
+                        <th class="border px-4 py-2">Product</th>
+                        <th class="border px-4 py-2">Price</th>
+                        <th class="border px-4 py-2">Quantity</th>
+                        <th class="border px-4 py-2">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="item : ${transaction.items}">
+                        <td class="border px-4 py-2" th:text="${item.productName}">Sample Product</td>
+                        <td class="border px-4 py-2" th:text="'Rp ' + ${item.pricePerUnit}">Rp 10.000</td>
+                        <td class="border px-4 py-2" th:text="${item.quantity}">1</td>
+                        <td class="border px-4 py-2" th:text="'Rp ' + ${item.totalPrice}">Rp 10.000</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="mt-6">
+            <a href="/transactions/customer" class="text-blue-600 hover:underline"><i class="fas fa-arrow-left"></i> Back to Transactions</a>
+        </div>
+    </div>
+</body>
+</html>
