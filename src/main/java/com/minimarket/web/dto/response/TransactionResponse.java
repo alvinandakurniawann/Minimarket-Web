@@ -9,13 +9,12 @@ public class TransactionResponse {
 
     private Long id;
     private String customerName;
-    private String customerEmail; // Tambahkan untuk admin
+    private String customerEmail;
     private PaymentMethod paymentMethod;
     private Double total;
     private LocalDateTime createdAt;
     private List<Item> items;
 
-    // Constructor
     public TransactionResponse(Long id, String customerName, String customerEmail, PaymentMethod paymentMethod, Double total, LocalDateTime createdAt, List<Item> items) {
         this.id = id;
         this.customerName = customerName;
@@ -26,7 +25,6 @@ public class TransactionResponse {
         this.items = items;
     }
 
-    // Getters and Setters
     public Long getId() {
         return id;
     }
@@ -86,19 +84,20 @@ public class TransactionResponse {
     public static class Item {
         private Long productId;
         private String productName;
+        private String productImage; // Tambahkan untuk gambar produk
         private Integer quantity;
         private Double price;
         private Double subtotal;
 
-        public Item(Long productId, String productName, Integer quantity, Double price, Double subtotal) {
+        public Item(Long productId, String productName, String productImage, Integer quantity, Double price, Double subtotal) {
             this.productId = productId;
             this.productName = productName;
+            this.productImage = productImage;
             this.quantity = quantity;
             this.price = price;
             this.subtotal = subtotal;
         }
 
-        // Getters and Setters
         public Long getProductId() {
             return productId;
         }
@@ -113,6 +112,14 @@ public class TransactionResponse {
 
         public void setProductName(String productName) {
             this.productName = productName;
+        }
+
+        public String getProductImage() {
+            return productImage;
+        }
+
+        public void setProductImage(String productImage) {
+            this.productImage = productImage;
         }
 
         public Integer getQuantity() {

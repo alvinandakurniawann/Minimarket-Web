@@ -98,13 +98,14 @@ public class TransactionServiceImpl implements TransactionService {
         return new TransactionResponse(
                 transaction.getId(),
                 transaction.getCustomer().getFullName(),
-                transaction.getCustomer().getEmail(), // Include email for admin views
+                transaction.getCustomer().getEmail(),
                 transaction.getPaymentMethod(),
                 transaction.getTotal(),
                 transaction.getCreatedAt(),
                 transaction.getItems().stream().map(item -> new TransactionResponse.Item(
                         item.getProduct().getId(),
                         item.getProduct().getName(),
+                        item.getProduct().getImageUrl(), // Tambahkan gambar produk
                         item.getQuantity(),
                         item.getPrice(),
                         item.getPrice() * item.getQuantity()
