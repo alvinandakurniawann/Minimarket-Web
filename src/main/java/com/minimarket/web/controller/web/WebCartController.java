@@ -4,17 +4,22 @@ import com.minimarket.web.dto.request.CartRequest;
 import com.minimarket.web.dto.request.TransactionRequest;
 import com.minimarket.web.dto.response.CartResponse;
 import com.minimarket.web.dto.response.TransactionResponse;
+import com.minimarket.web.model.cart.CartItem;
 import com.minimarket.web.model.user.Customer;
+import com.minimarket.web.repository.CartItemRepository;
 import com.minimarket.web.repository.UserRepository;
 import com.minimarket.web.service.interfaces.CartItemService;
 import com.minimarket.web.service.interfaces.CartService;
 import com.minimarket.web.service.interfaces.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import java.util.Map;
+
 
 @Controller
 @RequestMapping("/customer/cart")
@@ -31,6 +36,10 @@ public class WebCartController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private CartItemRepository cartItemRepository;
+
 
     @PostMapping("/add")
     public String addToCart(
@@ -60,25 +69,35 @@ public class WebCartController {
         return "customer/cart/view";
     }
 
-    @PostMapping("/update/{cartItemId}")
-    public String updateCartItem(
-            @PathVariable Long cartItemId,
-            @RequestParam Integer quantity,
-            Authentication authentication) {
-
-        if (quantity == null || quantity <= 0) {
-            throw new IllegalArgumentException("Invalid quantity. Quantity must be greater than 0.");
-        }
-
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        Customer customer = userRepository.findByEmail(userDetails.getUsername())
-                .filter(user -> user instanceof Customer)
-                .map(user -> (Customer) user)
-                .orElseThrow(() -> new RuntimeException("Customer not found"));
-
-        cartItemService.updateCartItem(cartItemId, quantity);
-        return "redirect:/customer/cart/view/" + customer.getId();
+@PostMapping("/update/{cartItemId}")
+@ResponseBody
+public ResponseEntity<String> updateCartItem(
+        @PathVariable Long cartItemId,
+        @RequestBody Map<String, Integer> payload,
+        Authentication authentication) {
+    int quantity = payload.get("quantity");
+    if (quantity <= 0) {
+        return ResponseEntity.badRequest().body("Quantity must be greater than 0");
     }
+
+    UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+    Customer customer = userRepository.findByEmail(userDetails.getUsername())
+            .filter(user -> user instanceof Customer)
+            .map(user -> (Customer) user)
+            .orElseThrow(() -> new RuntimeException("Customer not found"));
+
+    // Validasi bahwa cartItemId milik pelanggan
+    CartItem cartItem = cartItemRepository.findById(cartItemId)
+            .orElseThrow(() -> new RuntimeException("Cart item not found"));
+
+    if (!cartItem.getCart().getCustomer().getId().equals(customer.getId())) {
+        return ResponseEntity.status(403).body("Unauthorized cart item update");
+    }
+
+    cartItemService.updateCartItem(cartItemId, quantity);
+    return ResponseEntity.ok("Cart item updated successfully");
+}
+
 
     @PostMapping("/remove/{cartItemId}")
     public String removeCartItem(@PathVariable Long cartItemId, Authentication authentication) {

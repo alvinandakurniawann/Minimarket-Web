@@ -1,32 +1,35 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="id">
 <head>
-    <title>Register</title>
-    <link rel="stylesheet" href="/css/auth.css">
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Register - MiniSmart</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
 </head>
-<body>
-    <div class="auth-container">
-        <div class="auth-card">
-            <h2>Register</h2>
-            <form method="post" action="/auth/register">
-                <div class="form-group">
-                    <label for="fullName">Full Name</label>
-                    <input type="text" id="fullName" name="fullName" required>
-                </div>
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" required>
-                </div>
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" name="password" required>
-                </div>
-                <button type="submit" class="btn-submit">Register</button>
-            </form>
-            <p class="auth-link">
-                Already have an account? <a href="/auth/login">Login here</a>
-            </p>
-        </div>
+<body class="bg-gray-900 flex items-center justify-center min-h-screen relative">
+    <img alt="Background image of a modern online minimarket interface with the name 'MiniSmart' prominently displayed, various product listings, shopping cart icons, and a search bar" 
+         class="absolute inset-0 w-full h-full object-cover opacity-30" height="1080" 
+         src="https://storage.googleapis.com/a1aa/image/4Rk3eY7NNTzZH6tSy05N8swCireXe9DT4cUkUYmI1P8EfHfeE.jpg" width="1920"/>
+    <div class="bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-md relative z-10">
+        <h2 class="text-3xl font-bold mb-6 text-center text-blue-400">Register</h2>
+        <form method="post" action="/auth/register">
+            <div class="mb-4">
+                <label for="fullName" class="block text-gray-300 font-semibold">Full Name</label>
+                <input type="text" id="fullName" name="fullName" required class="w-full px-3 py-2 border border-gray-600 rounded-md bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div class="mb-4">
+                <label for="email" class="block text-gray-300 font-semibold">Email</label>
+                <input type="email" id="email" name="email" required class="w-full px-3 py-2 border border-gray-600 rounded-md bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div class="mb-6">
+                <label for="password" class="block text-gray-300 font-semibold">Password</label>
+                <input type="password" id="password" name="password" required class="w-full px-3 py-2 border border-gray-600 rounded-md bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">Register</button>
+        </form>
+        <p class="mt-4 text-center text-gray-400">
+            Already have an account? <a href="/auth/login" class="text-blue-400 hover:underline">Login here</a>
+        </p>
     </div>
 </body>
 </html>

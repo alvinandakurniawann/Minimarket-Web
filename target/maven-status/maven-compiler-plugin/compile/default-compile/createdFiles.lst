@@ -2,6 +2,7 @@ com\minimarket\web\util\CurrencyFormatter.class
 com\minimarket\web\repository\ProductRepository.class
 com\minimarket\web\service\interfaces\TransactionService.class
 com\minimarket\web\controller\web\WebCustomerController.class
+com\minimarket\web\controller\web\WebProfileController.class
 com\minimarket\web\controller\api\UserController.class
 com\minimarket\web\service\interfaces\CartItemService.class
 com\minimarket\web\model\product\Category.class
@@ -34,12 +35,14 @@ com\minimarket\web\model\product\Product.class
 com\minimarket\web\service\impl\ProductServiceImpl.class
 com\minimarket\web\controller\web\WebAdminController.class
 com\minimarket\web\dto\response\CartResponse$Item.class
+com\minimarket\web\repository\CustomerRepository.class
 com\minimarket\web\service\impl\UserServiceImpl.class
 com\minimarket\web\dto\request\CategoryRequest.class
 com\minimarket\web\dto\response\CartResponse.class
 com\minimarket\web\controller\web\WebAuthController.class
 com\minimarket\web\model\user\Customer.class
 com\minimarket\web\model\user\Admin.class
+com\minimarket\web\dto\request\ProfileUpdateRequest.class
 com\minimarket\web\model\base\AuditableEntity.class
 com\minimarket\web\repository\UserRepository.class
 com\minimarket\web\dto\response\TransactionResponse$Item.class

@@ -4,32 +4,119 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Transaction Detail - Admin Dashboard</title>
-    <link rel="stylesheet" href="/css/admin/admin.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+
+        .background-image {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://storage.googleapis.com/a1aa/image/3xfQ7hvjqkQ7F6PTD7FnYQgA8k6S5NUceiaBO1eODaTNZvAoA.jpg');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.6;
+            z-index: -1;
+        }
+
+        /* Admin Panel Styling */
+        .sidebar {
+            background-color: #343a40; /* Solid dark gray */
+        }
+
+        /* Card and table styling for transparency */
+        .content-container {
+            background-color: rgba(255, 255, 255, 0.8); /* White with opacity */
+            border-radius: 8px;
+            padding: 20px;
+            z-index: 1;
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .content-container h3 {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .content-container p {
+            margin: 5px 0;
+        }
+
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: rgba(255, 255, 255, 0.8); /* Transparent table */
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow effect */
+        }
+
+        .admin-table th, .admin-table td {
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            text-align: center;
+        }
+
+        .admin-table th {
+            background-color: rgba(248, 249, 250, 0.9); /* Light gray */
+            color: #333;
+        }
+
+        .admin-table tr:nth-child(even) {
+            background-color: rgba(249, 249, 249, 0.9); /* Light background for even rows */
+        }
+
+        .admin-table tr:hover {
+            background-color: rgba(241, 241, 241, 0.9); /* Hover effect */
+        }
+    </style>
 </head>
-<body>
-    <div class="admin-container">
-        <div class="sidebar">
-            <h2>Admin Panel</h2>
-            <nav>
-                <a href="/transactions/admin" class="btn btn-danger">Back to Transactions</a>
-            </nav>
-        </div>
-        <div class="main-content">
-            <h1>Transaction Detail</h1>
-            <div class="card mb-20">
+<body class="font-sans antialiased bg-gray-100">
+    <!-- Background Image -->
+    <div class="background-image"></div>
+
+    <!-- Admin Panel Container -->
+    <div class="flex min-h-screen">
+        <!-- Sidebar -->
+        <aside class="sidebar w-64 text-white flex-shrink-0">
+            <div class="p-6">
+                <h2 class="text-center text-2xl font-bold mb-6">Admin Panel</h2>
+                <nav>
+                    <a href="/transactions/admin" class="flex items-center gap-2 bg-red-600 hover:bg-red-700 py-2 px-4 rounded mb-2">
+                        <i class="fas fa-arrow-left"></i> <span>Back to Transactions</span>
+                    </a>
+                </nav>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-8">
+            <header class="mb-8">
+                <h1 class="text-4xl font-bold text-gray-800">Transaction Detail</h1>
+            </header>
+
+            <!-- Transaction Information -->
+            <div class="content-container">
                 <h3>Transaction Information</h3>
                 <p><strong>Transaction ID:</strong> <span th:text="${transaction.id}">1</span></p>
-                <p><strong>Date:</strong> <span th:text="${transaction.createdAt}">2024-12-30</span></p>
+                <p><strong>Date:</strong> <span th:text="${transaction.formattedCreatedAt}">2024-12-30</span></p>
                 <p><strong>Payment Method:</strong> <span th:text="${transaction.paymentMethod}">CASH</span></p>
             </div>
-            
-            <div class="card mb-20">
+
+            <!-- Customer Information -->
+            <div class="content-container">
                 <h3>Customer Information</h3>
                 <p><strong>Name:</strong> <span th:text="${transaction.customerName}">John Doe</span></p>
                 <p><strong>Email:</strong> <span th:text="${transaction.customerEmail}">john.doe@example.com</span></p>
             </div>
-            
-            <div class="card mb-20">
+
+            <!-- Order Items -->
+            <div class="content-container">
                 <h3>Order Items</h3>
                 <table class="admin-table">
                     <thead>
@@ -43,18 +130,18 @@
                     <tbody>
                         <tr th:each="item : ${transaction.items}">
                             <td th:text="${item.productName}">Product Name</td>
-                            <td th:text="${item.price}">$50</td>
+                            <td th:text="'Rp ' + ${item.price}">$50</td>
                             <td th:text="${item.quantity}">2</td>
-                            <td th:text="${item.subtotal}">$100</td>
+                            <td th:text="'Rp ' + ${item.subtotal}">$100</td>
                         </tr>
                         <tr>
                             <td colspan="3" class="text-right"><strong>Total:</strong></td>
-                            <td th:text="${transaction.total}">$200</td>
+                            <td th:text="'Rp ' + ${transaction.total}">$200</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-        </div>
+        </main>
     </div>
 </body>
 </html>

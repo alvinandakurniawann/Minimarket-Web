@@ -1,75 +1,80 @@
-<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>View Profile</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f9f9f9;
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>
+   View Profile
+  </title>
+  <script src="https://cdn.tailwindcss.com">
+  </script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&amp;display=swap" rel="stylesheet"/>
+  <style>
+   body {
+            font-family: 'Roboto', sans-serif;
         }
-        .profile-container {
-            max-width: 500px;
-            margin: 50px auto;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            background-color: white;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        .form-group label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-        .form-group input {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        .btn {
-            padding: 10px 15px;
-            text-decoration: none;
-            color: white;
-            background-color: #007bff;
-            border-radius: 5px;
-            display: inline-block;
-        }
-        .btn:hover {
-            background-color: #0056b3;
-        }
-    </style>
-</head>
-<body>
-    <div class="profile-container">
-        <h2 class="text-2xl">Profile</h2>
-        <div class="form-group">
-            <label for="fullName">Nama Lengkap:</label>
-            <input type="text" id="fullName" th:value="${customer.fullName}" disabled>
-        </div>
-        <div class="form-group">
-            <label for="email">Email:</label>
-            <input type="email" id="email" th:value="${customer.email}" disabled>
-        </div>
-        <div class="form-group">
-            <label for="address">Alamat:</label>
-            <input type="text" id="address" th:value="${customer.address}" disabled>
-        </div>
-        <div class="form-group">
-            <label for="gender">Jenis Kelamin:</label>
-            <input type="text" id="gender" th:value="${customer.gender}" disabled>
-        </div>
-        <div class="form-group">
-            <label for="phone">Nomor Telepon:</label>
-            <input type="text" id="phone" th:value="${customer.phone}" disabled>
-        </div>
-        <a href="/customer/profile/edit" class="btn">Edit Profil</a>
-        <a href="/customer/home" class="btn">Kembali ke Beranda</a>
+  </style>
+ </head>
+ <body class="flex items-center justify-center min-h-screen relative">
+  <img alt="Beautiful background image of a scenic landscape with mountains and a lake" class="absolute inset-0 w-full h-full object-cover z-0" height="1080" src="https://storage.googleapis.com/a1aa/image/6yZ20u5mvbbeIK7CueXH0FqN3pnuLeZuu62j0RO3O6qHnfCQB.jpg" width="1920"/>
+  <div class="relative z-10 max-w-lg w-full bg-white bg-opacity-80 p-8 rounded-lg shadow-lg">
+    <h2 class="text-2xl font-bold text-center mb-6 text-gray-800">
+     Profile
+    </h2>
+    <div class="form-group mb-4">
+     <label class="block font-bold mb-2 text-gray-700" for="fullName">
+      Nama Lengkap:
+     </label>
+     <div class="flex items-center">
+      <i class="fas fa-user mr-2 text-gray-500"></i>
+      <input class="w-full p-3 border border-gray-300 rounded-lg bg-gray-100" disabled="" id="fullName" th:value="${customer.fullName}" type="text"/>
+     </div>
     </div>
-</body>
+    <div class="form-group mb-4">
+     <label class="block font-bold mb-2 text-gray-700" for="email">
+      Email:
+     </label>
+     <div class="flex items-center">
+      <i class="fas fa-envelope mr-2 text-gray-500"></i>
+      <input class="w-full p-3 border border-gray-300 rounded-lg bg-gray-100" disabled="" id="email" th:value="${customer.email}" type="email"/>
+     </div>
+    </div>
+    <div class="form-group mb-4">
+     <label class="block font-bold mb-2 text-gray-700" for="address">
+      Alamat:
+     </label>
+     <div class="flex items-center">
+      <i class="fas fa-map-marker-alt mr-2 text-gray-500"></i>
+      <input class="w-full p-3 border border-gray-300 rounded-lg bg-gray-100" disabled="" id="address" th:value="${customer.address}" type="text"/>
+     </div>
+    </div>
+    <div class="form-group mb-4">
+     <label class="block font-bold mb-2 text-gray-700" for="gender">
+      Jenis Kelamin:
+     </label>
+     <div class="flex items-center">
+      <i class="fas fa-venus-mars mr-2 text-gray-500"></i>
+      <input class="w-full p-3 border border-gray-300 rounded-lg bg-gray-100" disabled="" id="gender" th:value="${customer.gender}" type="text"/>
+     </div>
+    </div>
+    <div class="form-group mb-4">
+     <label class="block font-bold mb-2 text-gray-700" for="phone">
+      Nomor Telepon:
+     </label>
+     <div class="flex items-center">
+      <i class="fas fa-phone mr-2 text-gray-500"></i>
+      <input class="w-full p-3 border border-gray-300 rounded-lg bg-gray-100" disabled="" id="phone" th:value="${customer.phone}" type="text"/>
+     </div>
+    </div>
+    <div class="text-center">
+     <a class="btn bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-700 inline-block mr-2" href="/customer/profile/edit">
+      <i class="fas fa-edit mr-2"></i>Edit Profil
+     </a>
+     <a class="btn bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-700 inline-block" href="/customer/home">
+      <i class="fas fa-home mr-2"></i>Kembali ke Beranda
+     </a>
+    </div>
+   </div>
+  </div>
+ </body>
 </html>

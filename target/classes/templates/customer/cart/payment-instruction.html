@@ -4,34 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Instruksi Pembayaran</title>
-    <style>
-        .btn {
-            display: inline-block;
-            padding: 10px 15px;
-            margin: 10px 0;
-            text-decoration: none;
-            color: white;
-            border-radius: 4px;
-            background-color: #28a745;
-        }
-        .btn:hover {
-            background-color: #218838;
-        }
-        .btn-back {
-            background-color: #007bff;
-        }
-        .btn-back:hover {
-            background-color: #0056b3;
-        }
-    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
 </head>
-<body>
-    <h1>Transaksi Berhasil</h1>
-    <p th:text="${paymentInstruction}">Instruksi Pembayaran</p>
-    <img th:if="${qrisImage}" th:src="${qrisImage}" alt="QRIS Pembayaran" style="max-width: 300px;">
-    <div>
-        <a th:href="'/transactions/' + ${transaction.id}" class="btn">Lihat Transaksi Saya</a>
-        <a href="/customer/home" class="btn btn-back">Kembali ke Beranda</a>
+<body class="flex items-center justify-center min-h-screen bg-gray-900 bg-opacity-75 relative">
+    <img alt="Background image with a theme of money, showing various currency notes and coins" class="absolute inset-0 w-full h-full object-cover z-0" height="1080" src="https://storage.googleapis.com/a1aa/image/hsLB9hSrwALfGC3hr2a3q49LT1bGejfcyzIfRQir1zwEj8CQB.jpg" width="1920"/>
+    <div class="text-center bg-white bg-opacity-90 p-8 rounded-lg shadow-lg z-10">
+        <h1 class="text-4xl font-bold mb-4 text-gray-800">
+            Transaksi Diproses...
+        </h1>
+        <p th:text="${paymentInstruction}" class="text-lg mb-6 text-gray-700">
+            Instruksi Pembayaran
+        </p>
+        <img th:if="${qrisImage}" th:src="${qrisImage}" alt="QRIS Pembayaran" class="max-w-xs mx-auto mb-6">
+        <div class="space-x-4">
+            <a th:href="'/transactions/' + ${transaction.id}" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded transition duration-300">
+                <i class="fas fa-receipt mr-2"></i>Lihat Transaksi Saya
+            </a>
+            <a href="/customer/home" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded transition duration-300">
+                <i class="fas fa-home mr-2"></i>Kembali ke Beranda
+            </a>
+        </div>
     </div>
 </body>
 </html>

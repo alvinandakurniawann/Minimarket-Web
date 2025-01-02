@@ -1,8 +1,9 @@
 package com.minimarket.web.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.minimarket.web.model.transaction.PaymentMethod;
-
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class TransactionResponse {
@@ -12,6 +13,8 @@ public class TransactionResponse {
     private String customerEmail;
     private PaymentMethod paymentMethod;
     private Double total;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDateTime createdAt;
     private List<Item> items;
 
@@ -73,6 +76,17 @@ public class TransactionResponse {
         this.createdAt = createdAt;
     }
 
+    /**
+     * Returns the formatted date as a String (yyyy-MM-dd).
+     */
+    public String getFormattedCreatedAt() {
+        if (this.createdAt != null) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            return this.createdAt.format(formatter);
+        }
+        return null;
+    }
+    
     public List<Item> getItems() {
         return items;
     }

@@ -1,100 +1,32 @@
-<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link rel="stylesheet" href="/css/auth.css">
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #f4f4f9;
-        }
-        .auth-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            max-width: 400px;
-            background: #fff;
-            padding: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            border-radius: 8px;
-        }
-        .auth-card {
-            width: 100%;
-        }
-        h2 {
-            text-align: center;
-            margin-bottom: 20px;
-            color: #333;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-        input[type="text"], input[type="password"] {
-            width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 14px;
-        }
-        .btn-submit {
-            width: 100%;
-            padding: 10px;
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-        .btn-submit:hover {
-            background-color: #0056b3;
-        }
-        .auth-link {
-            margin-top: 15px;
-            text-align: center;
-        }
-        .auth-link a {
-            color: #007BFF;
-            text-decoration: none;
-        }
-        .auth-link a:hover {
-            text-decoration: underline;
-        }
-    </style>
+    <title>Login - Minimar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
 </head>
-<body>
-    <div class="auth-container">
-        <div class="auth-card">
-            <h2>Login</h2>
-            <form method="post" action="/auth/login">
-                <div class="form-group">
-                    <label for="username">Email</label>
-                    <input type="text" id="username" name="username" placeholder="Enter your email" required>
-                </div>
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
-                </div>
-                <button type="submit" class="btn-submit">Login</button>
-            </form>
-            <p class="auth-link">
-                Don't have an account? <a href="/auth/register">Register here</a>
-            </p>
-        </div>
+<body class="bg-gray-900 flex items-center justify-center min-h-screen relative">
+    <img alt="Background image of a modern online minimarket interface with the name 'MiniSmart' prominently displayed, various product listings, shopping cart icons, and a search bar" 
+         class="absolute inset-0 w-full h-full object-cover opacity-30" height="1080" 
+         src="https://storage.googleapis.com/a1aa/image/4Rk3eY7NNTzZH6tSy05N8swCireXe9DT4cUkUYmI1P8EfHfeE.jpg" width="1920"/>
+    <div class="bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-md relative z-10">
+        <h2 class="text-3xl font-bold mb-6 text-center text-blue-400">Login</h2>
+        <p class="text-center text-gray-300 mb-6 text-lg">Selamat datang di <span class="text-blue-400 font-bold">Minimarket</span>, silakan login untuk melanjutkan</p>
+        <form method="post" action="/auth/login">
+            <div class="mb-4">
+                <label for="username" class="block text-gray-300 font-semibold">Email</label>
+                <input type="text" id="username" name="username" placeholder="Enter your email" required class="w-full px-3 py-2 border border-gray-600 rounded-md bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div class="mb-6">
+                <label for="password" class="block text-gray-300 font-semibold">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required class="w-full px-3 py-2 border border-gray-600 rounded-md bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">Login</button>
+        </form>
+        <p class="mt-4 text-center text-gray-400">
+            Don't have an account? <a href="/auth/register" class="text-blue-400 hover:underline">Register here</a>
+        </p>
     </div>
 </body>
 </html>

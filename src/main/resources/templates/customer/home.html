@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -7,6 +7,34 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
     <style>
+        /* ====== Tambahan CSS untuk memperindah tampilan dan membuat gambar jadi satu kotak penuh ====== */
+
+        /* Efek kelap-kelip warna-warni untuk teks Welcome */
+        @keyframes rainbow-flash {
+            0% { color: red; }
+            14% { color: orange; }
+            28% { color: yellow; }
+            42% { color: green; }
+            57% { color: blue; }
+            71% { color: indigo; }
+            85% { color: violet; }
+            100% { color: red; }
+        }
+
+        .flashing-rainbow-text {
+            font-weight: bold;
+            animation: rainbow-flash 2s infinite;
+            font-size: 6rem; /* Perbesar ukuran teks */
+        }
+
+        /* Efek hover pada card produk */
+        .product-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s ease-in-out;
+        }
+
+        /* Dropdown menu */
         .dropdown-menu {
             display: none;
             position: absolute;
@@ -14,13 +42,13 @@
             background-color: white;
             border: 1px solid #e2e8f0;
             border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             z-index: 1000;
-            min-width: 150px;
+            min-width: 160px;
         }
         .dropdown-menu a {
             display: block;
-            padding: 10px;
+            padding: 10px 15px;
             text-decoration: none;
             color: #333;
             font-size: 14px;
@@ -31,23 +59,42 @@
         .dropdown:hover .dropdown-menu {
             display: block;
         }
+
+        /* Card produk */
         .product-card {
             position: relative;
             background-color: #fff;
             border: 1px solid #ddd;
             border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden; /* agar sudut gambar ikut melengkung */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             padding: 15px;
             text-align: left;
+            transition: all 0.3s ease;
         }
-        .product-card img {
-            max-width: 100%;
-            height: 200px;
-            object-fit: cover;
-            border-radius: 8px;
-            margin-bottom: 10px;
+
+        /* Container khusus gambar dengan aspect-ratio 1:1 (kotak) agar gambar memenuhi kotak */
+        .product-card .image-container {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1 / 1;       /* Membuat container berbentuk persegi */
+            overflow: hidden;          /* Memotong bagian gambar yang keluar */
+            border-radius: 8px;        /* Sudut gambar melengkung selaras card */
+            margin-bottom: 10px;       /* Jarak dengan info di bawahnya */
+            display: flex;             /* Untuk memudahkan pengaturan posisi gambar di tengah */
+            align-items: center;       /* Vertikal center */
+            justify-content: center;   /* Horizontal center */
         }
+
+        /* Gambar menyesuaikan container sepenuhnya dan berada di tengah */
+        .product-card .image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;         /* Memotong sisi gambar agar sesuai rasio */
+            object-position: center;   /* Pastikan gambar berada di tengah container */
+            display: block;
+        }
+
         .product-card .info {
             margin-bottom: 10px;
         }
@@ -55,15 +102,17 @@
             font-size: 18px;
             font-weight: bold;
             margin-bottom: 5px;
+            color: #1E293B;
         }
         .product-card .info p {
             font-size: 14px;
-            color: gray;
+            color: #475569;
             margin-bottom: 5px;
         }
         .product-card .actions {
             display: flex;
             justify-content: space-between;
+            align-items: center;
         }
         .product-card .btn {
             display: inline-block;
@@ -74,40 +123,161 @@
             border-radius: 4px;
             text-align: center;
             font-size: 14px;
+            transition: background-color 0.2s ease;
         }
         .product-card .btn:hover {
             background-color: #0056b3;
         }
         .btn-add-to-cart {
             background-color: #28a745;
+            transition: background-color 0.2s ease;
         }
         .btn-add-to-cart:hover {
             background-color: #218838;
         }
+
+        /* Filter input dan select */
         .filter-container {
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-end;
             align-items: center;
             margin-bottom: 20px;
+            gap: 1rem;
         }
-        .filter-container input,
         .filter-container select {
             padding: 8px;
             border: 1px solid #ddd;
             border-radius: 4px;
             font-size: 14px;
         }
+
+        /* Header dengan gradasi */
+        .header-gradient {
+            background: linear-gradient(to right, #1d4ed8, #3b82f6);
+        }
+
+        /* Jumbotron dengan gradasi */
+        .jumbotron-gradient {
+            background: linear-gradient(to right, #dbeafe, #e0f2fe);
+        }
+
+        .header-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .search-bar {
+    color: black; /* Atur warna teks menjadi hitam (atau warna yang kontras dengan background) */
+    background-color: white; /* Pastikan background mendukung keterbacaan teks */
+    flex: 0.67;
+    margin-left: 20px;
+    margin-right: 20px;
+    border-radius: 1rem; /* Membuat ujung melengkung (adjust the value as needed) */
+    padding: 0.3rem; /* Optional: Add padding for better spacing inside */
+}
+</style>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minimarket Header</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+        }
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header-container h1 {
+            font-size: 1.75rem; /* Ukuran font lebih kecil */
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            color: white; /* Warna tulisan tetap putih */
+        }
+        .header-container h1 i {
+            margin-right: 8px; /* Sedikit memperkecil jarak antara ikon dan teks */
+            font-size: 1.25rem; /* Ukuran ikon lebih kecil */
+        }
+
+        .dropdown-menu a {
+            display: block;
+            padding: 10px;
+            text-decoration: none;
+            color: #333;
+            font-size: 0.875rem;
+        }
+        .dropdown-menu a:hover {
+            background-color: #f1f1f1;
+        }
     </style>
-</head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minimarket Header</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+        }
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header-container h1 {
+            font-size: 1.75rem; /* Ukuran font tetap */
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            color: white; /* Warna tulisan tetap putih */
+        }
+        .header-container h1 i {
+            margin-right: 10px; /* Jarang antara ikon dan teks */
+            font-size: 1.75rem; /* Ukuran ikon sedikit diperbesar */
+        }
+        .search-bar input {
+    padding: 0.5rem;
+    border-radius: 0.375rem;
+    width: 100%; /* Agar input memenuhi lebar yang tersedia */
+    transition: all 0.3s ease; /* Transisi halus saat fokus */
+}
+        .dropdown-menu a {
+            display: block;
+            padding: 10px;
+            text-decoration: none;
+            color: #333;
+            font-size: 0.875rem;
+        }
+        .dropdown-menu a:hover {
+            background-color: #f1f1f1;
+        }
+    </style>
+
 <body class="bg-gray-100">
     <!-- Header -->
-    <header class="bg-white shadow p-4">
-        <div class="container mx-auto flex justify-between items-center">
-            <h1 class="text-2xl font-bold">MINIMARKET</h1>
+    <header class="bg-blue-600 shadow p-4"> <!-- Background biru -->
+        <div class="container mx-auto header-container text-white">
+            <!-- Title with Icon -->
+            <h1>
+                <i class="fas fa-store"></i> 
+                MINIMARKET
+            </h1>
+
+            <!-- Search Bar -->
+            <div class="search-bar">
+                <input type="text" id="searchBar" placeholder="Search by product name..." class="w-full p-2 rounded">
+            </div>
+
             <div class="flex items-center space-x-4">
                 <!-- Profile Dropdown -->
                 <div class="relative dropdown">
-                    <button class="text-blue-600 hover:text-blue-800 flex items-center">
+                    <button class="hover:text-gray-200 flex items-center font-semibold">
                         <i class="fas fa-user mr-2"></i> Profile
                     </button>
                     <div class="dropdown-menu">
@@ -117,36 +287,41 @@
                     </div>
                 </div>
                 <!-- Cart Button -->
-                <button class="text-blue-600 hover:text-blue-800" onclick="location.href='/customer/cart/view'">
+                <button class="hover:text-gray-200" onclick="location.href='/customer/cart/view'">
                     <i class="fas fa-shopping-cart"></i>
                 </button>
             </div>
         </div>
     </header>
+</body>
 
-    <!-- Jumbotron -->
-    <section class="bg-gray-200 py-10 text-center">
-        <div class="container mx-auto">
-            <h2 class="text-4xl font-bold mb-2">Welcome to the MINIMARKET</h2>
-            <p class="text-gray-600">Happy shopping and enjoy exploring our products!</p>
-        </div>
-    </section>
+
+
+<!-- Jumbotron -->
+<section class="jumbotron-gradient py-10 text-center" style="background-image: url('https://storage.googleapis.com/a1aa/image/3xfQ7hvjqkQ7F6PTD7FnYQgA8k6S5NUceiaBO1eODaTNZvAoA.jpg'); background-size: cover; background-position: center;">
+    <div class="container mx-auto">
+        <h2 class="text-5xl font-bold mb-2 flashing-rainbow-text text-white">Welcome to the MINIMARKET</h2>
+        <p class="text-gray-200" style="font-size: 24px;">Happy shopping and enjoy exploring our products!</p>
+    </div>
+</section>
+
 
     <!-- Product List -->
     <main class="container mx-auto mt-8">
         <div class="filter-container">
-            <!-- Search -->
-            <input type="text" id="searchBar" placeholder="Search by product name..." class="w-1/2">
             <!-- Sort -->
-            <select id="sortOptions" class="w-1/4">
+            <select id="sortOptions">
                 <option value="">Sort by</option>
                 <option value="price-asc">Price: Low to High</option>
                 <option value="price-desc">Price: High to Low</option>
             </select>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6" id="productGrid">
+            <!-- Contoh penempatan gambar dalam container khusus -->
             <div class="product-card" th:each="product : ${products}">
-                <img th:src="${product.imageUrl}" alt="Product Image">
+                <div class="image-container">
+                    <img th:src="${product.imageUrl}" alt="Product Image">
+                </div>
                 <div class="info">
                     <h2 th:text="${product.name}">Sample Product</h2>
                     <p th:text="${product.category}">Category</p>
@@ -154,7 +329,9 @@
                 </div>
                 <div class="actions">
                     <a th:href="'/customer/products/detail/' + ${product.id}" class="btn">View Details</a>
-                    <button class="btn btn-add-to-cart" th:attr="onclick='addToCart(' + ${product.id} + ')'">Add to Cart</button>
+                    <button class="btn btn-add-to-cart" th:attr="onclick='addToCart(' + ${product.id} + ')'">
+                        <i class="fas fa-shopping-cart"></i>
+                    </button>
                 </div>
             </div>
         </div>
@@ -162,10 +339,10 @@
 
     <script>
         const searchBar = document.getElementById('searchBar');
-        const sortOptions = document.getElementById('sortOptions');
         const productGrid = document.getElementById('productGrid');
-        const products = Array.from(productGrid.children);
-
+        const products = Array.from(productGrid.getElementsByClassName('product-card'));
+    
+        // Fitur Search
         searchBar.addEventListener('input', () => {
             const query = searchBar.value.toLowerCase();
             products.forEach(product => {
@@ -173,19 +350,26 @@
                 product.style.display = name.includes(query) ? 'block' : 'none';
             });
         });
+   
 
+        // Fitur Sort
         sortOptions.addEventListener('change', () => {
             const sortValue = sortOptions.value;
             const sortedProducts = products.sort((a, b) => {
+                // Ambil angka harga, hilangkan karakter non-angka
                 const priceA = parseInt(a.querySelector('.text-red-500').textContent.replace(/\D/g, ''), 10);
                 const priceB = parseInt(b.querySelector('.text-red-500').textContent.replace(/\D/g, ''), 10);
+
+                // Jika 'price-asc', urutkan naik; jika 'price-desc', urutkan turun
                 return sortValue === 'price-asc' ? priceA - priceB : priceB - priceA;
             });
 
+            // Bersihkan grid, lalu masukkan ulang secara terurut
             productGrid.innerHTML = '';
             sortedProducts.forEach(product => productGrid.appendChild(product));
         });
 
+        // Fungsi Add to Cart
         function addToCart(productId) {
             fetch('/customer/cart/add', {
                 method: 'POST',

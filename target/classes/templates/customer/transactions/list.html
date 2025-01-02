@@ -5,39 +5,60 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Transaction History</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background-image: url('https://storage.googleapis.com/a1aa/image/szyYuUH3Wy4AM1O8v2Yda2VaXWXcftz0Z2RujFrDHLNWWOAKA.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            z-index: -1;
+            opacity: 1;
+        }
+        .transaction-details {
+            backdrop-filter: blur(10px);
+        }
+    </style>
 </head>
-<body class="bg-gray-100">
-    <div class="container mx-auto p-6">
+<body class="bg-gray-100 bg-opacity-50 relative">
+    <div class="container mx-auto p-6 bg-white bg-opacity-50 relative">
         <!-- Back Button -->
-        <div class="mb-4">
-            <a href="/customer/home" class="text-blue-600 hover:underline">
-                <i class="fas fa-arrow-left"></i> Back to Home
+        <div class="mb-4 flex items-center">
+            <a href="/customer/home" class="flex items-center text-blue-600 hover:underline">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                Back to Home
             </a>
         </div>
 
-        <h1 class="text-2xl font-bold mb-4">Transaction History</h1>
-        <table class="min-w-full bg-white border border-gray-300">
-            <thead>
-                <tr class="bg-gray-200 text-left">
-                    <th class="py-2 px-4 border-b">ID</th>
-                    <th class="py-2 px-4 border-b">Total</th>
-                    <th class="py-2 px-4 border-b">Payment Method</th>
-                    <th class="py-2 px-4 border-b">Date</th>
-                    <th class="py-2 px-4 border-b">Details</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="transaction : ${transactions}" class="hover:bg-gray-100">
-                    <td class="py-2 px-4 border-b" th:text="${transaction.id}">1</td>
-                    <td class="py-2 px-4 border-b" th:text="'Rp ' + ${transaction.total}">Rp 100,000</td>
-                    <td class="py-2 px-4 border-b" th:text="${transaction.paymentMethod}">CASH</td>
-                    <td class="py-2 px-4 border-b" th:text="${transaction.createdAt}">2024-12-30</td>
-                    <td class="py-2 px-4 border-b">
-                        <a th:href="'/transactions/' + ${transaction.id}" class="text-blue-600 hover:underline">View</a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <h1 class="text-4xl font-bold mb-8 text-center">Transaction History</h1>
+        <div class="overflow-x-auto">
+            <table class="w-3/4 mx-auto bg-white bg-opacity-50 border border-gray-300 transaction-details text-sm">
+                <thead>
+                    <tr class="bg-gray-200 bg-opacity-50 text-left">
+                        <th class="py-2 px-4 border-b">ID</th>
+                        <th class="py-2 px-4 border-b">Total</th>
+                        <th class="py-2 px-4 border-b">Payment Method</th>
+                        <th class="py-2 px-4 border-b">Date</th>
+                        <th class="py-2 px-4 border-b">Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="transaction : ${transactions}" class="hover:bg-gray-100 hover:bg-opacity-50">
+                        <td class="py-2 px-4 border-b" th:text="${transaction.id}">1</td>
+                        <td class="py-2 px-4 border-b" th:text="'Rp ' + ${transaction.total}">Rp 100,000</td>
+                        <td class="py-2 px-4 border-b" th:text="${transaction.paymentMethod}">CASH</td>
+                        <td class="py-2 px-4 border-b" th:text="${transaction.formattedCreatedAt}">2024-12-30 14:50:59</td>
+                        <td class="py-2 px-4 border-b">
+                            <a th:href="'/transactions/' + ${transaction.id}" class="text-blue-600 hover:underline">View</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </body>
 </html>

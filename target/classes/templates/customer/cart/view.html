@@ -6,108 +6,183 @@
     <title>Your Cart</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <style>
+        body {
+            position: relative;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            overflow: auto;
+        }
+        
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background-image: url('https://storage.googleapis.com/a1aa/image/3xfQ7hvjqkQ7F6PTD7FnYQgA8k6S5NUceiaBO1eODaTNZvAoA.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            z-index: -1;
+            filter: blur(3px);
+            opacity: 0.8;
+        }
+        .container {
+            z-index: 1;
+            position: relative;
+        }
+    </style>
 </head>
 <body class="bg-gray-100">
     <div class="container mx-auto p-4">
-        <div class="flex flex-col lg:flex-row">
+        <div class="flex flex-col">
             <!-- Left Section -->
-            <div class="w-full lg:w-3/4 bg-white p-4 rounded-lg shadow-md">
+            <div class="w-full bg-white p-4 rounded-lg shadow-md mb-4">
                 <div class="flex items-center mb-4">
-                    <a href="/customer/home" class="text-gray-500 hover:text-gray-700 mr-2">
+                    <a class="text-gray-500 hover:text-gray-700 mr-2" href="/customer/home">
                         <i class="fas fa-arrow-left"></i>
                     </a>
                     <h1 class="text-2xl font-bold">Keranjang Belanja</h1>
                 </div>
-                <div class="border-t border-gray-200"></div>
-
-                <!-- Items -->
-                <div th:each="item : ${cart.items}" class="flex items-start py-4 border-b border-gray-200">
-                    <input type="checkbox" name="selectedItems" th:value="${item.id}" class="mr-4 mt-3 remember-checkbox">
-                    <img th:src="${item.productImage}" alt="Product Image" class="w-20 h-20 object-cover mr-4">
-                    <div class="flex-1">
-                        <a th:href="'/customer/products/detail/' + ${item.productId}" class="text-blue-600 hover:underline">
-                            <h3 class="font-bold" th:text="${item.productName}">Nama Produk</h3>
-                        </a>
-                        <p class="text-gray-500" th:text="'Jumlah: ' + ${item.quantity}">Jumlah: 1</p>
-                        <p class="text-gray-500" th:text="'Harga Satuan: ' + ${item.pricePerUnit}">Harga: Rp10.000</p>
-                        <p class="text-gray-500" th:text="'Subtotal: ' + ${item.totalPrice}">Subtotal: Rp10.000</p>
-                    </div>
-                    <div class="flex items-center">
-                        <!-- Real-time Update -->
-                        <input type="number" name="quantity" min="1" th:data-item-id="${item.id}" th:value="${item.quantity}" class="border rounded w-16 text-center real-time-update"/>
-                        <!-- Remove Product -->
-                        <form th:action="'/customer/cart/remove/' + ${item.id}" method="post" class="ml-4">
-                            <button type="submit" class="text-gray-500 hover:text-gray-700">
-                                <i class="far fa-trash-alt"></i>
-                            </button>
-                        </form>
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <input id="selectAll" type="checkbox" class="mr-2">
+                        <label for="selectAll" class="text-gray-600">Pilih Semua</label>
                     </div>
                 </div>
+                <div class="border-t border-gray-200"></div>
+
+                <!-- Items Table -->
+                <table class="table-auto w-full mt-4">
+                    <thead class="bg-gray-100 text-gray-600 text-left">
+                        <tr>
+                            <th class="py-2 px-4">Produk</th>
+                            <th class="py-2 px-4">Harga Satuan</th>
+                            <th class="py-2 px-4">Kuantitas</th>
+                            <th class="py-2 px-4">Total Harga</th>
+                            <th class="py-2 px-4">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="item : ${cart.items}" class="border-b">
+                            <td class="py-6 px-4 flex items-center">
+                                <input class="mr-4 remember-checkbox" name="selectedItems" type="checkbox" th:value="${item.id}" />
+                                <img th:src="${item.productImage}" alt="Product Image" class="w-20 h-20 object-cover rounded-md border mr-4" />
+                                <div>
+                                    <a th:href="'/customer/products/detail/' + ${item.productId}" class="text-blue-600 hover:underline">
+                                        <h3 class="font-bold" th:text="${item.productName}">Nama Produk</h3>
+                                    </a>
+                                </div>
+                            </td>
+                            <td class="py-6 px-4" th:text="${item.pricePerUnit}">Rp10.000</td>
+                            <td class="py-6 px-4">
+                                <input class="w-12 text-center border rounded quantity-input" name="quantity" min="1" type="number" th:data-item-id="${item.id}" th:value="${item.quantity}" />
+                            </td>
+                            <td class="py-6 px-4 font-semibold text-gray-800 subtotal" th:text="${item.totalPrice}">Rp10.000</td>
+                            <td class="py-6 px-4 text-red-500">
+                                <form th:action="'/customer/cart/remove/' + ${item.id}" method="post">
+                                    <button type="submit" class="hover:underline">Hapus</button>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
 
             <!-- Right Section -->
-            <div class="w-full lg:w-1/4 bg-white p-4 rounded-lg shadow-md mt-4 lg:mt-0 lg:ml-4">
+            <div class="w-full bg-white p-4 rounded-lg shadow-md">
                 <h2 class="text-xl font-bold mb-4">Ringkasan Belanja</h2>
                 <div class="flex justify-between mb-4">
                     <span class="text-gray-700">Total</span>
                     <span class="text-gray-700" id="totalPrice">Rp 0</span>
                 </div>
                 <!-- Checkout Form -->
-                <form id="checkoutForm" th:action="'/customer/cart/checkout/' + ${cart.id}" method="post">
-                    <input type="hidden" name="selectedItems" th:value="${selectedItems}">
-                    <button type="submit" id="buyNowButton" class="w-full bg-green-600 text-white py-2 rounded-lg disabled:bg-gray-400 disabled:cursor-not-allowed" disabled>
-                        Beli Sekarang
-                    </button>
-                    
-                </form>                
+                <form th:action="'/customer/cart/checkout/' + ${cart.id}" id="checkoutForm" method="post">
+                    <input name="selectedItems" type="hidden" th:value="${selectedItems}" />
+                    <button id="buyNowButton" type="submit" class="w-full bg-green-600 text-white py-2 rounded-lg disabled:bg-gray-400 disabled:cursor-not-allowed" disabled>Beli Sekarang</button>
+                </form>
             </div>
         </div>
     </div>
 
     <script>
-document.addEventListener('DOMContentLoaded', () => {
-    const checkboxes = document.querySelectorAll('.remember-checkbox');
-    const buyNowButton = document.getElementById('buyNowButton');
-    const totalPriceElement = document.getElementById('totalPrice');
+        document.addEventListener('DOMContentLoaded', () => {
+            const checkboxes = document.querySelectorAll('.remember-checkbox');
+            const selectAllCheckbox = document.getElementById('selectAll');
+            const buyNowButton = document.getElementById('buyNowButton');
+            const totalPriceElement = document.getElementById('totalPrice');
+            const quantityInputs = document.querySelectorAll('.quantity-input');
+            const savedSelections = JSON.parse(localStorage.getItem('selectedItems')) || [];
 
-    const savedSelections = JSON.parse(localStorage.getItem('selectedItems')) || [];
+            const calculateTotal = () => {
+                const selectedItems = document.querySelectorAll('.remember-checkbox:checked');
+                let total = 0;
 
-    // Fungsi untuk menghitung total harga dan mengatur tombol
-    const calculateTotal = () => {
-        const selectedItems = document.querySelectorAll('.remember-checkbox:checked');
-        let total = 0;
+                selectedItems.forEach(item => {
+                    const parent = item.closest('tr');
+                    const subtotal = parseInt(parent.querySelector('.subtotal').textContent.replace(/[^\d]/g, ''), 10);
+                    total += subtotal;
+                });
 
-        selectedItems.forEach(item => {
-            const parent = item.closest('.flex');
-            const subtotal = parent.querySelector('p:last-child').textContent.replace(/[^\d]/g, '');
-            total += parseInt(subtotal, 10);
-        });
+                totalPriceElement.textContent = `Rp ${total.toLocaleString('id-ID')}`;
+                buyNowButton.disabled = selectedItems.length === 0 || checkboxes.length === 0;
+            };
 
-        totalPriceElement.textContent = `Rp ${total.toLocaleString('id-ID')}`;
+            checkboxes.forEach(checkbox => {
+                if (savedSelections.includes(checkbox.value)) {
+                    checkbox.checked = true;
+                }
 
-        // Nonaktifkan tombol "Beli Sekarang" jika tidak ada barang dipilih atau keranjang kosong
-        buyNowButton.disabled = selectedItems.length === 0 || checkboxes.length === 0;
-    };
+                checkbox.addEventListener('change', () => {
+                    const updatedSelections = Array.from(checkboxes)
+                        .filter(cb => cb.checked)
+                        .map(cb => cb.value);
 
-    // Inisialisasi checkbox
-    checkboxes.forEach(checkbox => {
-        if (savedSelections.includes(checkbox.value)) {
-            checkbox.checked = true;
-        }
+                    localStorage.setItem('selectedItems', JSON.stringify(updatedSelections));
+                    calculateTotal();
+                });
+            });
 
-        checkbox.addEventListener('change', () => {
-            const updatedSelections = Array.from(checkboxes)
-                .filter(cb => cb.checked)
-                .map(cb => cb.value);
+            selectAllCheckbox.addEventListener('change', () => {
+                checkboxes.forEach(checkbox => {
+                    checkbox.checked = selectAllCheckbox.checked;
+                });
+                calculateTotal();
+            });
 
-            localStorage.setItem('selectedItems', JSON.stringify(updatedSelections));
+            quantityInputs.forEach(input => {
+                input.addEventListener('input', () => {
+                    const parent = input.closest('tr');
+                    const pricePerUnit = parseInt(parent.querySelector('td:nth-child(2)').textContent.replace(/[^\d]/g, ''), 10);
+                    const quantity = parseInt(input.value, 10) || 0;
+                    const subtotal = pricePerUnit * quantity;
+
+                    parent.querySelector('.subtotal').textContent = `Rp ${subtotal.toLocaleString('id-ID')}`;
+
+                    // Kirim pembaruan ke server
+                    const itemId = input.getAttribute('data-item-id');
+                    fetch(`/customer/cart/update/${itemId}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ quantity })
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            console.error('Gagal memperbarui kuantitas:', response.statusText);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Kesalahan koneksi:', error);
+                    });
+
+                    calculateTotal();
+                });
+            });
+
             calculateTotal();
         });
-    });
-
-    // Panggil fungsi awal untuk menetapkan status tombol
-    calculateTotal();
-});
     </script>
 </body>
 </html>

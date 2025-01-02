@@ -3,131 +3,121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Products List - Admin Dashboard</title>
-    <link rel="stylesheet" href="/css/admin.css">
+    <title>Admin Panel - Products</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <style>
-        .admin-container {
-            display: flex;
-            min-height: 100vh;
-        }
-        .sidebar {
-            background-color: #343a40;
-            color: white;
-            padding: 20px;
-            width: 250px;
-        }
-        .sidebar h2 {
-            text-align: center;
-        }
-        .sidebar a {
-            display: block;
-            color: white;
-            text-decoration: none;
-            padding: 10px;
-            margin-top: 10px;
-            background-color: #dc3545;
-            text-align: center;
-            border-radius: 4px;
-        }
-        .sidebar a:hover {
-            background-color: #c82333;
-        }
-        .main-content {
-            flex: 1;
-            padding: 20px;
-        }
-        .admin-table {
+        /* Background image styling */
+        .background-image {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
+            height: 100%;
+            background-image: url('https://storage.googleapis.com/a1aa/image/3xfQ7hvjqkQ7F6PTD7FnYQgA8k6S5NUceiaBO1eODaTNZvAoA.jpg');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.6;
+            z-index: -1;
         }
-        .admin-table th, .admin-table td {
-            border: 1px solid #ddd;
-            padding: 10px;
-            text-align: center;
+
+        /* Admin Panel Styling */
+        .sidebar {
+            background-color: #343a40; /* Solid dark gray */
         }
-        .admin-table th {
-            background-color: #f8f9fa;
+
+        /* Gaya transparansi hanya untuk konten tabel */
+        .table-container {
+            position: relative;
         }
-        .btn-primary {
-            background-color: #007bff;
-            color: white;
-            text-decoration: none;
-            padding: 10px 15px;
-            border-radius: 4px;
-            display: inline-block;
-            margin-right: 10px;
-        }
-        .btn-primary:hover {
-            background-color: #0056b3;
-        }
-        .btn-danger {
-            background-color: #dc3545;
-            color: white;
-            text-decoration: none;
-            padding: 10px 15px;
-            border-radius: 4px;
-            display: inline-block;
-        }
-        .btn-danger:hover {
-            background-color: #c82333;
-        }
-        .product-image {
-            max-width: 100px;
-            max-height: 100px;
-            object-fit: cover;
+
+        .table-content {
+            background-color: rgba(255, 255, 255, 0.8); /* White with opacity */
+            border-radius: 8px;
+            padding: 20px;
+            z-index: 1;
+            position: relative;
         }
     </style>
 </head>
-<body>
-    <div class="admin-container">
-        <div class="sidebar">
-            <h2>Admin Panel</h2>
-            <nav>  
-                <a href="/admin/dashboard">Dashboard</a>
-                <a href="/admin/category/list">Categories</a>
-                <a href="/admin/transactions/list">Transactions</a>
-            </nav>
-        </div>
-        <div class="main-content">
-            <h1>Products</h1>
-            <a href="/admin/product/add" class="btn btn-primary">Add New Product</a>
-            
-            <table class="admin-table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Image</th>
-                        <th>Product Name</th>
-                        <th>Category</th>
-                        <th>Price</th>
-                        <th>Stock</th>
-                        <th>Description</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Loop data produk dari backend -->
-                    <tr th:each="product : ${products}">
-                        <td th:text="${product.id}">1</td>
-                        <td>
-                            <img th:src="${product.imageUrl}" alt="Product Image" class="product-image">
-                        </td>
-                        <td th:text="${product.name}">Sample Product</td>
-                        <td th:text="${product.category}">Food</td>
-                        <td th:text="${T(com.minimarket.web.util.CurrencyFormatter).formatToRupiah(product.price)}">Rp 10.000</td>
-                        <td th:text="${product.stock}">100</td>
-                        <td th:text="${product.description}">Sample Description</td>
-                        <td>
-                            <a th:href="'/admin/product/edit/' + ${product.id}" class="btn btn-primary">Edit</a>
-                            <form th:action="'/admin/product/delete/' + ${product.id}" method="post" style="display:inline;">
-                                <button type="submit" class="btn btn-danger">Delete</button>
-                            </form>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+<body class="font-sans antialiased bg-gray-100">
+    <!-- Background Image -->
+    <div class="background-image"></div>
+
+    <!-- Admin Panel Container -->
+    <div class="flex min-h-screen">
+        <!-- Sidebar -->
+        <aside class="sidebar w-64 text-white flex-shrink-0">
+            <div class="p-6">
+                <h2 class="text-center text-2xl font-bold mb-6">Admin Panel</h2>
+                <nav>
+                    <a href="/admin/dashboard" class="flex items-center gap-2 bg-red-600 hover:bg-red-700 py-2 px-4 rounded mb-2">
+                        <i class="fas fa-tachometer-alt"></i> <span>Dashboard</span>
+                    </a>
+                    <a href="/admin/category/list" class="flex items-center gap-2 bg-red-600 hover:bg-red-700 py-2 px-4 rounded mb-2">
+                        <i class="fas fa-list"></i> <span>Categories</span>
+                    </a>
+                    <a href="/admin/transactions/list" class="flex items-center gap-2 bg-red-600 hover:bg-red-700 py-2 px-4 rounded mb-2">
+                        <i class="fas fa-exchange-alt"></i> <span>Transactions</span>
+                    </a>
+                </nav>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-8">
+            <header class="mb-8">
+                <h1 class="text-4xl font-bold text-gray-800">Products</h1>
+                <a href="/admin/product/add" class="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded mt-4 inline-flex">
+                    <i class="fas fa-plus"></i> <span>Add New Product</span>
+                </a>
+            </header>
+
+            <!-- Table Container -->
+            <div class="table-container">
+                <!-- Table Content -->
+                <div class="table-content">
+                    <table class="w-full bg-white border-collapse shadow rounded-lg overflow-hidden">
+                        <thead>
+                            <tr class="bg-gray-200 text-gray-800">
+                                <th class="text-left p-4">ID</th>
+                                <th class="text-left p-4">Image</th>
+                                <th class="text-left p-4">Product Name</th>
+                                <th class="text-left p-4">Category</th>
+                                <th class="text-left p-4">Price</th>
+                                <th class="text-left p-4">Stock</th>
+                                <th class="text-left p-4">Description</th>
+                                <th class="text-left p-4">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Loop data produk dari backend -->
+                            <tr th:each="product : ${products}" class="border-b hover:bg-gray-100">
+                                <td th:text="${product.id}" class="p-4">1</td>
+                                <td class="p-4">
+                                    <img th:src="${product.imageUrl}" alt="Product Image" class="w-20 h-20 object-cover rounded-lg">
+                                </td>
+                                <td th:text="${product.name}" class="p-4">Sample Product</td>
+                                <td th:text="${product.category}" class="p-4">Food</td>
+                                <td th:text="${T(com.minimarket.web.util.CurrencyFormatter).formatToRupiah(product.price)}" class="p-4">Rp 10.000</td>
+                                <td th:text="${product.stock}" class="p-4">100</td>
+                                <td th:text="${product.description}" class="p-4">Sample Description</td>
+                                <td class="p-4 flex gap-2">
+                                    <a href="/admin/product/edit/1" class="btn-equal bg-blue-600 hover:bg-blue-700 text-white py-1 px-3 rounded inline-flex items-center justify-center">
+                                        <i class="fas fa-edit"></i> <span>Edit</span>
+                                    </a>
+                                    <form action="/admin/product/delete/1" method="post" class="inline">
+                                        <button type="submit" class="btn-equal bg-red-600 hover:bg-red-700 text-white py-1 px-3 rounded inline-flex items-center justify-center">
+                                            <i class="fas fa-trash-alt"></i> <span>Delete</span>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
     </div>
 </body>
 </html>

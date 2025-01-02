@@ -4,73 +4,56 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Category</title>
-    <link rel="stylesheet" href="/css/admin.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f9;
+        /* Background image styling */
+        .background-image {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://storage.googleapis.com/a1aa/image/3xfQ7hvjqkQ7F6PTD7FnYQgA8k6S5NUceiaBO1eODaTNZvAoA.jpg');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.6;
+            z-index: -1;
         }
 
-        .admin-container {
-            display: flex;
-            min-height: 100vh;
-        }
-
+        /* Admin Panel Styling */
         .sidebar {
-            background-color: #343a40;
-            color: white;
+            background-color: #343a40; /* Solid dark gray */
+        }
+
+        /* Form container styling */
+        .form-container {
+            background-color: rgba(255, 255, 255, 0.8); /* White with opacity */
+            border-radius: 8px;
             padding: 20px;
-            width: 250px;
+            z-index: 1;
+            position: relative;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow effect */
         }
 
-        .sidebar h2 {
-            text-align: center;
-            font-size: 18px;
-        }
-
-        .sidebar nav {
-            margin-top: 20px;
-        }
-
-        .sidebar a {
-            display: block;
-            color: white;
-            text-decoration: none;
-            padding: 10px;
-            margin-top: 10px;
-            background-color: #dc3545;
-            text-align: center;
-            border-radius: 4px;
-        }
-
-        .sidebar a:hover {
-            background-color: #c82333;
-        }
-
-        .main-content {
-            flex: 1;
-            padding: 40px;
-        }
-
-        .main-content h1 {
-            color: #343a40;
+        .form-container h1 {
+            margin-bottom: 20px;
             font-size: 24px;
-            margin-bottom: 20px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
             font-weight: bold;
+            color: #333;
         }
 
-        .form-group input[type="text"] {
+        .form-container .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-container label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .form-container input {
             width: 100%;
             padding: 10px;
             border: 1px solid #ddd;
@@ -78,15 +61,21 @@
             font-size: 14px;
         }
 
-        .btn-primary {
-            background-color: #007bff;
-            color: white;
+        .btn-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .btn-container .btn {
+            text-align: center;
             padding: 10px 15px;
             border-radius: 4px;
-            text-decoration: none;
-            font-size: 14px;
-            display: inline-block;
-            margin-right: 10px;
+            color: white;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
         }
 
         .btn-primary:hover {
@@ -95,12 +84,6 @@
 
         .btn-danger {
             background-color: #dc3545;
-            color: white;
-            padding: 10px 15px;
-            border-radius: 4px;
-            text-decoration: none;
-            font-size: 14px;
-            display: inline-block;
         }
 
         .btn-danger:hover {
@@ -108,26 +91,47 @@
         }
     </style>
 </head>
-<body>
-    <div class="admin-container">
-        <div class="sidebar">
-            <h2>Admin Panel</h2>
-            <nav>
-                <a href="/admin/dashboard" class="btn btn-danger">Dashboard</a>
-                <a href="/admin/category/list" class="btn btn-danger">Categories</a>
-            </nav>
-        </div>
-        <div class="main-content">
-            <h1>Edit Category</h1>
-            <form action="/admin/category/edit/{id}" method="post">
-                <div class="form-group">
-                    <label for="name">Category Name</label>
-                    <input type="text" id="name" name="name" th:value="${categoryRequest.name}" required>
-                </div>
-                <button type="submit" class="btn btn-primary">Save Changes</button>
-                <a href="/admin/category/list" class="btn btn-danger">Cancel</a>
-            </form>
-        </div>
+<body class="font-sans antialiased bg-gray-100">
+    <!-- Background Image -->
+    <div class="background-image"></div>
+
+    <!-- Admin Panel Container -->
+    <div class="flex min-h-screen">
+        <!-- Sidebar -->
+        <aside class="sidebar w-64 text-white flex-shrink-0">
+            <div class="p-6">
+                <h2 class="text-center text-2xl font-bold mb-6">Admin Panel</h2>
+                <nav>
+                    <a href="/admin/dashboard" class="flex items-center gap-2 bg-red-600 hover:bg-red-700 py-2 px-4 rounded mb-2">
+                        <i class="fas fa-tachometer-alt"></i> <span>Dashboard</span>
+                    </a>
+                    <a href="/admin/category/list" class="flex items-center gap-2 bg-red-600 hover:bg-red-700 py-2 px-4 rounded mb-2">
+                        <i class="fas fa-list"></i> <span>Categories</span>
+                    </a>
+                </nav>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-8">
+            <header class="mb-8">
+                <h1 class="text-4xl font-bold text-gray-800">Edit Category</h1>
+            </header>
+
+            <!-- Form Container -->
+            <div class="form-container">
+                <form action="/admin/category/edit/{id}" method="post">
+                    <div class="form-group">
+                        <label for="name">Category Name</label>
+                        <input type="text" id="name" name="name" th:value="${categoryRequest.name}" required>
+                    </div>
+                    <div class="btn-container">
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                        <a href="/admin/category/list" class="btn btn-danger">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </main>
     </div>
 </body>
 </html>

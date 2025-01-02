@@ -4,88 +4,88 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Checkout</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
     <style>
         body {
-            font-family: Arial, sans-serif;
-        }
-        .container {
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 20px;
             position: relative;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: white;
         }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        table th, table td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: center;
-        }
-        .btn {
-            padding: 10px 15px;
-            text-decoration: none;
-            color: white;
-            border-radius: 4px;
-            background-color: #28a745;
-        }
-        .btn:hover {
-            background-color: #218838;
-        }
-        .back-arrow {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            text-decoration: none;
-            color: #333;
-            font-size: 20px;
-        }
-        .back-arrow:hover {
-            color: #007bff;
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background-image: url('https://storage.googleapis.com/a1aa/image/3xfQ7hvjqkQ7F6PTD7FnYQgA8k6S5NUceiaBO1eODaTNZvAoA.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            z-index: -1;
+            opacity: 0.8; /* Transparansi untuk membuat konten tetap terlihat */
         }
     </style>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
 </head>
-<body>
-    <div class="container">
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <div class="w-full max-w-4xl p-12 bg-white rounded-lg shadow-lg">
         <!-- Back Button -->
-        <a href="/customer/cart/view" class="back-arrow">
-            <i class="fas fa-arrow-left"></i>
-        </a>
-        <h1>Checkout</h1>
-        <table>
+        <div class="flex items-center mb-4">
+            <a href="/customer/cart/view" class="text-gray-500 hover:text-gray-700 mr-2">
+                <i class="fas fa-arrow-left text-2xl"></i>
+            </a>
+            <h1 class="text-4xl font-bold">Checkout</h1>
+        </div>
+        
+        <!-- Table Section -->
+        <table class="w-full border-collapse mb-6">
             <thead>
                 <tr>
-                    <th>Produk</th>
-                    <th>Harga</th>
-                    <th>Jumlah</th>
-                    <th>Total</th>
+                    <th class="border p-3 text-left bg-gray-100 text-lg">Produk</th>
+                    <th class="border p-3 text-left bg-gray-100 text-lg">Harga</th>
+                    <th class="border p-3 text-left bg-gray-100 text-lg">Jumlah</th>
+                    <th class="border p-3 text-left bg-gray-100 text-lg">Total</th>
                 </tr>
             </thead>
             <tbody>
-                <tr th:each="item : ${cart.items}">
-                    <td th:text="${item.productName}">Nama Produk</td>
-                    <td th:text="${item.pricePerUnit}">Rp 10.000</td>
-                    <td th:text="${item.quantity}">2</td>
-                    <td th:text="${item.totalPrice}">Rp 20.000</td>
+                <tr th:each="item : ${cart.items}" class="border-b">
+                    <td class="border p-3" th:text="${item.productName}">Nama Produk</td>
+                    <td class="border p-3" th:text="${item.pricePerUnit}">Rp 10.000</td>
+                    <td class="border p-3" th:text="${item.quantity}">2</td>
+                    <td class="border p-3" th:text="${item.totalPrice}">Rp 20.000</td>
                 </tr>
             </tbody>
         </table>
-        <h3>Total Pembayaran: <span th:text="${cart.totalPrice}">Rp 200.000</span></h3>
-        <h3>Pilih Metode Pembayaran:</h3>
-        <form method="post" th:action="'/customer/cart/checkout/' + ${cart.id}">
-            <label>
-                <input type="radio" name="paymentMethod" value="CASH" required> Tunai
-            </label><br>
-            <label>
-                <input type="radio" name="paymentMethod" value="TRANSFER" required> Transfer
-            </label><br>
-            <label>
-                <input type="radio" name="paymentMethod" value="QRIS" required> QRIS
-            </label><br>
-            <button type="submit" class="btn">Konfirmasi Pembayaran</button>
-        </form>
+        
+        <!-- Payment Section -->
+        <div class="mb-6">
+            <p class="text-2xl font-bold mb-4">Pilih Metode Pembayaran:</p>
+            <form method="post" th:action="'/customer/cart/checkout/' + ${cart.id}">
+                <label class="flex items-center mb-4 border p-4 rounded-lg hover:bg-gray-50 cursor-pointer">
+                    <input type="radio" name="paymentMethod" value="CASH" class="mr-3" required> 
+                    <img src="https://storage.googleapis.com/a1aa/image/7W57eyEY1WSXOKjwfiQF1cebCvwoYJVZ1iy49dNUzGdcsdBoA.jpg" alt="Cash" class="mr-3 w-8 h-8"> Tunai
+                </label>
+                <label class="flex items-center mb-4 border p-4 rounded-lg hover:bg-gray-50 cursor-pointer">
+                    <input type="radio" name="paymentMethod" value="TRANSFER" class="mr-3" required> 
+                    <img src="https://storage.googleapis.com/a1aa/image/epKdKgCnuX36MqJeYwsQwfQR7MelBjtopn0Mu7xiX9Brk7CQB.jpg" alt="Transfer" class="mr-3 w-8 h-8"> Transfer
+                </label>
+                <label class="flex items-center mb-4 border p-4 rounded-lg hover:bg-gray-50 cursor-pointer">
+                    <input type="radio" name="paymentMethod" value="QRIS" class="mr-3" required> 
+                    <img src="https://storage.googleapis.com/a1aa/image/I5d4g9eMEnwrYKlTlVvm8EeyhJoS3WSNeDHwIVS5d6hXsdBoA.jpg" alt="QRIS" class="mr-3 w-8 h-8"> QRIS
+                </label>
+                
+                <!-- Total Section -->
+                <div class="flex justify-between items-center bg-gray-100 p-4 rounded mb-6">
+                    <p class="text-2xl font-bold">Total Pembayaran:</p>
+                    <span th:text="${cart.totalPrice}" class="text-green-600 text-3xl">Rp 200,000</span>
+                </div>
+
+                <button type="submit" class="bg-green-500 text-white px-6 py-3 rounded-lg w-full text-xl font-semibold hover:bg-green-600">
+                    Konfirmasi Pembayaran
+                </button>
+            </form>
+        </div>
     </div>
 </body>
 </html>

@@ -7,51 +7,100 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
     <style>
+        body::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: url('https://storage.googleapis.com/a1aa/image/szyYuUH3Wy4AM1O8v2Yda2VaXWXcftz0Z2RujFrDHLNWWOAKA.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            opacity: 0.5;
+            z-index: -1;
+        }
         .container {
             max-width: 800px;
+            backdrop-filter: blur(8px);
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
         }
         .product-image {
             border-radius: 8px;
+        }
+        .field-table {
+            width: 50%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .field-table th, .field-table td {
+            text-align: center;
         }
     </style>
 </head>
 <body class="bg-gray-100">
     <div class="container mx-auto p-6">
-        <h1 class="text-2xl font-bold mb-4">Transaction Details</h1>
-        <div class="bg-white shadow-md rounded p-6">
-            <h2 class="text-xl font-bold">Transaction ID: <span th:text="${transaction.id}">1</span></h2>
-            <p><strong>Customer:</strong> <span th:text="${transaction.customerName}">John Doe</span></p>
-            <p><strong>Payment Method:</strong> <span th:text="${transaction.paymentMethod}">CASH</span></p>
-            <p><strong>Total:</strong> <span th:text="'Rp ' + ${transaction.total}">Rp 0</span></p>
-            <p><strong>Date:</strong> <span th:text="${transaction.createdAt}">01-01-2024 12:00</span></p>
-            
-            <h3 class="text-lg font-bold mt-6">Items:</h3>
-            <table class="w-full table-auto border-collapse">
-                <thead>
-                    <tr>
-                        <th class="border px-4 py-2">Image</th>
-                        <th class="border px-4 py-2">Product</th>
-                        <th class="border px-4 py-2">Price</th>
-                        <th class="border px-4 py-2">Quantity</th>
-                        <th class="border px-4 py-2">Total</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr th:each="item : ${transaction.items}">
-                        <td class="border px-4 py-2">
-                            <img th:src="${item.productImage}" alt="Product Image" class="product-image w-20 h-20 object-cover">
-                        </td>
-                        <td class="border px-4 py-2" th:text="${item.productName}">Sample Product</td>
-                        <td class="border px-4 py-2" th:text="'Rp ' + ${item.price}">Rp 10.000</td>
-                        <td class="border px-4 py-2" th:text="${item.quantity}">1</td>
-                        <td class="border px-4 py-2" th:text="'Rp ' + ${item.subtotal}">Rp 10.000</td>
-                    </tr>
-                </tbody>                
-            </table>
-        </div>
-        <div class="mt-6">
-            <a href="/transactions/customer" class="text-blue-600 hover:underline">
-                <i class="fas fa-arrow-left"></i> Back to Transactions
+        <h1 class="text-3xl font-bold mb-6 text-center">Transaction Details</h1>
+        
+        <table class="field-table table-auto border-collapse bg-white rounded-lg overflow-hidden mb-6">
+            <thead>
+                <tr class="bg-gray-200">
+                    <th class="border px-4 py-2">Field</th>
+                    <th class="border px-4 py-2">Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="border px-4 py-2 font-bold">Transaction ID</td>
+                    <td class="border px-4 py-2" th:text="${transaction.id}">1</td>
+                </tr>
+                <tr>
+                    <td class="border px-4 py-2 font-bold">Customer</td>
+                    <td class="border px-4 py-2" th:text="${transaction.customerName}">John Doe</td>
+                </tr>
+                <tr>
+                    <td class="border px-4 py-2 font-bold">Payment Method</td>
+                    <td class="border px-4 py-2" th:text="${transaction.paymentMethod}">CASH</td>
+                </tr>
+                <tr>
+                    <td class="border px-4 py-2 font-bold">Total</td>
+                    <td class="border px-4 py-2" th:text="'Rp ' + ${transaction.total}">Rp 0</td>
+                </tr>
+                <tr>
+                    <td class="border px-4 py-2 font-bold">Date</td>
+                    <td class="border px-4 py-2" th:text="${transaction.formattedCreatedAt}">01-01-2024</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3 class="text-lg font-bold mt-6">Items:</h3>
+        <table class="w-full table-auto border-collapse bg-white rounded-lg overflow-hidden">
+            <thead>
+                <tr class="bg-gray-200">
+                    <th class="border px-4 py-2">Image</th>
+                    <th class="border px-4 py-2">Product</th>
+                    <th class="border px-4 py-2">Price</th>
+                    <th class="border px-4 py-2">Quantity</th>
+                    <th class="border px-4 py-2">Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="item : ${transaction.items}" class="hover:bg-gray-100">
+                    <td class="border px-4 py-2">
+                        <img th:src="${item.productImage}" alt="Product Image" class="product-image w-20 h-20 object-cover">
+                    </td>
+                    <td class="border px-4 py-2" th:text="${item.productName}">Sample Product</td>
+                    <td class="border px-4 py-2" th:text="'Rp ' + ${item.price}">Rp 10.000</td>
+                    <td class="border px-4 py-2" th:text="${item.quantity}">1</td>
+                    <td class="border px-4 py-2" th:text="'Rp ' + ${item.subtotal}">Rp 10.000</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="mt-6 text-center">
+            <a href="/transactions/customer" class="text-blue-600 hover:underline inline-flex items-center">
+                <i class="fas fa-arrow-left mr-2"></i> Back to Transactions
             </a>
         </div>
     </div>
