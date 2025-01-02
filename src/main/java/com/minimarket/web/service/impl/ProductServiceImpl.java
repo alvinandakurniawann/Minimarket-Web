@@ -50,17 +50,23 @@ public class ProductServiceImpl implements ProductService {
     public ProductResponse updateProduct(Long id, ProductRequest productRequest) {
         Product existingProduct = productRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Product not found with ID: " + id));
-
+    
+        // Validasi nilai stock
+        if (productRequest.getStock() == null || productRequest.getStock() < 0) {
+            throw new RuntimeException("Stock must be a positive integer.");
+        }
+    
         existingProduct.setName(productRequest.getProductName());
         existingProduct.setCategory(categoryRepository.findById(productRequest.getCategoryId())
                 .orElseThrow(() -> new RuntimeException("Category not found with ID: " + productRequest.getCategoryId())));
         existingProduct.setPrice(productRequest.getPrice());
         existingProduct.setStock(productRequest.getStock());
         existingProduct.setDescription(productRequest.getDescription());
-
+    
         Product updatedProduct = productRepository.save(existingProduct);
         return mapToResponse(updatedProduct);
     }
+    
 
     @Override
     public ProductResponse addProductWithImage(ProductRequest productRequest, MultipartFile image) {
