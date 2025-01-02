@@ -103,14 +103,14 @@
                                 <td th:text="${product.stock}" class="p-4">100</td>
                                 <td th:text="${product.description}" class="p-4">Sample Description</td>
                                 <td class="p-4 flex gap-2">
-                                    <a href="/admin/product/edit/1" class="btn-equal bg-blue-600 hover:bg-blue-700 text-white py-1 px-3 rounded inline-flex items-center justify-center">
+                                    <a th:href="'/admin/product/edit/' + ${product.id}" class="btn-equal bg-blue-600 hover:bg-blue-700 text-white py-1 px-3 rounded inline-flex items-center justify-center">
                                         <i class="fas fa-edit"></i> <span>Edit</span>
                                     </a>
-                                    <form action="/admin/product/delete/1" method="post" class="inline">
+                                    <form th:action="'/admin/product/delete/' + ${product.id}" method="post" class="inline">
                                         <button type="submit" class="btn-equal bg-red-600 hover:bg-red-700 text-white py-1 px-3 rounded inline-flex items-center justify-center">
                                             <i class="fas fa-trash-alt"></i> <span>Delete</span>
                                         </button>
-                                    </form>
+                                    </form>                                    
                                 </td>
                             </tr>
                         </tbody>

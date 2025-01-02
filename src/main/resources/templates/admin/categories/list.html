@@ -91,14 +91,14 @@
                                 <td th:text="${category.id}" class="p-4">1</td>
                                 <td th:text="${category.name}" class="p-4">Sample Category</td>
                                 <td class="p-4 flex gap-2">
-                                    <a href="/admin/category/edit/1" class="btn-equal bg-blue-600 hover:bg-blue-700 text-white py-1 px-3 rounded inline-flex items-center justify-center">
+                                    <a th:href="'/admin/category/edit/' + ${category.id}" class="btn-equal bg-blue-600 hover:bg-blue-700 text-white py-1 px-3 rounded inline-flex items-center justify-center">
                                         <i class="fas fa-edit"></i> <span>Edit</span>
                                     </a>
-                                    <form action="/admin/category/delete/1" method="post" class="inline">
+                                    <form th:action="'/admin/category/delete/' + ${category.id}" method="post" class="inline">
                                         <button type="submit" class="btn-equal bg-red-600 hover:bg-red-700 text-white py-1 px-3 rounded inline-flex items-center justify-center">
                                             <i class="fas fa-trash-alt"></i> <span>Delete</span>
                                         </button>
-                                    </form>
+                                    </form>                                    
                                 </td>
                             </tr>
                         </tbody>
