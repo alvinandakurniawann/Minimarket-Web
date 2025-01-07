@@ -50,7 +50,6 @@ public class CategoryServiceImpl implements CategoryService {
         }
     }
 
-
     @Override
     public CategoryResponse getCategoryById(Long id) {
         Category category = categoryRepository.findById(id)
@@ -65,5 +64,4 @@ public class CategoryServiceImpl implements CategoryService {
         category.setName(categoryRequest.getName());
         categoryRepository.save(category);
     }
-
 }

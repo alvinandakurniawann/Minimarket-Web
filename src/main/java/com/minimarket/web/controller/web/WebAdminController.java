@@ -117,11 +117,15 @@ public class WebAdminController {
     // Tampilkan halaman edit kategori
     @GetMapping("/category/edit/{id}")
     public String editCategoryPage(@PathVariable Long id, Model model) {
+        System.out.println("Received ID: " + id);
         CategoryResponse category = categoryService.getCategoryById(id);
         model.addAttribute("categoryRequest", new CategoryRequest(category.getName()));
-        model.addAttribute("categoryId", id);
+        model.addAttribute("categoryId", id); // Tambahkan ID ke model
         return "admin/categories/edit";
     }
+    
+    
+    
 
     // Proses edit kategori
     @PostMapping("/category/edit/{id}")
@@ -129,6 +133,7 @@ public class WebAdminController {
         categoryService.updateCategory(id, categoryRequest);
         return "redirect:/admin/category/list";
     }
+    
 
     // Tampilkan daftar transaksi
     @GetMapping("/transactions/list")
