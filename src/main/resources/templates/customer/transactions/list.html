@@ -20,6 +20,20 @@
         .transaction-details {
             backdrop-filter: blur(10px);
         }
+        .status-success {
+            color: green;
+            font-weight: bold;
+        }
+
+        .status-failed {
+            color: red;
+            font-weight: bold;
+        }
+
+        .status-pending {
+            color: black;
+        }
+
     </style>
 </head>
 <body class="bg-gray-100 bg-opacity-50 relative">
@@ -43,15 +57,23 @@
                         <th class="py-2 px-4 border-b">Total</th>
                         <th class="py-2 px-4 border-b">Payment Method</th>
                         <th class="py-2 px-4 border-b">Date</th>
+                        <th class="py-2 px-4 border-b">Status</th>
                         <th class="py-2 px-4 border-b">Details</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr th:each="transaction : ${transactions}" class="hover:bg-gray-100 hover:bg-opacity-50">
-                        <td class="py-2 px-4 border-b" th:text="${transaction.id}">1</td>
-                        <td class="py-2 px-4 border-b" th:text="'Rp ' + ${transaction.total}">Rp 100,000</td>
-                        <td class="py-2 px-4 border-b" th:text="${transaction.paymentMethod}">CASH</td>
-                        <td class="py-2 px-4 border-b" th:text="${transaction.formattedCreatedAt}">2024-12-30 14:50:59</td>
+                        <td class="py-2 px-4 border-b" th:text="${transaction.id}">20</td>
+                        <td class="py-2 px-4 border-b" th:text="'Rp ' + ${transaction.total}">Rp 19000.0</td>
+                        <td class="py-2 px-4 border-b" th:text="${transaction.paymentMethod}">QRIS</td>
+                        <td class="py-2 px-4 border-b" th:text="${transaction.formattedCreatedAt}">2025-01-02 00:15:43</td>
+                        <td class="py-2 px-4 border-b"
+                        th:classappend="
+                            ${transaction.status.toUpperCase()} == 'TRANSAKSI BERHASIL' ? 'status-success' :
+                            (${transaction.status.toUpperCase()} == 'TRANSAKSI GAGAL' ? 'status-failed' : 'status-pending')"
+                        th:text="${transaction.status.toUpperCase()}">
+                        TRANSAKSI BERHASIL
+                       </td>                                
                         <td class="py-2 px-4 border-b">
                             <a th:href="'/transactions/' + ${transaction.id}" class="text-blue-600 hover:underline">View</a>
                         </td>
