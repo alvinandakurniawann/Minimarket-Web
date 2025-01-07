@@ -7,7 +7,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <style>
-
         .background-image {
             position: fixed;
             top: 0;
@@ -21,14 +20,12 @@
             z-index: -1;
         }
 
-        /* Admin Panel Styling */
         .sidebar {
-            background-color: #343a40; /* Solid dark gray */
+            background-color: #343a40;
         }
 
-        /* Card and table styling for transparency */
         .content-container {
-            background-color: rgba(255, 255, 255, 0.8); /* White with opacity */
+            background-color: rgba(255, 255, 255, 0.8);
             border-radius: 8px;
             padding: 20px;
             z-index: 1;
@@ -43,17 +40,13 @@
             color: #333;
         }
 
-        .content-container p {
-            margin: 5px 0;
-        }
-
         .admin-table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
-            background-color: rgba(255, 255, 255, 0.8); /* Transparent table */
+            background-color: rgba(255, 255, 255, 0.8);
             border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow effect */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         .admin-table th, .admin-table td {
@@ -63,26 +56,29 @@
         }
 
         .admin-table th {
-            background-color: rgba(248, 249, 250, 0.9); /* Light gray */
+            background-color: rgba(248, 249, 250, 0.9);
             color: #333;
         }
 
         .admin-table tr:nth-child(even) {
-            background-color: rgba(249, 249, 249, 0.9); /* Light background for even rows */
+            background-color: rgba(249, 249, 249, 0.9);
         }
 
         .admin-table tr:hover {
-            background-color: rgba(241, 241, 241, 0.9); /* Hover effect */
+            background-color: rgba(241, 241, 241, 0.9);
+        }
+
+        .product-image {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
         }
     </style>
 </head>
 <body class="font-sans antialiased bg-gray-100">
-    <!-- Background Image -->
     <div class="background-image"></div>
-
-    <!-- Admin Panel Container -->
     <div class="flex min-h-screen">
-        <!-- Sidebar -->
         <aside class="sidebar w-64 text-white flex-shrink-0">
             <div class="p-6">
                 <h2 class="text-center text-2xl font-bold mb-6">Admin Panel</h2>
@@ -93,8 +89,6 @@
                 </nav>
             </div>
         </aside>
-
-        <!-- Main Content -->
         <main class="flex-1 p-8">
             <header class="mb-8">
                 <h1 class="text-4xl font-bold text-gray-800">Transaction Detail</h1>
@@ -106,6 +100,14 @@
                 <p><strong>Transaction ID:</strong> <span th:text="${transaction.id}">1</span></p>
                 <p><strong>Date:</strong> <span th:text="${transaction.formattedCreatedAt}">2024-12-30</span></p>
                 <p><strong>Payment Method:</strong> <span th:text="${transaction.paymentMethod}">CASH</span></p>
+                <p><strong>Status:</strong>
+                    <select th:attr="onchange='updateStatus(this, ' + ${transaction.id} + ')'"
+                            class="ml-2 bg-gray-200 text-gray-700 py-1 px-2 rounded">
+                        <option value="Pending" th:selected="${transaction.status == 'Pending'}">Pending</option>
+                        <option value="Transaksi Berhasil" th:selected="${transaction.status == 'Transaksi Berhasil'}">Transaksi Berhasil</option>
+                        <option value="Transaksi Gagal" th:selected="${transaction.status == 'Transaksi Gagal'}">Transaksi Gagal</option>
+                    </select>
+                </p>
             </div>
 
             <!-- Customer Information -->
@@ -121,6 +123,7 @@
                 <table class="admin-table">
                     <thead>
                         <tr>
+                            <th>Gambar Product</th>
                             <th>Product</th>
                             <th>Price</th>
                             <th>Quantity</th>
@@ -129,13 +132,16 @@
                     </thead>
                     <tbody>
                         <tr th:each="item : ${transaction.items}">
+                            <td>
+                                <img th:src="${item.productImage}" alt="Product Image" class="product-image">
+                            </td>
                             <td th:text="${item.productName}">Product Name</td>
                             <td th:text="'Rp ' + ${item.price}">$50</td>
                             <td th:text="${item.quantity}">2</td>
                             <td th:text="'Rp ' + ${item.subtotal}">$100</td>
                         </tr>
                         <tr>
-                            <td colspan="3" class="text-right"><strong>Total:</strong></td>
+                            <td colspan="4" class="text-right"><strong>Total:</strong></td>
                             <td th:text="'Rp ' + ${transaction.total}">$200</td>
                         </tr>
                     </tbody>
@@ -143,5 +149,31 @@
             </div>
         </main>
     </div>
+
+    <!-- JavaScript -->
+    <script>
+        function updateStatus(selectElement, transactionId) {
+            const newStatus = selectElement.value;
+            if (newStatus) {
+                fetch(`/transactions/admin/transactions/status/${transactionId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ status: newStatus }),
+                })
+                .then(response => {
+                    if (response.ok) {
+                        alert('Status updated successfully!');
+                        location.reload();
+                    } else {
+                        response.text().then(err => console.error("Server Error:", err));
+                        alert('Failed to update status');
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            }
+        }
+    </script>
 </body>
 </html>

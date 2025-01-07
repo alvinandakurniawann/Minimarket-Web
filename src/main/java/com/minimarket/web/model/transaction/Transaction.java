@@ -3,6 +3,7 @@ package com.minimarket.web.model.transaction;
 import com.minimarket.web.model.base.BaseEntity;
 import com.minimarket.web.model.user.Customer;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.DecimalMin;
 
 import java.util.List;
 
@@ -21,8 +22,13 @@ public class Transaction extends BaseEntity {
     private List<TransactionItem> items;
 
     @Column(nullable = false)
+    @DecimalMin(value = "0.1", inclusive = true, message = "Total amount must be at least 0.1")
     private Double total;
 
+    @Column(nullable = false, length = 20)
+    private String status = "Pending"; // Default value    
+
+    // Getters and Setters
     public Customer getCustomer() {
         return customer;
     }
@@ -53,5 +59,13 @@ public class Transaction extends BaseEntity {
 
     public void setTotal(Double total) {
         this.total = total;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

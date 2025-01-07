@@ -14,20 +14,31 @@ public class TransactionResponse {
     private PaymentMethod paymentMethod;
     private Double total;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;
+    private String status; // Properti status transaksi
     private List<Item> items;
 
-    public TransactionResponse(Long id, String customerName, String customerEmail, PaymentMethod paymentMethod, Double total, LocalDateTime createdAt, List<Item> items) {
+    public TransactionResponse(Long id, String customerName, String customerEmail, PaymentMethod paymentMethod, Double total, LocalDateTime createdAt, String status, List<Item> items) {
         this.id = id;
         this.customerName = customerName;
         this.customerEmail = customerEmail;
         this.paymentMethod = paymentMethod;
         this.total = total;
         this.createdAt = createdAt;
+        this.status = status;
         this.items = items;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    // Getter dan setter lainnya
     public Long getId() {
         return id;
     }
@@ -76,17 +87,6 @@ public class TransactionResponse {
         this.createdAt = createdAt;
     }
 
-    /**
-     * Returns the formatted date as a String (yyyy-MM-dd).
-     */
-    public String getFormattedCreatedAt() {
-        if (this.createdAt != null) {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-            return this.createdAt.format(formatter);
-        }
-        return null;
-    }
-    
     public List<Item> getItems() {
         return items;
     }
@@ -98,7 +98,7 @@ public class TransactionResponse {
     public static class Item {
         private Long productId;
         private String productName;
-        private String productImage; // Tambahkan untuk gambar produk
+        private String productImage; // Gambar produk
         private Integer quantity;
         private Double price;
         private Double subtotal;
@@ -160,4 +160,13 @@ public class TransactionResponse {
             this.subtotal = subtotal;
         }
     }
+
+public String getFormattedCreatedAt() {
+    if (this.createdAt != null) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        return this.createdAt.format(formatter);
+    }
+    return null;
+}
+
 }

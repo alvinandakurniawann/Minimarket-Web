@@ -13,4 +13,7 @@ public interface TransactionService {
     List<TransactionResponse> getAllTransactionsByCustomerId(Long customerId);
 
     List<TransactionResponse> getAllTransactions(); // Tambahkan metode untuk semua transaksi
+
+    void updateTransactionStatus(Long id, String status);
+
 }

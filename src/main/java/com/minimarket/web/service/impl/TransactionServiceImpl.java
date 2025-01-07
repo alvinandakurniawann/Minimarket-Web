@@ -86,6 +86,22 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
+    @Transactional
+    public void updateTransactionStatus(Long id, String status) {
+        System.out.println("Updating status for Transaction ID: " + id + " to " + status);
+    
+        Transaction transaction = transactionRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Transaction not found"));
+    
+        transaction.setStatus(status);
+        transactionRepository.save(transaction);
+    
+        System.out.println("Transaction status updated successfully in the database.");
+    }
+    
+       
+    
+    @Override
     public List<TransactionResponse> getAllTransactionsByCustomerId(Long customerId) {
         return transactionRepository.findByCustomerId(customerId).stream()
                 .map(this::mapToResponse)
@@ -107,16 +123,16 @@ public class TransactionServiceImpl implements TransactionService {
                 transaction.getPaymentMethod(),
                 transaction.getTotal(),
                 transaction.getCreatedAt(),
+                transaction.getStatus(), // Tambahkan status
                 transaction.getItems().stream().map(item -> new TransactionResponse.Item(
                         item.getProduct().getId(),
                         item.getProduct().getName(),
-                        item.getProduct().getImageUrl(), // Tambahkan gambar produk
+                        item.getProduct().getImageUrl(),
                         item.getQuantity(),
                         item.getPrice(),
                         item.getPrice() * item.getQuantity()
                 )).collect(Collectors.toList())
         );
-    }
-
+    }    
 
 }

@@ -7,7 +7,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <style>
-        /* Background image styling */
         .background-image {
             position: fixed;
             top: 0;
@@ -21,32 +20,42 @@
             z-index: -1;
         }
 
-        /* Admin Panel Styling */
         .sidebar {
-            background-color: #343a40; /* Solid dark gray */
+            background-color: #343a40;
         }
 
-        /* Gaya transparansi hanya untuk konten tabel */
+        .status-success {
+            color: green;
+            font-weight: bold;
+        }
+
+        .status-failed {
+            color: red;
+            font-weight: bold;
+        }
+
         .table-container {
             position: relative;
         }
 
         .table-content {
-            background-color: rgba(255, 255, 255, 0.8); /* White with opacity */
+            background-color: rgba(255, 255, 255, 0.8);
             border-radius: 8px;
             padding: 20px;
             z-index: 1;
             position: relative;
         }
+
+        .btn-equal {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
     </style>
 </head>
 <body class="font-sans antialiased bg-gray-100">
-    <!-- Background Image -->
     <div class="background-image"></div>
-
-    <!-- Admin Panel Container -->
     <div class="flex min-h-screen">
-        <!-- Sidebar -->
         <aside class="sidebar w-64 text-white flex-shrink-0">
             <div class="p-6">
                 <h2 class="text-center text-2xl font-bold mb-6">Admin Panel</h2>
@@ -63,16 +72,11 @@
                 </nav>
             </div>
         </aside>
-
-        <!-- Main Content -->
         <main class="flex-1 p-8">
             <header class="mb-8">
                 <h1 class="text-4xl font-bold text-gray-800">Transactions</h1>
             </header>
-
-            <!-- Table Container -->
             <div class="table-container">
-                <!-- Table Content -->
                 <div class="table-content">
                     <table class="w-full bg-white border-collapse shadow rounded-lg overflow-hidden">
                         <thead>
@@ -80,24 +84,29 @@
                                 <th class="text-left p-4">ID</th>
                                 <th class="text-left p-4">Customer</th>
                                 <th class="text-left p-4">Total Amount</th>
+                                <th class="text-left p-4">Date</th>
+                                <th class="text-left p-4">Status</th>
                                 <th class="text-left p-4">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- Looping transaksi dari backend -->
                             <tr th:each="transaction : ${transactions}" class="border-b hover:bg-gray-100">
                                 <td th:text="${transaction.id}" class="p-4">1</td>
                                 <td th:text="${transaction.customerName}" class="p-4">John Doe</td>
                                 <td th:text="'Rp ' + ${transaction.total}" class="p-4">Rp 200.000</td>
+                                <td th:text="${transaction.formattedCreatedAt}" class="p-4">2024-12-30</td>
+                                <td th:classappend="
+                                    ${transaction.status} == 'Transaksi Berhasil' ? 'status-success' :
+                                    (${transaction.status} == 'Transaksi Gagal' ? 'status-failed' : '')"
+                                    th:text="${transaction.status}" class="p-4">Pending</td>
                                 <td class="p-4">
-                                    <!-- Tautan untuk melihat detail transaksi -->
                                     <a th:href="'/transactions/admin/' + ${transaction.id}" 
-                                    class="btn-equal bg-blue-600 hover:bg-blue-700 text-white py-1 px-3 rounded inline-flex items-center justify-center">
-                                     <i class="fas fa-eye"></i> <span>View Details</span>
-                                 </a>                                 
+                                       class="btn-equal bg-blue-600 hover:bg-blue-700 text-white py-1 px-3 rounded inline-flex items-center justify-center">
+                                        <i class="fas fa-eye"></i> <span>View Details</span>
+                                    </a>
                                 </td>
                             </tr>
-                        </tbody>
+                        </tbody>                        
                     </table>
                 </div>
             </div>
