@@ -15,7 +15,7 @@ Aplikasi manajemen minimarket berbasis web yang dibangun dengan Spring Boot dan 
 
 - **Backend**: Spring Boot 3.4.1
 - **Frontend**: Thymeleaf, Bootstrap
-- **Database**: H2 (development), MySQL (production)
+- **Database**: MySQL 8.0+
 - **Build Tool**: Maven
 - **Java Version**: 17
 
@@ -23,7 +23,7 @@ Aplikasi manajemen minimarket berbasis web yang dibangun dengan Spring Boot dan 
 
 - Java 17 atau lebih tinggi
 - Maven 3.6.3 atau lebih tinggi
-- MySQL 8.0 atau lebih tinggi (untuk production)
+- MySQL 8.0 atau lebih tinggi
 
 ## Instalasi
 
