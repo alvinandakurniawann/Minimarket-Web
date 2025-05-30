@@ -1,14 +1,130 @@
-# Aplikasi Minimarket
+# Minimarket Management System
 
-Aplikasi manajemen minimarket berbasis web yang dibangun dengan Spring Boot dan Thymeleaf.
+A comprehensive web-based minimarket management application built with Spring Boot and Thymeleaf. This system helps store owners manage their inventory, sales, and business operations efficiently.
 
-## Fitur
+## 🚀 Features
 
-- Autentikasi dan otorisasi pengguna
-- Manajemen produk
-- Manajemen stok
-- Manajemen transaksi
-- Laporan penjualan
+### User Management
+- 🔐 Secure authentication and role-based authorization
+- 👥 User roles: Admin, Cashier, and Manager
+- 👤 User profile management
+
+### Product Management
+- 📦 Add, edit, and delete products
+- 📊 Product categories and variants
+- 📸 Product image support
+- 📝 Barcode/QR code generation
+
+### Inventory Management
+- 📦 Real-time stock tracking
+- 🔄 Stock movement history
+- 📈 Low stock alerts
+- 📦 Supplier management
+
+### Sales & Transactions
+- 💳 Point of Sale (POS) system
+- 🧾 Receipt generation
+- 🔄 Return and refund processing
+- 💵 Multiple payment methods
+
+### Reporting
+- 📊 Sales reports (daily, weekly, monthly)
+- 📈 Revenue analytics
+- 📦 Inventory reports
+- 📋 Transaction history
+
+## 🛠️ Technologies Used
+
+### Backend
+- Java 17
+- Spring Boot 3.x
+- Spring Security
+- Spring Data JPA
+- Hibernate
+- Maven
+
+### Frontend
+- Thymeleaf
+- Bootstrap 5
+- JavaScript
+- jQuery
+- Chart.js
+
+### Database
+- MySQL 8.0
+
+### Tools
+- IntelliJ IDEA / vscode
+- Git
+- Postman (for API testing)
+
+## 🚀 Getting Started
+
+### Prerequisites
+- JDK 17 or higher
+- Maven 3.8+
+- MySQL 8.0 or higher
+- Node.js (for frontend dependencies)
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/yourusername/minimarket-management.git
+   cd minimarket-management
+   ```
+
+2. **Configure Database**
+   - Create a new MySQL database
+   - Update `application.properties` with your database credentials
+
+3. **Build and Run**
+   ```bash
+   mvn clean install
+   mvn spring-boot:run
+   ```
+
+4. **Access the Application**
+   Open your browser and visit: `http://localhost:8080`
+   - Admin credentials: admin@minimarket.com / admin123
+   - Cashier credentials: cashier@minimarket.com / cashier123
+
+## 📂 Project Structure
+
+```
+src/main/java/
+├── com/minimarket/
+│   ├── config/           # Configuration classes
+│   ├── controller/       # MVC Controllers
+│   ├── model/            # Entity classes
+│   ├── repository/       # Data access layer
+│   ├── service/          # Business logic
+│   ├── dto/              # Data Transfer Objects
+│   ├── exception/        # Custom exceptions
+│   └── security/         # Security configurations
+src/main/resources/
+├── static/              # Static files (CSS, JS, images)
+├── templates/           # Thymeleaf templates
+└── application.properties # Application configuration
+```
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## 📧 Contact
+
+For any inquiries, please contact [your-email@example.com](mailto:your-email@example.com)
+
+---
+
+<div align="center">
+  Made with ❤️ by Your Name
+</div>
 - Antarmuka pengguna responsif
 
 ## Teknologi
