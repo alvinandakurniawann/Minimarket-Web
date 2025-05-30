@@ -6,31 +6,20 @@ A comprehensive web-based minimarket management application built with Spring Bo
 
 ### User Management
 - 🔐 Secure authentication and role-based authorization
-- 👥 User roles: Admin, Cashier, and Manager
+- 👥 User roles: Admin, and buyer
 - 👤 User profile management
 
 ### Product Management
 - 📦 Add, edit, and delete products
 - 📊 Product categories and variants
 - 📸 Product image support
-- 📝 Barcode/QR code generation
-
+  
 ### Inventory Management
 - 📦 Real-time stock tracking
 - 🔄 Stock movement history
-- 📈 Low stock alerts
 - 📦 Supplier management
 
-### Sales & Transactions
-- 💳 Point of Sale (POS) system
-- 🧾 Receipt generation
-- 🔄 Return and refund processing
-- 💵 Multiple payment methods
-
 ### Reporting
-- 📊 Sales reports (daily, weekly, monthly)
-- 📈 Revenue analytics
-- 📦 Inventory reports
 - 📋 Transaction history
 
 ## 🛠️ Technologies Used
@@ -48,7 +37,6 @@ A comprehensive web-based minimarket management application built with Spring Bo
 - Bootstrap 5
 - JavaScript
 - jQuery
-- Chart.js
 
 ### Database
 - MySQL 8.0
