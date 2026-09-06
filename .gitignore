@@ -1,0 +1,25 @@
+# Build output
+target/
+*.jar
+*.war
+*.class
+
+# IDE
+.vscode/
+.idea/
+*.iml
+.project
+.classpath
+.settings/
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Local env & secrets
+.env
+*.log
+
+# Uploaded files (local dev)
+src/main/resources/static/images/products/*
+!src/main/resources/static/images/products/.gitkeep
