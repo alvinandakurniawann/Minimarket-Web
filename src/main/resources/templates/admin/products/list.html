@@ -1,123 +1,158 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel - Products</title>
+    <title>Produk - Admin Minimarket</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Fira+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* Background image styling */
-        .background-image {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url('https://storage.googleapis.com/a1aa/image/3xfQ7hvjqkQ7F6PTD7FnYQgA8k6S5NUceiaBO1eODaTNZvAoA.jpg');
-            background-size: cover;
-            background-position: center;
-            opacity: 0.6;
-            z-index: -1;
+        :root {
+            --bg: #0F172A;
+            --card: #1B2336;
+            --border: #475569;
+            --fg: #F8FAFC;
+            --muted-fg: #CBD5E1;
+            --accent: #22C55E;
+            --accent-ink: #052E16;
+            --danger: #DC2626;
         }
-
-        /* Admin Panel Styling */
-        .sidebar {
-            background-color: #343a40; /* Solid dark gray */
+        body {
+            font-family: 'Fira Sans', system-ui, sans-serif;
+            background-color: var(--bg);
+            color: var(--fg);
         }
-
-        /* Gaya transparansi hanya untuk konten tabel */
-        .table-container {
-            position: relative;
+        .mono { font-family: 'Fira Code', monospace; }
+        a:focus-visible, button:focus-visible {
+            outline: 3px solid var(--accent);
+            outline-offset: 2px;
         }
-
-        .table-content {
-            background-color: rgba(255, 255, 255, 0.8); /* White with opacity */
+        .panel {
+            background-color: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+        }
+        .admin-table { width: 100%; border-collapse: collapse; }
+        .admin-table th, .admin-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+            vertical-align: middle;
+        }
+        .admin-table thead th {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--muted-fg);
+        }
+        .admin-table tbody tr:hover { background-color: rgba(255, 255, 255, 0.03); }
+        .btn-primary {
+            background-color: var(--accent);
+            color: var(--accent-ink);
+            font-weight: 700;
+            transition: filter 0.2s ease, transform 0.2s ease;
+        }
+        .btn-primary:hover { filter: brightness(1.1); transform: translateY(-2px); }
+        .btn-edit {
+            border: 1px solid var(--border);
+            color: var(--fg);
+            transition: border-color 0.2s ease;
+        }
+        .btn-edit:hover { border-color: var(--accent); }
+        .btn-danger {
+            background-color: var(--danger);
+            color: #fff;
+            transition: filter 0.2s ease;
+        }
+        .btn-danger:hover { filter: brightness(1.15); }
+        .product-image {
+            width: 56px;
+            height: 56px;
+            object-fit: cover;
             border-radius: 8px;
-            padding: 20px;
-            z-index: 1;
-            position: relative;
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .btn-primary { transition: none; }
+            .btn-primary:hover { transform: none; }
         }
     </style>
 </head>
-<body class="font-sans antialiased bg-gray-100">
-    <!-- Background Image -->
-    <div class="background-image"></div>
+<body>
+    <nav class="border-b" style="border-color: var(--border);">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="/admin/dashboard" class="text-xl font-bold flex items-center gap-2">
+                <i class="fas fa-store" style="color: var(--accent);"></i>
+                <span>Minimarket <span class="mono text-sm font-medium px-2 py-1 rounded" style="background-color: var(--card); color: var(--accent);">ADMIN</span></span>
+            </a>
+            <a class="font-semibold text-sm hover:underline flex items-center" style="color: var(--muted-fg);" href="/auth/logout">
+                <i class="fas fa-sign-out-alt mr-2"></i> LOG OUT
+            </a>
+        </div>
+    </nav>
 
-    <!-- Admin Panel Container -->
-    <div class="flex min-h-screen">
-        <!-- Sidebar -->
-        <aside class="sidebar w-64 text-white flex-shrink-0">
-            <div class="p-6">
-                <h2 class="text-center text-2xl font-bold mb-6">Admin Panel</h2>
-                <nav>
-                    <a href="/admin/dashboard" class="flex items-center gap-2 bg-red-600 hover:bg-red-700 py-2 px-4 rounded mb-2">
-                        <i class="fas fa-tachometer-alt"></i> <span>Dashboard</span>
-                    </a>
-                    <a href="/admin/category/list" class="flex items-center gap-2 bg-red-600 hover:bg-red-700 py-2 px-4 rounded mb-2">
-                        <i class="fas fa-list"></i> <span>Categories</span>
-                    </a>
-                    <a href="/admin/transactions/list" class="flex items-center gap-2 bg-red-600 hover:bg-red-700 py-2 px-4 rounded mb-2">
-                        <i class="fas fa-exchange-alt"></i> <span>Transactions</span>
-                    </a>
-                </nav>
+    <main class="container mx-auto px-4 py-8">
+        <nav class="text-sm font-semibold mb-4" aria-label="Breadcrumb">
+            <a href="/admin/dashboard" class="hover:underline" style="color: var(--accent);">Dashboard</a>
+            <span class="mx-2" style="color: var(--muted-fg);">/</span>
+            <span style="color: var(--muted-fg);">Produk</span>
+        </nav>
+
+        <div class="flex flex-wrap items-center justify-between gap-3 mb-6">
+            <div>
+                <p class="mono text-sm font-semibold tracking-widest uppercase mb-2" style="color: var(--accent);">Katalog</p>
+                <h1 class="text-3xl md:text-4xl font-bold">Produk</h1>
             </div>
-        </aside>
+            <a href="/admin/product/add" class="btn-primary px-5 py-2.5 rounded-lg text-sm">
+                <i class="fas fa-plus mr-2"></i>Tambah Produk
+            </a>
+        </div>
 
-        <!-- Main Content -->
-        <main class="flex-1 p-8">
-            <header class="mb-8">
-                <h1 class="text-4xl font-bold text-gray-800">Products</h1>
-                <a href="/admin/product/add" class="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded mt-4 inline-flex">
-                    <i class="fas fa-plus"></i> <span>Add New Product</span>
-                </a>
-            </header>
+        <div class="panel p-4 md:p-6 overflow-x-auto">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Gambar</th>
+                        <th>Nama Produk</th>
+                        <th>Kategori</th>
+                        <th>Harga</th>
+                        <th>Stok</th>
+                        <th>Deskripsi</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="product : ${products}">
+                        <td class="mono" th:text="${product.id}">1</td>
+                        <td><img th:src="${product.imageUrl}" alt="Foto produk" class="product-image"></td>
+                        <td class="font-semibold" th:text="${product.name}">Sample Product</td>
+                        <td th:text="${product.category}">Food</td>
+                        <td class="mono" th:text="${T(com.minimarket.web.util.CurrencyFormatter).formatToRupiah(product.price)}">Rp 10.000</td>
+                        <td class="mono" th:text="${product.stock}">100</td>
+                        <td class="text-sm max-w-xs truncate" style="color: var(--muted-fg);" th:text="${product.description}">Sample Description</td>
+                        <td>
+                            <div class="flex gap-2">
+                                <a th:href="'/admin/product/edit/' + ${product.id}" class="btn-edit px-3 py-1.5 rounded-lg text-sm font-bold inline-flex items-center" aria-label="Ubah produk">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <form th:action="'/admin/product/delete/' + ${product.id}" method="post" class="inline" onsubmit="return confirm('Hapus produk ini?');">
+                                    <button type="submit" class="btn-danger px-3 py-1.5 rounded-lg text-sm font-bold inline-flex items-center" aria-label="Hapus produk">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
 
-            <!-- Table Container -->
-            <div class="table-container">
-                <!-- Table Content -->
-                <div class="table-content">
-                    <table class="w-full bg-white border-collapse shadow rounded-lg overflow-hidden">
-                        <thead>
-                            <tr class="bg-gray-200 text-gray-800">
-                                <th class="text-left p-4">ID</th>
-                                <th class="text-left p-4">Image</th>
-                                <th class="text-left p-4">Product Name</th>
-                                <th class="text-left p-4">Category</th>
-                                <th class="text-left p-4">Price</th>
-                                <th class="text-left p-4">Stock</th>
-                                <th class="text-left p-4">Description</th>
-                                <th class="text-left p-4">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- Loop data produk dari backend -->
-                            <tr th:each="product : ${products}" class="border-b hover:bg-gray-100">
-                                <td th:text="${product.id}" class="p-4">1</td>
-                                <td class="p-4">
-                                    <img th:src="${product.imageUrl}" alt="Product Image" class="w-20 h-20 object-cover rounded-lg">
-                                </td>
-                                <td th:text="${product.name}" class="p-4">Sample Product</td>
-                                <td th:text="${product.category}" class="p-4">Food</td>
-                                <td th:text="${T(com.minimarket.web.util.CurrencyFormatter).formatToRupiah(product.price)}" class="p-4">Rp 10.000</td>
-                                <td th:text="${product.stock}" class="p-4">100</td>
-                                <td th:text="${product.description}" class="p-4">Sample Description</td>
-                                <td class="p-4 flex gap-2">
-                                    <a th:href="'/admin/product/edit/' + ${product.id}" class="btn-equal bg-blue-600 hover:bg-blue-700 text-white py-1 px-3 rounded inline-flex items-center justify-center">
-                                        <i class="fas fa-edit"></i> <span>Edit</span>
-                                    </a>
-                                    <form th:action="'/admin/product/delete/' + ${product.id}" method="post" class="inline">
-                                        <button type="submit" class="btn-equal bg-red-600 hover:bg-red-700 text-white py-1 px-3 rounded inline-flex items-center justify-center">
-                                            <i class="fas fa-trash-alt"></i> <span>Delete</span>
-                                        </button>
-                                    </form>                                    
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </main>
-    </div>
+    <footer class="text-center text-sm py-6" style="color: var(--muted-fg);">
+        Minimarket Admin &middot; Panel pengelolaan toko
+    </footer>
 </body>
 </html>

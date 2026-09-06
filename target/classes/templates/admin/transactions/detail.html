@@ -1,179 +1,298 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Transaction Detail - Admin Dashboard</title>
+    <title>Detail Transaksi - Admin Minimarket</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Fira+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        .background-image {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url('https://storage.googleapis.com/a1aa/image/3xfQ7hvjqkQ7F6PTD7FnYQgA8k6S5NUceiaBO1eODaTNZvAoA.jpg');
-            background-size: cover;
-            background-position: center;
-            opacity: 0.6;
-            z-index: -1;
+        :root {
+            --bg: #0F172A;
+            --card: #1B2336;
+            --border: #475569;
+            --fg: #F8FAFC;
+            --muted-fg: #CBD5E1;
+            --accent: #22C55E;
+            --accent-ink: #052E16;
+            --warn: #F59E0B;
+            --warn-ink: #451A03;
+            --danger: #DC2626;
         }
-
-        .sidebar {
-            background-color: #343a40;
+        body {
+            font-family: 'Fira Sans', system-ui, sans-serif;
+            background-color: var(--bg);
+            color: var(--fg);
         }
-
-        .content-container {
-            background-color: rgba(255, 255, 255, 0.8);
-            border-radius: 8px;
-            padding: 20px;
-            z-index: 1;
-            position: relative;
-            margin-bottom: 20px;
+        .mono {
+            font-family: 'Fira Code', monospace;
         }
-
-        .content-container h3 {
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 10px;
-            color: #333;
+        a:focus-visible, button:focus-visible {
+            outline: 3px solid var(--accent);
+            outline-offset: 2px;
         }
-
+        .panel {
+            background-color: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+        }
+        .status-pill {
+            display: inline-block;
+            padding: 4px 14px;
+            border-radius: 999px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            border: 1px solid;
+        }
+        .st-pending { color: #FBBF24; border-color: #F59E0B; background-color: rgba(245, 158, 11, 0.12); }
+        .st-success { color: #22C55E; border-color: #22C55E; background-color: rgba(34, 197, 94, 0.12); }
+        .st-failed { color: #F87171; border-color: #DC2626; background-color: rgba(220, 38, 38, 0.12); }
+        .status-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px 16px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--muted-fg);
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+        }
+        .status-btn:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+        .status-btn.is-pending { background-color: var(--warn); border-color: var(--warn); color: var(--warn-ink); }
+        .status-btn.is-success { background-color: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+        .status-btn.is-failed { background-color: var(--danger); border-color: var(--danger); color: #fff; }
         .admin-table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
-            background-color: rgba(255, 255, 255, 0.8);
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
-
         .admin-table th, .admin-table td {
-            border: 1px solid rgba(0, 0, 0, 0.1);
-            padding: 10px;
-            text-align: center;
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
         }
-
-        .admin-table th {
-            background-color: rgba(248, 249, 250, 0.9);
-            color: #333;
+        .admin-table thead th {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--muted-fg);
         }
-
-        .admin-table tr:nth-child(even) {
-            background-color: rgba(249, 249, 249, 0.9);
+        .admin-table tbody tr:hover {
+            background-color: rgba(255, 255, 255, 0.03);
         }
-
-        .admin-table tr:hover {
-            background-color: rgba(241, 241, 241, 0.9);
-        }
-
         .product-image {
-            width: 80px;
-            height: 80px;
+            width: 64px;
+            height: 64px;
             object-fit: cover;
             border-radius: 8px;
         }
-    </style>
-</head>
-<body class="font-sans antialiased bg-gray-100">
-    <div class="background-image"></div>
-    <div class="flex min-h-screen">
-        <aside class="sidebar w-64 text-white flex-shrink-0">
-            <div class="p-6">
-                <h2 class="text-center text-2xl font-bold mb-6">Admin Panel</h2>
-                <nav>
-                    <a href="/transactions/admin" class="flex items-center gap-2 bg-red-600 hover:bg-red-700 py-2 px-4 rounded mb-2">
-                        <i class="fas fa-arrow-left"></i> <span>Back to Transactions</span>
-                    </a>
-                </nav>
-            </div>
-        </aside>
-        <main class="flex-1 p-8">
-            <header class="mb-8">
-                <h1 class="text-4xl font-bold text-gray-800">Transaction Detail</h1>
-            </header>
-
-            <!-- Transaction Information -->
-            <div class="content-container">
-                <h3>Transaction Information</h3>
-                <p><strong>Transaction ID:</strong> <span th:text="${transaction.id}">1</span></p>
-                <p><strong>Date:</strong> <span th:text="${transaction.formattedCreatedAt}">2024-12-30</span></p>
-                <p><strong>Payment Method:</strong> <span th:text="${transaction.paymentMethod}">CASH</span></p>
-                <p><strong>Status:</strong>
-                    <select th:attr="onchange='updateStatus(this, ' + ${transaction.id} + ')'"
-                            class="ml-2 bg-gray-200 text-gray-700 py-1 px-2 rounded">
-                        <option value="Pending" th:selected="${transaction.status == 'Pending'}">Pending</option>
-                        <option value="Transaksi Berhasil" th:selected="${transaction.status == 'Transaksi Berhasil'}">Transaksi Berhasil</option>
-                        <option value="Transaksi Gagal" th:selected="${transaction.status == 'Transaksi Gagal'}">Transaksi Gagal</option>
-                    </select>
-                </p>
-            </div>
-
-            <!-- Customer Information -->
-            <div class="content-container">
-                <h3>Customer Information</h3>
-                <p><strong>Name:</strong> <span th:text="${transaction.customerName}">John Doe</span></p>
-                <p><strong>Email:</strong> <span th:text="${transaction.customerEmail}">john.doe@example.com</span></p>
-            </div>
-
-            <!-- Order Items -->
-            <div class="content-container">
-                <h3>Order Items</h3>
-                <table class="admin-table">
-                    <thead>
-                        <tr>
-                            <th>Gambar Product</th>
-                            <th>Product</th>
-                            <th>Price</th>
-                            <th>Quantity</th>
-                            <th>Subtotal</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr th:each="item : ${transaction.items}">
-                            <td>
-                                <img th:src="${item.productImage}" alt="Product Image" class="product-image">
-                            </td>
-                            <td th:text="${item.productName}">Product Name</td>
-                            <td th:text="'Rp ' + ${item.price}">$50</td>
-                            <td th:text="${item.quantity}">2</td>
-                            <td th:text="'Rp ' + ${item.subtotal}">$100</td>
-                        </tr>
-                        <tr>
-                            <td colspan="4" class="text-right"><strong>Total:</strong></td>
-                            <td th:text="'Rp ' + ${transaction.total}">$200</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </main>
-    </div>
-
-    <!-- JavaScript -->
-    <script>
-        function updateStatus(selectElement, transactionId) {
-            const newStatus = selectElement.value;
-            if (newStatus) {
-                fetch(`/transactions/admin/transactions/status/${transactionId}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ status: newStatus }),
-                })
-                .then(response => {
-                    if (response.ok) {
-                        alert('Status updated successfully!');
-                        location.reload();
-                    } else {
-                        response.text().then(err => console.error("Server Error:", err));
-                        alert('Failed to update status');
-                    }
-                })
-                .catch(error => console.error('Error:', error));
+        .toast {
+            position: fixed;
+            left: 50%;
+            bottom: 28px;
+            transform: translateX(-50%) translateY(20px);
+            background-color: var(--accent);
+            color: var(--accent-ink);
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease, transform 0.25s ease;
+            z-index: 2000;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+            max-width: 90vw;
+        }
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+        .toast.error {
+            background-color: var(--danger);
+            color: #fff;
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .status-btn {
+                transition: none;
+            }
+            .status-btn:hover {
+                transform: none;
             }
         }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="border-b" style="border-color: var(--border);">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="/admin/dashboard" class="text-xl font-bold flex items-center gap-2">
+                <i class="fas fa-store" style="color: var(--accent);"></i>
+                <span>Minimarket <span class="mono text-sm font-medium px-2 py-1 rounded" style="background-color: var(--card); color: var(--accent);">ADMIN</span></span>
+            </a>
+            <a class="font-semibold text-sm hover:underline flex items-center" style="color: var(--muted-fg);" href="/auth/logout">
+                <i class="fas fa-sign-out-alt mr-2"></i> LOG OUT
+            </a>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-4 py-8">
+        <nav class="text-sm font-semibold mb-4" aria-label="Breadcrumb">
+            <a href="/admin/transactions/list" class="hover:underline" style="color: var(--accent);">
+                <i class="fas fa-arrow-left mr-1"></i>Transaksi
+            </a>
+            <span class="mx-2" style="color: var(--muted-fg);">/</span>
+            <span class="mono" style="color: var(--muted-fg);" th:text="'#' + ${transaction.id}">#1</span>
+        </nav>
+
+        <p class="mono text-sm font-semibold tracking-widest uppercase mb-2" style="color: var(--accent);">Detail Transaksi</p>
+        <h1 class="text-3xl md:text-4xl font-bold mb-6">Transaksi <span class="mono" th:text="'#' + ${transaction.id}">#1</span></h1>
+
+        <!-- Transaction Information -->
+        <section class="panel p-6 mb-4">
+            <h2 class="text-lg font-bold mb-4">Informasi Transaksi</h2>
+            <dl class="grid sm:grid-cols-2 gap-x-8 gap-y-3 text-[15px]">
+                <div><dt class="font-semibold" style="color: var(--muted-fg);">ID Transaksi</dt><dd class="mono" th:text="${transaction.id}">1</dd></div>
+                <div><dt class="font-semibold" style="color: var(--muted-fg);">Tanggal</dt><dd th:text="${transaction.formattedCreatedAt}">2024-12-30</dd></div>
+                <div><dt class="font-semibold" style="color: var(--muted-fg);">Metode Bayar</dt><dd th:text="${transaction.paymentMethod}">TRANSFER</dd></div>
+                <div>
+                    <dt class="font-semibold mb-1" style="color: var(--muted-fg);">Status</dt>
+                    <dd><span id="statusBadge" class="status-pill" th:classappend="${transaction.status == 'Transaksi Berhasil'} ? ' st-success' : (${transaction.status == 'Transaksi Gagal'} ? ' st-failed' : ' st-pending')" th:text="${transaction.status}">Pending</span></dd>
+                </div>
+            </dl>
+            <div class="flex gap-2 flex-wrap mt-5" role="group" aria-label="Ubah status transaksi">
+                <button type="button" class="status-btn" data-status="Pending" th:data-id="${transaction.id}" th:classappend="${transaction.status == 'Pending'} ? ' is-pending'">
+                    <i class="fas fa-clock"></i>Pending
+                </button>
+                <button type="button" class="status-btn" data-status="Transaksi Berhasil" th:data-id="${transaction.id}" th:classappend="${transaction.status == 'Transaksi Berhasil'} ? ' is-success'">
+                    <i class="fas fa-check-circle"></i>Berhasil
+                </button>
+                <button type="button" class="status-btn" data-status="Transaksi Gagal" th:data-id="${transaction.id}" th:classappend="${transaction.status == 'Transaksi Gagal'} ? ' is-failed'">
+                    <i class="fas fa-times-circle"></i>Gagal
+                </button>
+            </div>
+        </section>
+
+        <!-- Customer Information -->
+        <section class="panel p-6 mb-4">
+            <h2 class="text-lg font-bold mb-4">Informasi Pelanggan</h2>
+            <dl class="grid sm:grid-cols-2 gap-x-8 gap-y-3 text-[15px]">
+                <div><dt class="font-semibold" style="color: var(--muted-fg);">Nama</dt><dd th:text="${transaction.customerName}">John Doe</dd></div>
+                <div><dt class="font-semibold" style="color: var(--muted-fg);">Email</dt><dd th:text="${transaction.customerEmail}">john@example.com</dd></div>
+            </dl>
+        </section>
+
+        <!-- Order Items -->
+        <section class="panel p-6">
+            <h2 class="text-lg font-bold mb-4">Item Pesanan</h2>
+            <div class="overflow-x-auto">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Gambar</th>
+                        <th>Produk</th>
+                        <th>Harga</th>
+                        <th>Qty</th>
+                        <th class="text-right">Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="item : ${transaction.items}">
+                        <td><img th:src="${item.productImage}" alt="Foto produk" class="product-image"></td>
+                        <td th:text="${item.productName}">Product Name</td>
+                        <td class="mono" th:text="'Rp ' + ${#numbers.formatDecimal(item.price, 1, 'POINT', 0, 'COMMA')}">Rp 50.000</td>
+                        <td class="mono" th:text="${item.quantity}">2</td>
+                        <td class="mono text-right" th:text="'Rp ' + ${#numbers.formatDecimal(item.subtotal, 1, 'POINT', 0, 'COMMA')}">Rp 100.000</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="4" class="text-right font-bold">Total</td>
+                        <td class="mono text-right font-bold" style="color: var(--accent);" th:text="'Rp ' + ${#numbers.formatDecimal(transaction.total, 1, 'POINT', 0, 'COMMA')}">Rp 200.000</td>
+                    </tr>
+                </tfoot>
+            </table>
+            </div>
+        </section>
+    </main>
+
+    <footer class="text-center text-sm py-6" style="color: var(--muted-fg);">
+        Minimarket Admin &middot; Panel pengelolaan toko
+    </footer>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script>
+        const badgeEl0 = document.getElementById('statusBadge');
+        let currentStatus = badgeEl0 ? badgeEl0.textContent.trim() : 'Pending';
+
+        function pillClass(status) {
+            if (status === 'Transaksi Berhasil') return 'status-pill st-success';
+            if (status === 'Transaksi Gagal') return 'status-pill st-failed';
+            return 'status-pill st-pending';
+        }
+
+        function paintButtons(status) {
+            document.querySelectorAll('.status-btn').forEach(btn => {
+                btn.classList.remove('is-pending', 'is-success', 'is-failed');
+                if (btn.getAttribute('data-status') === status) {
+                    if (status === 'Transaksi Berhasil') btn.classList.add('is-success');
+                    else if (status === 'Transaksi Gagal') btn.classList.add('is-failed');
+                    else btn.classList.add('is-pending');
+                }
+            });
+        }
+
+        let toastTimer = null;
+        function showToast(msg, isError) {
+            const toast = document.getElementById('toast');
+            toast.innerHTML = '<i class="fas ' + (isError ? 'fa-exclamation-circle' : 'fa-check-circle') + '"></i><span></span>';
+            toast.querySelector('span').textContent = msg;
+            toast.classList.toggle('error', !!isError);
+            toast.classList.add('show');
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => toast.classList.remove('show'), 2600);
+        }
+
+        document.querySelectorAll('.status-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const next = btn.getAttribute('data-status');
+                const id = btn.getAttribute('data-id');
+                if (next === currentStatus) return;
+                fetch('/transactions/admin/transactions/status/' + id, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ status: next })
+                })
+                .then(response => {
+                    if (!response.ok) throw new Error('Failed to update status');
+                    currentStatus = next;
+                    const badgeEl = document.getElementById('statusBadge');
+                    badgeEl.textContent = next;
+                    badgeEl.className = pillClass(next);
+                    paintButtons(next);
+                    showToast('Status diubah menjadi ' + next + '.');
+                })
+                .catch(error => {
+                    console.error(error);
+                    showToast('Gagal mengubah status. Coba lagi.', true);
+                });
+            });
+        });
     </script>
 </body>
 </html>

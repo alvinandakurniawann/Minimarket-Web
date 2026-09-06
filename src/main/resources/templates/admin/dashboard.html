@@ -1,120 +1,147 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
   <title>Admin Dashboard - MINIMARKET</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Fira+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    /* Custom Styles */
-    .hero-bg {
-      background-image: url('https://storage.googleapis.com/a1aa/image/3xfQ7hvjqkQ7F6PTD7FnYQgA8k6S5NUceiaBO1eODaTNZvAoA.jpg');
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
+    :root {
+      --bg: #0F172A;
+      --card: #1B2336;
+      --muted-bg: #272F42;
+      --border: #475569;
+      --fg: #F8FAFC;
+      --muted-fg: #CBD5E1;
+      --accent: #22C55E;
+      --accent-ink: #052E16;
     }
-
-    .card {
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    body {
+      font-family: 'Fira Sans', system-ui, sans-serif;
+      background-color: var(--bg);
+      color: var(--fg);
     }
-    
-    .card:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    .mono {
+      font-family: 'Fira Code', monospace;
     }
-
-    .card img {
-      border-radius: 8px;
-      transition: transform 0.3s ease;
+    a:focus-visible, button:focus-visible {
+      outline: 3px solid var(--accent);
+      outline-offset: 2px;
     }
-
-    .card img:hover {
-      transform: scale(1.05);
+    .stat-card {
+      background-color: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      transition: border-color 0.2s ease, transform 0.2s ease;
     }
-
-    .card-button {
-      background-color: #f87171; /* Tailwind's Red-400 */
-      color: white;
-      padding: 0.75rem 1.5rem;
-      border-radius: 0.375rem;
-      font-weight: bold;
-      transition: background-color 0.3s ease;
+    .nav-card {
+      background-color: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      transition: border-color 0.2s ease, transform 0.2s ease;
+      display: flex;
+      flex-direction: column;
     }
-
-    .card-button:hover {
-      background-color: #f43f5e; /* Tailwind's Red-500 */
+    .nav-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-4px);
     }
-
-    /* Animasi Rainbow */
-    @keyframes rainbow-flash {
-      0% { color: red; }
-      14% { color: orange; }
-      28% { color: yellow; }
-      42% { color: green; }
-      57% { color: blue; }
-      71% { color: indigo; }
-      85% { color: violet; }
-      100% { color: red; }
+    .icon-tile {
+      width: 56px;
+      height: 56px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      color: var(--accent-ink);
+      background-color: var(--accent);
     }
-
-    /* Terapkan Animasi ke Judul */
-    .rainbow-text {
-      animation: rainbow-flash 3s infinite;
-      font-weight: bold;
+    .btn-manage {
+      background-color: var(--accent);
+      color: var(--accent-ink);
+      font-weight: 700;
+      transition: filter 0.2s ease, transform 0.2s ease;
     }
-
+    .btn-manage:hover {
+      filter: brightness(1.1);
+      transform: translateY(-2px);
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .stat-card, .nav-card, .btn-manage {
+        transition: none;
+      }
+      .nav-card:hover, .btn-manage:hover {
+        transform: none;
+      }
+    }
   </style>
 </head>
-<body class="bg-gray-100">
+<body>
   <!-- Navbar -->
-  <nav class="bg-gray-800 p-4">
-    <div class="container mx-auto flex justify-between items-center">
-      <div class="text-white text-2xl font-semibold">
-        Minimarket Admin Dashboard
+  <nav class="border-b" style="border-color: var(--border); background-color: var(--bg);">
+    <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+      <div class="text-xl font-bold flex items-center gap-2">
+        <i class="fas fa-store" style="color: var(--accent);"></i>
+        <span>Minimarket <span class="mono text-sm font-medium px-2 py-1 rounded" style="background-color: var(--muted-bg); color: var(--accent);">ADMIN</span></span>
       </div>
-      <div>
-        <a class="text-white hover:text-gray-400 flex items-center" href="/auth/logout">
-          <i class="fas fa-sign-out-alt mr-2"></i> LOG OUT
-        </a>
-      </div>
+      <a class="font-semibold text-sm hover:underline flex items-center" style="color: var(--muted-fg);" href="/auth/logout">
+        <i class="fas fa-sign-out-alt mr-2"></i> LOG OUT
+      </a>
     </div>
   </nav>
 
-  <!-- Jumbotron -->
-  <section class="hero-bg py-20 text-center text-white">
-      <h1 class="text-4xl mb-2 rainbow-text">Welcome Admin</h1>
-      <p class="text-lg">This is the admin dashboard to manage your data effectively.</p>
-    </div>
-  </section>
+  <main class="container mx-auto px-4 py-8">
+    <!-- Heading -->
+    <p class="mono text-sm font-semibold tracking-widest uppercase mb-2" style="color: var(--accent);">Panel Kontrol</p>
+    <h1 class="text-3xl md:text-4xl font-bold mb-1">Dashboard</h1>
+    <p class="mb-8" style="color: var(--muted-fg);">Ringkasan data toko dalam satu layar.</p>
 
-  <!-- Cards -->
-  <div class="container mx-auto mt-8">
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-      <!-- Products Card -->
-      <div class="card bg-white p-6 rounded-lg shadow-md hover:shadow-xl text-center">
-        <img alt="Product Management" class="w-full h-48 object-cover rounded-md mb-4" src="https://storage.googleapis.com/a1aa/image/3xfQ7hvjqkQ7F6PTD7FnYQgA8k6S5NUceiaBO1eODaTNZvAoA.jpg"/>
-        <h4 class="text-xl font-semibold mb-2">Products</h4>
-        <p class="text-gray-600 mb-4">Manage your products effectively</p>
-        <a class="card-button" href="/admin/product/list">Manage</a>
+    <!-- Metrics -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+      <div class="stat-card p-5">
+        <p class="text-sm font-semibold uppercase tracking-wider mb-1" style="color: var(--muted-fg);">Produk</p>
+        <p class="mono text-4xl font-bold" style="color: var(--accent);" th:text="${productCount}">0</p>
       </div>
-
-      <!-- Categories Card -->
-      <div class="card bg-white p-6 rounded-lg shadow-md hover:shadow-xl text-center">
-        <img alt="Category Management" class="w-full h-48 object-cover rounded-md mb-4" src="https://storage.googleapis.com/a1aa/image/xqRxp7rUYgYeDK0hukXesZ3zPf6tyVoqCwnMmKfo54tSyeCgC.jpg"/>
-        <h4 class="text-xl font-semibold mb-2">Categories</h4>
-        <p class="text-gray-600 mb-4">Manage your product categories</p>
-        <a class="card-button" href="/admin/category/list">Manage</a>
+      <div class="stat-card p-5">
+        <p class="text-sm font-semibold uppercase tracking-wider mb-1" style="color: var(--muted-fg);">Kategori</p>
+        <p class="mono text-4xl font-bold" style="color: var(--accent);" th:text="${categoryCount}">0</p>
       </div>
-
-      <!-- Transactions Card -->
-      <div class="card bg-white p-6 rounded-lg shadow-md hover:shadow-xl text-center">
-        <img alt="Transaction Management" class="w-full h-48 object-cover rounded-md mb-4" src="https://storage.googleapis.com/a1aa/image/QLQhnXV9GBJxK9oxcvM5qTfVPqzYT0OQO9eKIDfIbAhOZvAoA.jpg"/>
-        <h4 class="text-xl font-semibold mb-2">Transactions</h4>
-        <p class="text-gray-600 mb-4">Track and manage all transactions</p>
-        <a class="card-button" href="/admin/transactions/list">Manage</a>
+      <div class="stat-card p-5">
+        <p class="text-sm font-semibold uppercase tracking-wider mb-1" style="color: var(--muted-fg);">Transaksi</p>
+        <p class="mono text-4xl font-bold" style="color: var(--accent);" th:text="${transactionCount}">0</p>
       </div>
     </div>
-  </div>
+
+    <!-- Nav cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+      <div class="nav-card p-6">
+        <div class="icon-tile mb-4"><i class="fas fa-box"></i></div>
+        <h2 class="text-xl font-bold mb-1">Products</h2>
+        <p class="text-sm mb-4" style="color: var(--muted-fg);">Kelola katalog, harga, dan stok produk</p>
+        <a class="btn-manage text-center px-4 py-2 rounded-lg mt-auto" href="/admin/product/list">Kelola →</a>
+      </div>
+      <div class="nav-card p-6">
+        <div class="icon-tile mb-4"><i class="fas fa-tags"></i></div>
+        <h2 class="text-xl font-bold mb-1">Categories</h2>
+        <p class="text-sm mb-4" style="color: var(--muted-fg);">Atur kategori produk toko</p>
+        <a class="btn-manage text-center px-4 py-2 rounded-lg mt-auto" href="/admin/category/list">Kelola →</a>
+      </div>
+      <div class="nav-card p-6">
+        <div class="icon-tile mb-4"><i class="fas fa-receipt"></i></div>
+        <h2 class="text-xl font-bold mb-1">Transactions</h2>
+        <p class="text-sm mb-4" style="color: var(--muted-fg);">Pantau semua transaksi pelanggan</p>
+        <a class="btn-manage text-center px-4 py-2 rounded-lg mt-auto" href="/admin/transactions/list">Kelola →</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="text-center text-sm py-6" style="color: var(--muted-fg);">
+    Minimarket Admin &middot; Panel pengelolaan toko
+  </footer>
 </body>
 </html>

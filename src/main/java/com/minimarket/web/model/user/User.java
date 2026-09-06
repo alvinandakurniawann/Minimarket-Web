@@ -4,6 +4,7 @@ import com.minimarket.web.model.base.BaseEntity;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "users")
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class User extends BaseEntity {
 

@@ -32,7 +32,10 @@ public class WebAdminController {
 
     // Tampilkan dashboard admin
     @GetMapping("/dashboard")
-    public String adminDashboard() {
+    public String adminDashboard(Model model) {
+        model.addAttribute("productCount", productService.getAllProducts().size());
+        model.addAttribute("categoryCount", categoryService.getAllCategories().size());
+        model.addAttribute("transactionCount", transactionService.getAllTransactions().size());
         return "admin/dashboard";
     }
 
@@ -148,6 +151,6 @@ public class WebAdminController {
     public String transactionDetail(@PathVariable Long id, Model model) {
         TransactionResponse transaction = transactionService.getTransactionById(id);
         model.addAttribute("transaction", transaction);
-        return "admin/transactions/d    etail";
+        return "admin/transactions/detail";
     }
 }
