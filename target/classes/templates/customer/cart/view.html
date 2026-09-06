@@ -1,87 +1,163 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Cart</title>
+    <title>Keranjang Belanja - Minimarket</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700;800&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary: #059669;
+            --primary-dark: #064E3B;
+            --accent: #EA580C;
+            --accent-dark: #C2410C;
+            --bg: #ECFDF5;
+            --ink: #064E3B;
+            --muted: #475569;
+            --card: #FFFFFF;
+            --border: #A7F3D0;
+        }
         body {
-            position: relative;
-            margin: 0;
-            padding: 0;
-            height: 100vh;
-            overflow: auto;
+            font-family: 'Nunito Sans', system-ui, sans-serif;
+            background-color: var(--bg);
+            color: var(--ink);
         }
-        
-        body::before {
-            content: "";
-            position: fixed;
-            inset: 0;
-            background-image: url('https://storage.googleapis.com/a1aa/image/3xfQ7hvjqkQ7F6PTD7FnYQgA8k6S5NUceiaBO1eODaTNZvAoA.jpg');
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-position: center;
-            z-index: -1;
-            filter: blur(3px);
-            opacity: 0.8;
+        h1, .display { font-family: 'Rubik', 'Nunito Sans', sans-serif; }
+        a:focus-visible, button:focus-visible, input:focus-visible {
+            outline: 3px solid var(--accent);
+            outline-offset: 2px;
         }
-        .container {
-            z-index: 1;
-            position: relative;
+        .panel {
+            background-color: var(--card);
+            border: 2px solid var(--border);
+            border-radius: 16px;
+        }
+        .cart-table { width: 100%; border-collapse: collapse; }
+        .cart-table thead th {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--muted);
+            text-align: left;
+            padding: 10px 12px;
+            border-bottom: 2px solid var(--border);
+        }
+        .cart-table tbody td {
+            padding: 14px 12px;
+            border-bottom: 1px solid #E2E8F0;
+            vertical-align: middle;
+        }
+        .cart-table tbody tr:last-child td { border-bottom: none; }
+        .qty-input {
+            width: 64px;
+            text-align: center;
+            padding: 6px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-weight: 700;
+            color: var(--ink);
+        }
+        .btn-checkout {
+            background-color: var(--accent);
+            color: #fff;
+            font-weight: 800;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+            cursor: pointer;
+        }
+        .btn-checkout:hover:not(:disabled) {
+            background-color: var(--accent-dark);
+            transform: translateY(-2px);
+        }
+        .btn-checkout:disabled {
+            background-color: #CBD5E1;
+            color: #475569;
+            cursor: not-allowed;
+        }
+        .link-del { color: #DC2626; font-weight: 700; }
+        .link-del:hover { text-decoration: underline; }
+        .prod-img {
+            width: 72px;
+            height: 72px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .btn-checkout { transition: none; }
+            .btn-checkout:hover:not(:disabled) { transform: none; }
         }
     </style>
 </head>
-<body class="bg-gray-100">
-    <div class="container mx-auto p-4">
-        <div class="flex flex-col">
-            <!-- Left Section -->
-            <div class="w-full bg-white p-4 rounded-lg shadow-md mb-4">
-                <div class="flex items-center mb-4">
-                    <a class="text-gray-500 hover:text-gray-700 mr-2" href="/customer/home">
-                        <i class="fas fa-arrow-left"></i>
-                    </a>
-                    <h1 class="text-2xl font-bold">Keranjang Belanja</h1>
-                </div>
-                <div class="flex items-center justify-between mb-4">
-                    <div>
-                        <input id="selectAll" type="checkbox" class="mr-2">
-                        <label for="selectAll" class="text-gray-600">Pilih Semua</label>
+<body>
+    <header class="bg-white shadow sticky top-0 z-50 border-b-2" style="border-color: var(--border);">
+        <div class="container mx-auto px-4 py-3 flex items-center justify-between gap-4">
+            <a href="/customer/home" class="text-xl font-extrabold flex items-center gap-2" style="color: var(--primary-dark);">
+                <i class="fas fa-store" style="color: var(--primary);"></i>
+                MINIMARKET
+            </a>
+            <div class="flex items-center gap-4">
+                <div class="relative dropdown">
+                    <button class="font-bold text-sm flex items-center" style="color: var(--primary-dark);" aria-haspopup="true">
+                        <i class="fas fa-user mr-2"></i> Profile
+                    </button>
+                    <div class="dropdown-menu hidden absolute right-0 bg-white border rounded-lg shadow-lg z-50" style="min-width: 180px;">
+                        <a href="/customer/profile/view" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-100"><i class="fas fa-eye mr-2"></i> View Profile</a>
+                        <a href="/transactions/customer" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-100"><i class="fas fa-history mr-2"></i> Transaction History</a>
+                        <a href="/auth/logout" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-100"><i class="fas fa-sign-out-alt mr-2"></i> Logout</a>
                     </div>
                 </div>
-                <div class="border-t border-gray-200"></div>
+                <a href="/customer/cart/view" class="font-bold" style="color: var(--primary-dark);" aria-label="Keranjang belanja" aria-current="page">
+                    <i class="fas fa-shopping-cart text-lg"></i>
+                </a>
+            </div>
+        </div>
+    </header>
 
-                <!-- Items Table -->
-                <table class="table-auto w-full mt-4">
-                    <thead class="bg-gray-100 text-gray-600 text-left">
+    <main class="container mx-auto px-4 py-8">
+        <nav class="text-sm font-semibold mb-4" aria-label="Breadcrumb">
+            <a href="/customer/home" class="hover:underline" style="color: var(--primary);">Home</a>
+            <span class="mx-2" style="color: var(--muted);">/</span>
+            <span style="color: var(--muted);">Keranjang</span>
+        </nav>
+
+        <h1 class="display text-3xl md:text-4xl font-extrabold mb-6">Keranjang Belanja</h1>
+
+        <div class="grid lg:grid-cols-3 gap-6 items-start">
+            <div class="panel p-4 md:p-6 lg:col-span-2 overflow-x-auto">
+                <label class="inline-flex items-center gap-2 font-bold text-sm mb-4 cursor-pointer">
+                    <input id="selectAll" type="checkbox" class="w-4 h-4 accent-emerald-600">
+                    Pilih Semua
+                </label>
+                <table class="cart-table">
+                    <thead>
                         <tr>
-                            <th class="py-2 px-4">Produk</th>
-                            <th class="py-2 px-4">Harga Satuan</th>
-                            <th class="py-2 px-4">Kuantitas</th>
-                            <th class="py-2 px-4">Total Harga</th>
-                            <th class="py-2 px-4">Aksi</th>
+                            <th>Produk</th>
+                            <th>Harga Satuan</th>
+                            <th>Kuantitas</th>
+                            <th>Total Harga</th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr th:each="item : ${cart.items}" class="border-b">
-                            <td class="py-6 px-4 flex items-center">
-                                <input class="mr-4 remember-checkbox" name="selectedItems" type="checkbox" th:value="${item.id}" />
-                                <img th:src="${item.productImage}" alt="Product Image" class="w-20 h-20 object-cover rounded-md border mr-4" />
-                                <div>
-                                    <a th:href="'/customer/products/detail/' + ${item.productId}" class="text-blue-600 hover:underline">
-                                        <h3 class="font-bold" th:text="${item.productName}">Nama Produk</h3>
-                                    </a>
+                        <tr th:each="item : ${cart.items}">
+                            <td>
+                                <div class="flex items-center gap-3">
+                                    <input class="remember-checkbox w-4 h-4 accent-emerald-600" name="selectedItems" type="checkbox" th:value="${item.id}" th:aria-label="'Pilih ' + ${item.productName}">
+                                    <img th:src="${item.productImage}" alt="Foto produk" class="prod-img">
+                                    <a th:href="'/customer/products/detail/' + ${item.productId}" class="font-bold hover:underline" th:text="${item.productName}">Nama Produk</a>
                                 </div>
                             </td>
-                            <td class="py-6 px-4" th:text="${item.pricePerUnit}">Rp10.000</td>
-                            <td class="py-6 px-4">
-                                <input class="w-12 text-center border rounded quantity-input" name="quantity" min="1" type="number" th:data-item-id="${item.id}" th:value="${item.quantity}" />
+                            <td class="mono font-semibold" th:text="${item.pricePerUnit}">Rp 10.000</td>
+                            <td>
+                                <input class="qty-input quantity-input" name="quantity" min="1" type="number" th:data-item-id="${item.id}" th:value="${item.quantity}">
                             </td>
-                            <td class="py-6 px-4 font-semibold text-gray-800 subtotal" th:text="${item.totalPrice}">Rp10.000</td>
-                            <td class="py-6 px-4 text-red-500">
-                                <form th:action="'/customer/cart/remove/' + ${item.id}" method="post">
-                                    <button type="submit" class="hover:underline">Hapus</button>
+                            <td class="subtotal font-extrabold" style="color: var(--accent);" th:text="${item.totalPrice}">Rp 10.000</td>
+                            <td>
+                                <form th:action="'/customer/cart/remove/' + ${item.id}" method="post" class="inline" onsubmit="return confirm('Hapus produk ini dari keranjang?');">
+                                    <button type="submit" class="link-del text-sm">Hapus</button>
                                 </form>
                             </td>
                         </tr>
@@ -89,21 +165,23 @@
                 </table>
             </div>
 
-            <!-- Right Section -->
-            <div class="w-full bg-white p-4 rounded-lg shadow-md">
-                <h2 class="text-xl font-bold mb-4">Ringkasan Belanja</h2>
-                <div class="flex justify-between mb-4">
-                    <span class="text-gray-700">Total</span>
-                    <span class="text-gray-700" id="totalPrice">Rp 0</span>
+            <div class="panel p-6 lg:sticky lg:top-24">
+                <h2 class="display text-xl font-bold mb-4">Ringkasan Belanja</h2>
+                <div class="flex justify-between mb-5 font-bold">
+                    <span style="color: var(--muted);">Total</span>
+                    <span id="totalPrice" class="mono">Rp 0</span>
                 </div>
-                <!-- Checkout Form -->
                 <form th:action="'/customer/cart/checkout/' + ${cart.id}" id="checkoutForm" method="post">
-                    <input name="selectedItems" type="hidden" th:value="${selectedItems}" />
-                    <button id="buyNowButton" type="submit" class="w-full bg-green-600 text-white py-2 rounded-lg disabled:bg-gray-400 disabled:cursor-not-allowed" disabled>Beli Sekarang</button>
+                    <input name="selectedItems" type="hidden" th:value="${selectedItems}">
+                    <button id="buyNowButton" type="submit" class="btn-checkout w-full py-3 rounded-xl" disabled>Beli Sekarang</button>
                 </form>
             </div>
         </div>
-    </div>
+    </main>
+
+    <footer class="text-center text-sm py-6 font-semibold" style="color: var(--muted);">
+        Minimarket &middot; Belanja online kebutuhan harian
+    </footer>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -114,17 +192,17 @@
             const quantityInputs = document.querySelectorAll('.quantity-input');
             const savedSelections = JSON.parse(localStorage.getItem('selectedItems')) || [];
 
+            const fmt = (n) => 'Rp ' + n.toLocaleString('id-ID');
+
             const calculateTotal = () => {
                 const selectedItems = document.querySelectorAll('.remember-checkbox:checked');
                 let total = 0;
-
                 selectedItems.forEach(item => {
                     const parent = item.closest('tr');
                     const subtotal = parseInt(parent.querySelector('.subtotal').textContent.replace(/[^\d]/g, ''), 10);
                     total += subtotal;
                 });
-
-                totalPriceElement.textContent = `Rp ${total.toLocaleString('id-ID')}`;
+                totalPriceElement.textContent = fmt(total);
                 buyNowButton.disabled = selectedItems.length === 0 || checkboxes.length === 0;
             };
 
@@ -132,12 +210,10 @@
                 if (savedSelections.includes(checkbox.value)) {
                     checkbox.checked = true;
                 }
-
                 checkbox.addEventListener('change', () => {
                     const updatedSelections = Array.from(checkboxes)
                         .filter(cb => cb.checked)
                         .map(cb => cb.value);
-
                     localStorage.setItem('selectedItems', JSON.stringify(updatedSelections));
                     calculateTotal();
                 });
@@ -156,27 +232,13 @@
                     const pricePerUnit = parseInt(parent.querySelector('td:nth-child(2)').textContent.replace(/[^\d]/g, ''), 10);
                     const quantity = parseInt(input.value, 10) || 0;
                     const subtotal = pricePerUnit * quantity;
-
-                    parent.querySelector('.subtotal').textContent = `Rp ${subtotal.toLocaleString('id-ID')}`;
-
-                    // Kirim pembaruan ke server
+                    parent.querySelector('.subtotal').textContent = fmt(subtotal);
                     const itemId = input.getAttribute('data-item-id');
                     fetch(`/customer/cart/update/${itemId}`, {
                         method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
+                        headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ quantity })
-                    })
-                    .then(response => {
-                        if (!response.ok) {
-                            console.error('Gagal memperbarui kuantitas:', response.statusText);
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Kesalahan koneksi:', error);
-                    });
-
+                    }).catch(error => console.error('Kesalahan koneksi:', error));
                     calculateTotal();
                 });
             });

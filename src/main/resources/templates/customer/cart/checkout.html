@@ -1,91 +1,173 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkout</title>
+    <title>Checkout - Minimarket</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700;800&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            position: relative;
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-            background-color: white;
+        :root {
+            --primary: #059669;
+            --primary-dark: #064E3B;
+            --accent: #EA580C;
+            --accent-dark: #C2410C;
+            --bg: #ECFDF5;
+            --ink: #064E3B;
+            --muted: #475569;
+            --card: #FFFFFF;
+            --border: #A7F3D0;
         }
-
-        body::before {
-            content: "";
-            position: fixed;
-            inset: 0;
-            background-image: url('https://storage.googleapis.com/a1aa/image/3xfQ7hvjqkQ7F6PTD7FnYQgA8k6S5NUceiaBO1eODaTNZvAoA.jpg');
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-position: center;
-            z-index: -1;
-            opacity: 0.8; /* Transparansi untuk membuat konten tetap terlihat */
+        body {
+            font-family: 'Nunito Sans', system-ui, sans-serif;
+            background-color: var(--bg);
+            color: var(--ink);
+        }
+        h1, .display { font-family: 'Rubik', 'Nunito Sans', sans-serif; }
+        .mono { font-family: ui-monospace, monospace; }
+        a:focus-visible, button:focus-visible, input:focus-visible {
+            outline: 3px solid var(--accent);
+            outline-offset: 2px;
+        }
+        .panel {
+            background-color: var(--card);
+            border: 2px solid var(--border);
+            border-radius: 16px;
+        }
+        .pay-option {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 14px 16px;
+            cursor: pointer;
+            transition: border-color 0.2s ease, background-color 0.2s ease;
+        }
+        .pay-option:hover { border-color: var(--primary); }
+        .pay-option:has(input:checked) {
+            border-color: var(--primary);
+            background-color: #ECFDF5;
+        }
+        .pay-option input { width: 18px; height: 18px; accent-color: var(--primary); }
+        .pay-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: #fff;
+            background-color: var(--primary);
+            flex-shrink: 0;
+        }
+        .btn-pay {
+            background-color: var(--accent);
+            color: #fff;
+            font-weight: 800;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+            cursor: pointer;
+        }
+        .btn-pay:hover {
+            background-color: var(--accent-dark);
+            transform: translateY(-2px);
+        }
+        .sum-table { width: 100%; border-collapse: collapse; }
+        .sum-table th {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--muted);
+            text-align: left;
+            padding: 10px 12px;
+            border-bottom: 2px solid var(--border);
+        }
+        .sum-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #E2E8F0;
+        }
+        .sum-table tr:last-child td { border-bottom: none; }
+        @media (prefers-reduced-motion: reduce) {
+            .btn-pay { transition: none; }
+            .btn-pay:hover { transform: none; }
         }
     </style>
 </head>
-<body class="bg-gray-100 flex items-center justify-center min-h-screen">
-    <div class="w-full max-w-4xl p-12 bg-white rounded-lg shadow-lg">
-        <!-- Back Button -->
-        <div class="flex items-center mb-4">
-            <a href="/customer/cart/view" class="text-gray-500 hover:text-gray-700 mr-2">
-                <i class="fas fa-arrow-left text-2xl"></i>
+<body>
+    <header class="bg-white shadow sticky top-0 z-50 border-b-2" style="border-color: var(--border);">
+        <div class="container mx-auto px-4 py-3 flex items-center justify-between gap-4">
+            <a href="/customer/home" class="text-xl font-extrabold flex items-center gap-2" style="color: var(--primary-dark);">
+                <i class="fas fa-store" style="color: var(--primary);"></i>
+                MINIMARKET
             </a>
-            <h1 class="text-4xl font-bold">Checkout</h1>
+            <a href="/customer/cart/view" class="font-bold text-sm" style="color: var(--primary-dark);">
+                <i class="fas fa-arrow-left mr-2"></i>Kembali ke Keranjang
+            </a>
         </div>
-        
-        <!-- Table Section -->
-        <table class="w-full border-collapse mb-6">
-            <thead>
-                <tr>
-                    <th class="border p-3 text-left bg-gray-100 text-lg">Produk</th>
-                    <th class="border p-3 text-left bg-gray-100 text-lg">Harga</th>
-                    <th class="border p-3 text-left bg-gray-100 text-lg">Jumlah</th>
-                    <th class="border p-3 text-left bg-gray-100 text-lg">Total</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="item : ${cart.items}" class="border-b">
-                    <td class="border p-3" th:text="${item.productName}">Nama Produk</td>
-                    <td class="border p-3" th:text="${item.pricePerUnit}">Rp 10.000</td>
-                    <td class="border p-3" th:text="${item.quantity}">2</td>
-                    <td class="border p-3" th:text="${item.totalPrice}">Rp 20.000</td>
-                </tr>
-            </tbody>
-        </table>
-        
-        <!-- Payment Section -->
-        <div class="mb-6">
-            <p class="text-2xl font-bold mb-4">Pilih Metode Pembayaran:</p>
-            <form method="post" th:action="'/customer/cart/checkout/' + ${cart.id}">
-                <label class="flex items-center mb-4 border p-4 rounded-lg hover:bg-gray-50 cursor-pointer">
-                    <input type="radio" name="paymentMethod" value="CASH" class="mr-3" required> 
-                    <img src="https://storage.googleapis.com/a1aa/image/7W57eyEY1WSXOKjwfiQF1cebCvwoYJVZ1iy49dNUzGdcsdBoA.jpg" alt="Cash" class="mr-3 w-8 h-8"> Tunai
-                </label>
-                <label class="flex items-center mb-4 border p-4 rounded-lg hover:bg-gray-50 cursor-pointer">
-                    <input type="radio" name="paymentMethod" value="TRANSFER" class="mr-3" required> 
-                    <img src="https://storage.googleapis.com/a1aa/image/epKdKgCnuX36MqJeYwsQwfQR7MelBjtopn0Mu7xiX9Brk7CQB.jpg" alt="Transfer" class="mr-3 w-8 h-8"> Transfer
-                </label>
-                <label class="flex items-center mb-4 border p-4 rounded-lg hover:bg-gray-50 cursor-pointer">
-                    <input type="radio" name="paymentMethod" value="QRIS" class="mr-3" required> 
-                    <img src="https://storage.googleapis.com/a1aa/image/I5d4g9eMEnwrYKlTlVvm8EeyhJoS3WSNeDHwIVS5d6hXsdBoA.jpg" alt="QRIS" class="mr-3 w-8 h-8"> QRIS
-                </label>
-                
-                <!-- Total Section -->
-                <div class="flex justify-between items-center bg-gray-100 p-4 rounded mb-6">
-                    <p class="text-2xl font-bold">Total Pembayaran:</p>
-                    <span th:text="${cart.totalPrice}" class="text-green-600 text-3xl">Rp 200,000</span>
-                </div>
+    </header>
 
-                <button type="submit" class="bg-green-500 text-white px-6 py-3 rounded-lg w-full text-xl font-semibold hover:bg-green-600">
-                    Konfirmasi Pembayaran
-                </button>
-            </form>
+    <main class="container mx-auto px-4 py-8 max-w-4xl">
+        <p class="text-sm font-bold tracking-widest uppercase mb-2" style="color: var(--primary);">Langkah Terakhir</p>
+        <h1 class="display text-3xl md:text-4xl font-extrabold mb-6">Checkout</h1>
+
+        <div class="panel p-4 md:p-6 mb-5 overflow-x-auto">
+            <table class="sum-table">
+                <thead>
+                    <tr>
+                        <th>Produk</th>
+                        <th>Harga</th>
+                        <th>Jumlah</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="item : ${cart.items}">
+                        <td class="font-bold" th:text="${item.productName}">Nama Produk</td>
+                        <td class="mono" th:text="${item.pricePerUnit}">Rp 10.000</td>
+                        <td class="mono" th:text="${item.quantity}">2</td>
+                        <td class="mono font-bold" th:text="${item.totalPrice}">Rp 20.000</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-    </div>
+
+        <form method="post" th:action="'/customer/cart/checkout/' + ${cart.id}" class="panel p-4 md:p-6">
+            <h2 class="display text-xl font-bold mb-4">Pilih Metode Pembayaran</h2>
+            <div class="flex flex-col gap-3 mb-6">
+                <label class="pay-option">
+                    <input type="radio" name="paymentMethod" value="CASH" required>
+                    <span class="pay-icon"><i class="fas fa-money-bill-wave"></i></span>
+                    <span><span class="block font-bold">Tunai</span><span class="block text-sm" style="color: var(--muted);">Bayar langsung saat terima barang</span></span>
+                </label>
+                <label class="pay-option">
+                    <input type="radio" name="paymentMethod" value="TRANSFER" required>
+                    <span class="pay-icon"><i class="fas fa-university"></i></span>
+                    <span><span class="block font-bold">Transfer</span><span class="block text-sm" style="color: var(--muted);">Transfer bank ke rekening toko</span></span>
+                </label>
+                <label class="pay-option">
+                    <input type="radio" name="paymentMethod" value="QRIS" required>
+                    <span class="pay-icon"><i class="fas fa-qrcode"></i></span>
+                    <span><span class="block font-bold">QRIS</span><span class="block text-sm" style="color: var(--muted);">Pindai kode QR untuk membayar</span></span>
+                </label>
+            </div>
+
+            <div class="flex justify-between items-center p-4 rounded-xl mb-6 font-bold" style="background-color: var(--bg);">
+                <span class="text-xl">Total Pembayaran</span>
+                <span class="mono text-2xl" style="color: var(--accent);" th:text="${cart.totalPrice}">Rp 200.000</span>
+            </div>
+
+            <button type="submit" class="btn-pay w-full py-3 rounded-xl text-lg">
+                Konfirmasi Pembayaran
+            </button>
+        </form>
+    </main>
+
+    <footer class="text-center text-sm py-6 font-semibold" style="color: var(--muted);">
+        Minimarket &middot; Belanja online kebutuhan harian
+    </footer>
 </body>
 </html>
