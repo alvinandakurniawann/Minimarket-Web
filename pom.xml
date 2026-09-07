@@ -58,6 +58,13 @@
             <version>8.0.33</version>
         </dependency>
 
+        <!-- PostgreSQL Driver (Supabase production) -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
         <!-- Development Tools -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

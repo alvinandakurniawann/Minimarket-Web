@@ -21,7 +21,8 @@ import java.util.List;
 @Service
 public class ProductServiceImpl implements ProductService {
 
-    private static final String IMAGE_UPLOAD_DIR = "src/main/resources/static/images/products/";
+    private static final String IMAGE_UPLOAD_DIR = System.getenv().getOrDefault(
+            "APP_UPLOAD_DIR", "src/main/resources/static/images/products/");
 
     @Autowired
     private ProductRepository productRepository;
@@ -142,7 +143,11 @@ public class ProductServiceImpl implements ProductService {
         productRepository.deleteById(id);
 
         if (productRepository.count() == 0) {
-            jdbcTemplate.execute("ALTER TABLE product AUTO_INCREMENT = 1");
+            try {
+                jdbcTemplate.execute("ALTER TABLE product AUTO_INCREMENT = 1");
+            } catch (Exception ignored) {
+                // MySQL-only nicety; other databases (e.g. PostgreSQL) don't need it
+            }
         }
     }
 
@@ -151,6 +156,7 @@ public class ProductServiceImpl implements ProductService {
             try {
                 byte[] bytes = image.getBytes();
                 Path path = Paths.get(IMAGE_UPLOAD_DIR + image.getOriginalFilename());
+                Files.createDirectories(path.getParent());
                 Files.write(path, bytes);
                 product.setImageUrl("/images/products/" + image.getOriginalFilename());
             } catch (IOException e) {

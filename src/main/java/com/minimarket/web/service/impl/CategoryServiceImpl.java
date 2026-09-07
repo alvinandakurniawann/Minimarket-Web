@@ -44,9 +44,13 @@ public class CategoryServiceImpl implements CategoryService {
 
         categoryRepository.deleteById(id);
 
-        // Jika tabel kosong, reset auto_increment
+        // Jika tabel kosong, reset auto_increment (MySQL saja)
         if (categoryRepository.count() == 0) {
-            jdbcTemplate.execute("ALTER TABLE category AUTO_INCREMENT = 1");
+            try {
+                jdbcTemplate.execute("ALTER TABLE category AUTO_INCREMENT = 1");
+            } catch (Exception ignored) {
+                // Postgres dan DB lain tidak butuh reset sequence manual
+            }
         }
     }
 
