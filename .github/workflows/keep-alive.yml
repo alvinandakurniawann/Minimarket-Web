@@ -1,6 +1,6 @@
 # Monitor backend + cegah Supabase pause 7 hari (tier gratis).
 # Isi Secrets di GitHub repo > Settings > Secrets and variables > Actions:
-#   BACKEND_URL       : mis. https://minimarket-web.azurewebsites.net (tanpa slash akhir)
+#   BACKEND_URL       : mis. https://minimarket.azurewebsites.net (tanpa slash akhir)
 #   SUPABASE_URL      : mis. https://xyzcompany.supabase.co
 #   SUPABASE_ANON_KEY : anon/public key dari Supabase dashboard
 name: keep-alive
