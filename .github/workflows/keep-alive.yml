@@ -7,24 +7,22 @@ name: keep-alive
 
 on:
   schedule:
-    - cron: "*/30 * * * *" # tiap 30 menit -> backend
-    - cron: "0 3 */5 * *" # tiap 5 hari jam 03:00 UTC -> Supabase
+    - cron: "*/10 * * * *" # tiap 10 menit -> backend (Azure idle ~20 mnt) + Supabase (cegah pause 7 hari)
   workflow_dispatch:
 
 jobs:
   ping-backend:
-    if: github.event.schedule == '*/30 * * * *' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     steps:
-      - run: curl -fsS "$BACKEND_URL/"
+      - run: curl -fsSL "${BACKEND_URL%/}/auth/login" > /dev/null
         env:
           BACKEND_URL: ${{ secrets.BACKEND_URL }}
 
   ping-supabase:
-    if: github.event.schedule == '0 3 */5 * *' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     steps:
-      - run: 'curl -fsS -H "apikey: $SUPABASE_ANON_KEY" "$SUPABASE_URL/auth/v1/health"'
+      # WAJIB query PostgREST (kena Postgres), bukan /auth/v1/health yg tidak dihitung sebagai aktivitas DB.
+      - run: curl -fsS -H "apikey: $SUPABASE_ANON_KEY" -H "Authorization: Bearer $SUPABASE_ANON_KEY" "$SUPABASE_URL/rest/v1/product?select=id&limit=1" > /dev/null
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
