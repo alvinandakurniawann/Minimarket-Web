@@ -26,7 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # WAJIB query PostgREST (kena Postgres), bukan /auth/v1/health yg tidak dihitung sebagai aktivitas DB.
-      - run: curl -fsS -H "apikey: $SUPABASE_ANON_KEY" -H "Authorization: Bearer $SUPABASE_ANON_KEY" "$SUPABASE_URL/rest/v1/product?select=id&limit=1" > /dev/null
+      - run: 'curl -fsS -H "apikey: $SUPABASE_ANON_KEY" -H "Authorization: Bearer $SUPABASE_ANON_KEY" "$SUPABASE_URL/rest/v1/product?select=id&limit=1" > /dev/null'
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
