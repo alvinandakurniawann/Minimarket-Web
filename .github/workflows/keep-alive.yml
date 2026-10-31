@@ -5,18 +5,22 @@
 #   SUPABASE_ANON_KEY : anon/public key dari Supabase dashboard
 name: keep-alive
 
+
 on:
   schedule:
     - cron: "*/10 * * * *" # tiap 10 menit -> backend (Azure idle ~20 mnt) + Supabase (cegah pause 7 hari)
   workflow_dispatch:
 
+
 jobs:
   ping-backend:
     runs-on: ubuntu-latest
+    continue-on-error: true
     steps:
       - run: curl -fsSL "${BACKEND_URL%/}/auth/login" > /dev/null
         env:
           BACKEND_URL: ${{ secrets.BACKEND_URL }}
+
 
   ping-supabase:
     runs-on: ubuntu-latest
